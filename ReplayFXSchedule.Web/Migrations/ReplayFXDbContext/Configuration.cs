@@ -16,8 +16,8 @@ namespace ReplayFXSchedule.Web.Migrations.ReplayFXDbContext
 
         protected override void Seed(ReplayFXSchedule.Web.Models.ReplayFXDbContext context)
         {
-            string[] eventTypes = { "featured", "favorite", "games", "competition", "movies", "music", "seminar" };
-            string[] eventTypeDisplays = { "Experience", "My Schedule", "Play", "Compete", "Watch", "Listen", "Learn" };
+            string[] eventTypes = { "featured", "games", "competition", "movies", "music", "seminar" };
+            string[] eventTypeDisplays = { "Featured", "Play", "Compete", "Watch", "Listen", "Learn" };
 
             for (int i = 0; i < eventTypes.Length; i++)
             {
