@@ -1,0 +1,11 @@
+﻿@model IEnumerable<ReplayFXSchedule.Web.Models.ReplayEventType>
+
+@{
+    Layout = null;
+}
+
+@foreach (var replayeventtype in Model)
+{
+    <li>@replayeventtype.DisplayName</li>
+}
+
