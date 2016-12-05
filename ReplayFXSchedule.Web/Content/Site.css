@@ -78,6 +78,10 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
     height:auto;
 }
 
+.table {
+    border-radius:1em;
+}
+
 .table tbody tr {
     background-color: white;
 }
