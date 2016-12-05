@@ -4,12 +4,12 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Manage Events</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default replayButton" })
 </p>
-<table class="table">
+<table class="table replayTable">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Title)

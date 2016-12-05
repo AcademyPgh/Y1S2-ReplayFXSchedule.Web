@@ -23,6 +23,7 @@ namespace ReplayFXSchedule.Web.Models
         [Display(Name = "End Time")]
         public string EndTime { get; set; }
         public string Description { get; set; }
+        [Display(Name = "Extended Description")]
         public string ExtendedDescription { get; set; }
         public string Location { get; set; }
 
@@ -33,6 +34,7 @@ namespace ReplayFXSchedule.Web.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
 
         [JsonIgnore]

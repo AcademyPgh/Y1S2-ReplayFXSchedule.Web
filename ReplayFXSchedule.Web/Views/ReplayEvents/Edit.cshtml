@@ -1,10 +1,10 @@
 ﻿@model ReplayFXSchedule.Web.Models.ReplayEvent
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Event";
 }
 
-<h2>Edit</h2>
+<h2>Edit Event</h2>
 
 
 @using (Html.BeginForm())
@@ -12,7 +12,6 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>ReplayEvent</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -74,21 +73,21 @@
         </div>
 
         <div class="form-group">
-            <label>Current Categories</label>
+            <label class="control-label col-md-2">Current Categories</label>
             <div class="col-md-10">
-                <div id="ReplayEventTypes" />
+                <div id="ReplayEventTypes" class="form-control"></div>
             </div>
         </div>
 
         <div class="form-group">
-            <label>Add Categories</label>
+            <label class="control-label col-md-2">Add Categories</label>
             <div class="col-md-10">
                 <div id="ReplayEventAddTypes">
-                    <select id="ReplaySelect">
+                    <select class="form-control" id="ReplaySelect">
                         <option>DON'T SELECT ME</option>
 
                     </select>
-                    <span id="AddType">Addskies</span>
+                    <span id="AddType"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
                 </div>
             </div>
         </div>
@@ -96,14 +95,15 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
+                @Html.ActionLink("Back to List", "Index","ReplayEvents", null, new { @class = "replayButton btn btn-default" })
             </div>
         </div>
     </div>
 }
 
-<div>
+@*<div>
     @Html.ActionLink("Back to List", "Index")
-</div>
+</div>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -116,7 +116,8 @@
                 success: function (data) {
                     var html = '';
                     data.map(function (replayEvent) {
-                        html += '<li>' + replayEvent.DisplayName + '<span data-id=' + replayEvent.Id + ' class="DeleteButton btn btn-primary">Delete</span></li>'
+                        //html += '<li>' + replayEvent.DisplayName + '<span data-id=' + replayEvent.Id + ' class="DeleteButton btn btn-primary">Delete</span></li>'
+                        html += '<li>' + replayEvent.DisplayName + '<span data-id=' + replayEvent.Id + ' class="DeleteButton"><i class="fa fa-times" aria-hidden="true"></i></span></li>'
                     });
 
                     $('#ReplayEventTypes').html(html);

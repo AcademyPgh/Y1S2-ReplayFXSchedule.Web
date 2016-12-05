@@ -1,12 +1,27 @@
 ﻿body {
     padding-top: 50px;
-    padding-bottom: 20px;
 }
 
+html, body {
+  height: 100%;
+  background:black;
+  color:white;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    min-height: 100%;
+    /* equal to footer height */
+    margin-bottom: -70px; 
+}
+
+.body-content:after {
+  content: "";
+  display: block;
+}
+footer, .body-content:after {
+  height: 70px; 
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -19,6 +34,168 @@
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
-textarea {
+textarea,
+#ReplayEventTypes {
     max-width: 280px;
 }
+
+.navbar.navbar-inverse, footer {
+    background-color:#9499e8;
+}
+
+.navbar.navbar-inverse a, .navbar-inverse .navbar-nav > li > a{
+    color:black;
+}
+
+input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
+   color:black;
+   background-color: #9499e8;
+   border: 1px solid white;
+   margin-right:2em;
+}
+
+
+.table {
+    border-collapse: collapse;
+}
+
+.table, th, td {
+    border: 3px solid darkgray;
+    color:black;
+}
+
+#ReplayEventTypes li span {
+    margin-left:10px;
+}
+
+#ReplayEventTypes li
+{
+    list-style-type:none;
+}
+
+#ReplayEventTypes.form-control{
+    height:auto;
+    min-height:34px;
+}
+
+.table {
+    border-radius:1em;
+}
+
+.table tbody tr {
+    background-color: white;
+}
+
+/*.table tbody tr:nth-child(even){
+    background-color: white;
+
+}*/
+
+.table tbody tr:first-child {
+    
+    background-color: rgba(148, 153, 182, 1);
+}
+
+footer{
+    padding:.5em;
+    text-align:center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.homeLogo{
+   padding-top:10em;
+   text-align:center;
+   background:black;
+   height:100vh;
+}
+
+.homeLogo img.img-responsive{
+    display:inline-block;
+}
+
+span#AddType {
+    display:inline-block;
+    font-size:3rem;
+}
+
+span#AddType i{
+    margin-left:1em;
+    vertical-align: middle;
+}
+
+select.form-control{
+    display:inline-block;
+}
+
+.deleteWarning {
+    background:#813051;
+    padding:.25em;
+    border-radius:.25em;
+    max-width:450px;
+    text-align:center;
+}
+
+.DeleteButton {
+    margin-right:50px;
+}
+
+.dl-horizontal dt, .dl-horizontal dd{
+    vertical-align:middle;
+}
+.dl-horizontal dt {
+    text-align:left;
+    /*font-weight:600;*/
+    padding-left:10px;
+    padding-right:30px;
+    border-right:3px solid darkgray;
+}
+
+.dl-horizontal dt:first-of-type, .dl-horizontal dd:first-of-type{
+    font-weight:700;
+    font-size:1.25em;
+}
+
+.dl-horizontal dt:nth-of-type(even), .dl-horizontal dd:nth-of-type(even){
+    background-color:white;
+    color:black;
+}
+
+.dl-horizontal dt:nth-of-type(odd), .dl-horizontal dd:nth-of-type(odd){
+    background-color:rgba(148, 153, 182, 1);
+     color:black;
+}
+
+.dl-horizontal dd{
+    margin-left:0px;
+    padding-left:25px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+  table.replayTable th { display: none; }
+  table.replayTable tbody td { 
+    display: block; padding: .6rem; 
+  }
+  table.replayTable tbody tr td:first-child { 
+    background: rgba(148, 153, 182, 1);
+    color: #000;
+    font-weight:700;
+  }
+	table.replayTable tbody td:before { 
+    content: attr(data-th); 
+    font-weight: bold;
+    display: inline-block;
+    width: 6rem;
+    margin-right:50px;  
+  }
+}
+
+
+
+
+
+
