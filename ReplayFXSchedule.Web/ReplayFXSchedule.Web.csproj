@@ -205,6 +205,12 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-100.png" />
+    <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-250.png" />
+    <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-50.png" />
+    <Content Include="Content\img\BuiltByAcademy-250.png" />
+    <Content Include="Content\img\BuiltByAcademy-50.png" />
+    <Content Include="Content\img\replayfxlogo.png" />
     <Content Include="Content\replayFX.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -272,7 +278,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\img\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
