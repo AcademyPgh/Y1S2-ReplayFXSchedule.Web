@@ -14,6 +14,7 @@ html, body {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom:30px;
     min-height: 100%;
     /* equal to footer height */
     margin-bottom: -70px; 
@@ -25,6 +26,7 @@ html, body {
 }
 footer, .body-content:after {
   height: 70px; 
+  /*margin-top:30px;*/
 }
 
 h1, h2{
@@ -160,9 +162,10 @@ select.form-control{
 .dl-horizontal dt {
     text-align:left;
     /*font-weight:600;*/
-    padding-left:10px;
-    padding-right:30px;
-    border-right:3px solid darkgray;
+    padding:5px 30px 5px 10px;
+    /*padding-left:10px;
+    padding-right:30px;*/
+    /*border-right:3px solid darkgray;*/
 }
 
 .dl-horizontal dt:first-of-type, .dl-horizontal dd:first-of-type{
@@ -200,22 +203,40 @@ select.form-control{
 
 
 @media screen and (max-width: 768px) {
-  table.replayTable th { display: none; }
-  table.replayTable tbody td { 
-    display: block; padding: .6rem; 
-  }
-  table.replayTable tbody tr td:first-child { 
-    background: rgba(148, 153, 182, 1);
-    color: #000;
-    font-weight:700;
-  }
-	table.replayTable tbody td:before { 
-    content: attr(data-th); 
-    font-weight: bold;
-    display: inline-block;
-    width: 6rem;
-    margin-right:50px;  
-  }
+    table.replayTable th {
+        display: none;
+    }
+
+    table.replayTable tbody td {
+        display: block;
+        padding: .6rem;
+    }
+
+    table.replayTable tbody tr td:first-child {
+        background: rgba(148, 153, 182, 1);
+        color: #000;
+        font-weight: 700;
+    }
+
+    table.replayTable tbody td:before {
+        content: attr(data-th);
+        font-weight: bold;
+        display: inline-block;
+        width: 6rem;
+        margin-right: 50px;
+        height: 30px;
+    }
+
+    .dl-horizontal dd, .dl-horizontal dd:nth-child(even), .dl-horizontal dd:nth-child(odd) {
+        padding-left: 10px;
+        background-color: white;
+    }
+
+    .dl-horizontal dt, .dl-horizontal dt:nth-child(even), .dl-horizontal dt:nth-child(odd){
+         background-color:#aeb2ef;
+    }
+
+
 }
 
 
