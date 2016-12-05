@@ -34,6 +34,7 @@ namespace ReplayFXSchedule.Web.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
 
         [JsonIgnore]

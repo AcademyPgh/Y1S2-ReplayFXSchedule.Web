@@ -12,8 +12,8 @@ html, body {
     padding-left: 15px;
     padding-right: 15px;
     min-height: 100%;
-  /* equal to footer height */
-  margin-bottom: -70px; 
+    /* equal to footer height */
+    margin-bottom: -70px; 
 }
 
 .body-content:after {
@@ -99,6 +99,7 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
 footer{
     padding:.5em;
     text-align:center;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .homeLogo{
@@ -114,7 +115,12 @@ footer{
 
 span#AddType {
     display:inline-block;
-    font-size:2rem;
+    font-size:3rem;
+}
+
+span#AddType i{
+    margin-left:1em;
+    vertical-align: middle;
 }
 
 select.form-control{
@@ -133,8 +139,43 @@ select.form-control{
     margin-right:50px;
 }
 
+.dl-horizontal dt, .dl-horizontal dd{
+    vertical-align:middle;
+}
+.dl-horizontal dt {
+    text-align:left;
+    /*font-weight:600;*/
+    padding-left:10px;
+    padding-right:30px;
+    border-right:3px solid darkgray;
+}
 
-@media screen and (max-width: 767px) {
+.dl-horizontal dt:first-of-type, .dl-horizontal dd:first-of-type{
+    font-weight:700;
+    font-size:1.25em;
+}
+
+.dl-horizontal dt:nth-of-type(even), .dl-horizontal dd:nth-of-type(even){
+    background-color:white;
+    color:black;
+}
+
+.dl-horizontal dt:nth-of-type(odd), .dl-horizontal dd:nth-of-type(odd){
+    background-color:rgba(148, 153, 182, 1);
+     color:black;
+}
+
+.dl-horizontal dd{
+    margin-left:0px;
+    padding-left:25px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
   table.replayTable th { display: none; }
   table.replayTable tbody td { 
     display: block; padding: .6rem; 
