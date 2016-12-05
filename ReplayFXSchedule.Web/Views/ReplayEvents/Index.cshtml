@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExtendedDescription)
+            @Html.DisplayNameFor(model => model.ReplayEventTypes)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Location)
@@ -53,14 +53,16 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ExtendedDescription)
+            @foreach (var eventType in item.ReplayEventTypes)
+            {
+                <span class="categoryType">@Html.DisplayFor(model => eventType.DisplayName) </span>
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Location)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) 
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
