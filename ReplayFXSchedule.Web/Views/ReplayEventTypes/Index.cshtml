@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<ReplayFXSchedule.Web.Models.ReplayEventType>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Replay Events";
 }
 
-<h2>Index</h2>
+<h2>Replay Events</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", "ReplayEventTypes", null, new { @class = "btn btn-default replayButton" })
 </p>
 <table class="table">
     <tr>

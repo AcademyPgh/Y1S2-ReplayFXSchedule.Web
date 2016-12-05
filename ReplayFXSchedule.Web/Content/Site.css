@@ -1,12 +1,27 @@
 ﻿body {
     padding-top: 50px;
-    padding-bottom: 20px;
 }
 
+html, body {
+  height: 100%;
+  background:black;
+  color:white;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -70px; 
+}
+
+.body-content:after {
+  content: "";
+  display: block;
+}
+footer, .body-content:after {
+  height: 70px; 
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -19,6 +34,88 @@
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
-textarea {
+textarea,
+#ReplayEventTypes {
     max-width: 280px;
 }
+
+.navbar.navbar-inverse, footer {
+    background-color:#9499e8;
+}
+
+.navbar.navbar-inverse a, .navbar-inverse .navbar-nav > li > a{
+    color:black;
+}
+input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
+   color:black;
+   background-color: #9499e8;
+   border: 1px solid white
+}
+
+ .btn-default.replayButton{
+
+ }
+
+.table {
+    border-collapse: collapse;
+}
+
+.table, th, td {
+    border: 3px solid darkgray;
+    color:black;
+}
+
+#ReplayEventTypes li span {
+    margin-left:10px;
+}
+
+#ReplayEventTypes li
+{
+    list-style-type:none;
+}
+
+#ReplayEventTypes.form-control{
+    height:auto;
+}
+
+.table tbody tr {
+    background-color: white;
+}
+
+/*.table tbody tr:nth-child(even){
+    background-color: white;
+
+}*/
+
+.table tbody tr:first-child {
+    
+    background-color: rgba(148, 153, 182, 1);
+}
+
+footer{
+    padding:.5em;
+    text-align:center;
+}
+
+.homeLogo{
+   padding-top:10em;
+   text-align:center;
+   background:black;
+   height:100vh;
+}
+
+.homeLogo img.img-responsive{
+    display:inline-block;
+}
+
+span#AddType {
+    display:inline-block;
+    font-size:2rem;
+}
+
+select.form-control{
+    display:inline-block;
+}
+
+
+
