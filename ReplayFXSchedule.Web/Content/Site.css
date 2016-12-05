@@ -46,15 +46,14 @@ textarea,
 .navbar.navbar-inverse a, .navbar-inverse .navbar-nav > li > a{
     color:black;
 }
+
 input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
    color:black;
    background-color: #9499e8;
-   border: 1px solid white
+   border: 1px solid white;
+   margin-right:2em;
 }
 
- .btn-default.replayButton{
-
- }
 
 .table {
     border-collapse: collapse;
@@ -76,6 +75,7 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
 
 #ReplayEventTypes.form-control{
     height:auto;
+    min-height:34px;
 }
 
 .table {
@@ -120,6 +120,21 @@ span#AddType {
 select.form-control{
     display:inline-block;
 }
+
+.deleteWarning {
+    background:#813051;
+    padding:.25em;
+    border-radius:.25em;
+    max-width:450px;
+    text-align:center;
+}
+
+.DeleteButton {
+    margin-right:50px;
+}
+
+
+
 
 
 

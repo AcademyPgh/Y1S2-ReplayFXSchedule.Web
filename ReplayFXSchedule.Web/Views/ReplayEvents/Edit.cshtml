@@ -4,7 +4,7 @@
     ViewBag.Title = "Edit Event";
 }
 
-<h2>Edit</h2>
+<h2>Edit Event</h2>
 
 
 @using (Html.BeginForm())
@@ -118,7 +118,7 @@
                     var html = '';
                     data.map(function (replayEvent) {
                         //html += '<li>' + replayEvent.DisplayName + '<span data-id=' + replayEvent.Id + ' class="DeleteButton btn btn-primary">Delete</span></li>'
-                        html += '<li>' + replayEvent.DisplayName + '<span data-id=' + replayEvent.Id + 'class="DeleteButton"><i class="fa fa-times" aria-hidden="true"></i></span></li>'
+                        html += '<li>' + replayEvent.DisplayName + '<span data-id=' + replayEvent.Id + ' class="DeleteButton"><i class="fa fa-times" aria-hidden="true"></i></span></li>'
                     });
 
                     $('#ReplayEventTypes').html(html);
