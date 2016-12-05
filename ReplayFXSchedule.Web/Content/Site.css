@@ -134,6 +134,26 @@ select.form-control{
 }
 
 
+@media screen and (max-width: 767px) {
+  table.replayTable th { display: none; }
+  table.replayTable tbody td { 
+    display: block; padding: .6rem; 
+  }
+  table.replayTable tbody tr td:first-child { 
+    background: rgba(148, 153, 182, 1);
+    color: #000;
+    font-weight:700;
+  }
+	table.replayTable tbody td:before { 
+    content: attr(data-th); 
+    font-weight: bold;
+    display: inline-block;
+    width: 6rem;
+    margin-right:50px;  
+  }
+}
+
+
 
 
 
