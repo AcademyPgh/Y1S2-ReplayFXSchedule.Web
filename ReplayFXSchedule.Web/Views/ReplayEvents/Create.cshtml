@@ -71,6 +71,14 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-md-2">Categories</label>
+            <div class="col-md-10">
+                <div id="CatList"></div>
+                <input name="categories" id="categories" type="hidden" />
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
                 @Html.ActionLink("Back to List", "Index", "ReplayEvents", null, new { @class = "replayButton btn btn-default" })
@@ -82,4 +90,54 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        //   time to fill this fozizzel
+
+        categories = [];
+
+        function load_categories() {
+            $.ajax({
+                url: '/public/categories',
+                type: 'GET',
+                success: function (data) {
+                    $('#CatList').html('<ul>');
+                    data.map(function (category) {
+                        $('#CatList').append('<li id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</li>');
+                        $('#cat' + category.Id).click(function () { toggle_category(category.Id); });
+                    });
+                    $('#CatList').append('</ul>');
+                }
+            })
+        }
+
+        function toggle_category(id) {
+            // if it is not there
+            // add the hidden input element
+            // add the checkmark to the category
+            if (!$('#catspan' + id).hasClass('fa fa-times')) {
+                categories.push(id);
+                $('#categories').val(categories.toString());
+                $('#catspan' + id).addClass('fa fa-times');
+            }
+            else {
+
+                // if it is there
+                // remove the hidden input element
+                // remove the checkmark on the category
+                var i = categories.indexOf(id);
+                categories.splice(i, 1);
+                $('#catadd' + id).remove();
+                $('#catspan' + id).removeClass('fa fa-times');
+
+            }
+        }
+
+        function initialize()
+        {
+            load_categories();
+        }
+
+        $(initialize);
+    </script>
 }

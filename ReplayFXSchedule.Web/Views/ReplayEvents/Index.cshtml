@@ -27,6 +27,9 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
+            Categories
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.ExtendedDescription)
         </th>
         <th>
@@ -51,6 +54,11 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @foreach(var cat in item.ReplayEventTypes) {
+                <li>@cat.Name</li>
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ExtendedDescription)

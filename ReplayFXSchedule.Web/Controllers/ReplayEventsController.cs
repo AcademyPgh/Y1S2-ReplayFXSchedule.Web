@@ -58,11 +58,16 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location")] ReplayEvent replayEvent)
+        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location")] ReplayEvent replayEvent, string categories)
         {
             if (ModelState.IsValid)
             {
                 db.ReplayEvents.Add(replayEvent);
+                replayEvent.ReplayEventTypes = new List<ReplayEventType>();
+                foreach(var id in categories.Split(','))
+                {
+                    replayEvent.ReplayEventTypes.Add(db.ReplayEventTypes.Find(Convert.ToInt32(id)));
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
