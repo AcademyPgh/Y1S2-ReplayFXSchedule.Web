@@ -1,14 +1,23 @@
-﻿body {
+﻿/*Dark Coding Skin*/
+html, body{
+     background:#282c34;
+      color:white;
+}
+
+
+/*Light Purple Accent Skin*/
+/*html, body{
+     background:#ffffff;
+}*/
+
+
+body {
     padding-top: 50px;
 }
 
 html, body {
-  height: 100%;
-  /*background:#47484b;*/
-  background:#282c34;
-  color:white;
+  height: 100%; 
   font-family: 'Montserrat', sans-serif;
-  /**/
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -27,6 +36,13 @@ html, body {
 footer, .body-content:after {
   height: 70px; 
   /*margin-top:30px;*/
+}
+
+
+footer{
+    padding:.5em;
+    text-align:center;
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1, h2{
@@ -49,27 +65,29 @@ textarea,
     max-width: 280px;
 }
 
+/* Navigation */
+
 .navbar.navbar-inverse, footer{
     background-color:#9499e8;
 }
 
-/*footer {
-    background-color:#9499e8;
-}*/
 
 .navbar.navbar-inverse a, .navbar-inverse .navbar-nav > li > a{
     color:black;
 }
 
+
+/* Buttons */
+
 input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
    color:black;
    background-color: #46a9bb;
-    /*background-color: #8f8d8a;*/
-    /*background-color:#84ac8d;*/
+   /*background:purple;*/
    border: 1px solid white;
    margin-right:2em;
 }
 
+/* Tables */
 
 .table {
     border-collapse: collapse;
@@ -79,6 +97,33 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
     border: 3px solid darkgray;
     color:black;
 }
+
+.table {
+    border-radius:1em;
+}
+
+.table tbody tr {
+    background-color: white;
+}
+
+.table tbody tr:first-child {
+    background-color:#aeb2ef;
+}
+
+/* Home Page */
+
+.homeLogo{
+   padding-top:10em;
+   text-align:center;
+   background:#282c34;
+   height:100vh;
+}
+
+.homeLogo img.img-responsive{
+    display:inline-block;
+}
+
+/* Replay Event Type Category Styling */
 
 #ReplayEventTypes li span {
     margin-left:10px;
@@ -94,41 +139,7 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
     min-height:34px;
 }
 
-.table {
-    border-radius:1em;
-}
 
-.table tbody tr {
-    background-color: white;
-}
-
-/*.table tbody tr:nth-child(even){
-    background-color: white;
-
-}*/
-
-.table tbody tr:first-child {
-    
-    /*background-color: rgba(148, 153, 182, 1);*/
-    background-color:#aeb2ef;
-}
-
-footer{
-    padding:.5em;
-    text-align:center;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.homeLogo{
-   padding-top:10em;
-   text-align:center;
-   background:#282c34;
-   height:100vh;
-}
-
-.homeLogo img.img-responsive{
-    display:inline-block;
-}
 
 span#AddType {
     display:inline-block;
@@ -144,6 +155,9 @@ select.form-control{
     display:inline-block;
 }
 
+
+/*Delete Page*/
+
 .deleteWarning {
     background:#d5696a;
     padding:.25em;
@@ -156,16 +170,22 @@ select.form-control{
     margin-right:50px;
 }
 
+.categoryType:after{
+    content: ", "
+}
+
+.categoryType:last-of-type:after{
+    content:" "
+}
+
+/* Data Lists */
+
 .dl-horizontal dt, .dl-horizontal dd{
     vertical-align:middle;
 }
 .dl-horizontal dt {
     text-align:left;
-    /*font-weight:600;*/
     padding:5px 30px 5px 10px;
-    /*padding-left:10px;
-    padding-right:30px;*/
-    /*border-right:3px solid darkgray;*/
 }
 
 .dl-horizontal dt:first-of-type, .dl-horizontal dd:first-of-type{
@@ -190,16 +210,6 @@ select.form-control{
     padding-bottom:5px;
 }
 
-.categoryType:after{
-    content: ", "
-}
-
-.categoryType:last-child:after{
-    content:" "
-}
-
-
-
 
 
 @media screen and (max-width: 768px) {
@@ -210,6 +220,7 @@ select.form-control{
     table.replayTable tbody td {
         display: block;
         padding: .6rem;
+        vertical-align:middle;
     }
 
     table.replayTable tbody tr td:first-child {
@@ -224,7 +235,7 @@ select.form-control{
         display: inline-block;
         width: 6rem;
         margin-right: 50px;
-        height: 30px;
+        vertical-align:top;
     }
 
     .dl-horizontal dd, .dl-horizontal dd:nth-child(even), .dl-horizontal dd:nth-child(odd) {
@@ -239,6 +250,21 @@ select.form-control{
 
 }
 
+@media screen and (min-width: 480px) and (max-width: 768px){
+  .responsiveTD {
+    display: inline-block;
+    width: 60%;
+}
+  }
+
+
+
+@media screen and (max-width: 479px) {
+    .responsiveTD {
+        display: inline-block;
+        width: 50%;
+    }
+}
 
 
 

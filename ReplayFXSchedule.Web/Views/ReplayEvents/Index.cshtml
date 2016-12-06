@@ -38,31 +38,43 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
+            <div class="responsiveTD">
+    @Html.DisplayFor(modelItem => item.Title)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.Date)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.StartTime)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.StartTime)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.EndTime)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.Description)
+            </div>
+</td>
         <td>
-            @foreach (var eventType in item.ReplayEventTypes)
-            {
-                <span class="categoryType">@Html.DisplayFor(model => eventType.DisplayName) </span>
-            }
+            <div class="responsiveTD">
+                    @foreach (var eventType in item.ReplayEventTypes)
+                    {
+                        <span class="categoryType">@Html.DisplayFor(model => eventType.DisplayName) </span><br />
+                    }
+            </div>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Location)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) 
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
