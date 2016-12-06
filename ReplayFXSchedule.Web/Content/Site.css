@@ -1,15 +1,41 @@
 ﻿/*Dark Coding Skin*/
-html, body{
-     background:#282c34;
-      color:white;
-}
+    html, body, .homeLogo{
+          background:#282c34;
+          color:white;
+    }
+
+     h1, h2{
+        color:white;
+    }
+
+    input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
+        background-color: #46a9bb;
+        color:black;
+    }
+
+/*End of Dark Coding Skin*/
 
 
 /*Light Purple Accent Skin*/
-/*html, body{
-     background:#ffffff;
-}*/
+/*Can be adjusted to match the color of the application*/
+    /*html, body, .homeLogo{
+         background:#ffffff;
+         color:#282c34;
+    }
 
+     h1, h2{
+        color:#282c34;
+    }
+
+    input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
+        background-color: #393e94;
+        color:white;
+    }*/
+
+/*End of Light Purple Accent Skin*/
+
+
+/* General Styles */
 
 body {
     padding-top: 50px;
@@ -33,11 +59,10 @@ html, body {
   content: "";
   display: block;
 }
+
 footer, .body-content:after {
   height: 70px; 
-  /*margin-top:30px;*/
 }
-
 
 footer{
     padding:.5em;
@@ -46,7 +71,7 @@ footer{
 }
 
 h1, h2{
-    color:white;
+    
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -80,9 +105,6 @@ textarea,
 /* Buttons */
 
 input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
-   color:black;
-   background-color: #46a9bb;
-   /*background:purple;*/
    border: 1px solid white;
    margin-right:2em;
 }
@@ -115,7 +137,6 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
 .homeLogo{
    padding-top:10em;
    text-align:center;
-   background:#282c34;
    height:100vh;
 }
 
