@@ -1,7 +1,7 @@
 ﻿@model ReplayFXSchedule.Web.Models.ReplayEvent
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Event";
 }
 
 <h2>Create ReplayFX Event</h2>
@@ -127,6 +127,7 @@
                 // remove the checkmark on the category
                 var i = categories.indexOf(id);
                 categories.splice(i, 1);
+                $('#categories').val(categories.toString());
                 $('#catadd' + id).remove();
                 $('#catspan' + id).removeClass('fa fa-times');
 

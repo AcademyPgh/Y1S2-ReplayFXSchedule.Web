@@ -1,16 +1,55 @@
-﻿body {
+﻿/*Dark Coding Skin*/
+    html, body, .homeLogo{
+          background:#282c34;
+          color:white;
+    }
+
+     h1, h2{
+        color:white;
+    }
+
+    input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
+        background-color: #46a9bb;
+        color:black;
+    }
+
+/*End of Dark Coding Skin*/
+
+
+/*Light Purple Accent Skin*/
+/*Can be adjusted to match the color of the application*/
+    /*html, body, .homeLogo{
+         background:#ffffff;
+         color:#282c34;
+    }
+
+     h1, h2{
+        color:#282c34;
+    }
+
+    input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
+        background-color: #393e94;
+        color:white;
+    }*/
+
+/*End of Light Purple Accent Skin*/
+
+
+/* General Styles */
+
+body {
     padding-top: 50px;
 }
 
 html, body {
-  height: 100%;
-  background:black;
-  color:white;
+  height: 100%; 
+  font-family: 'Montserrat', sans-serif;
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom:30px;
     min-height: 100%;
     /* equal to footer height */
     margin-bottom: -70px; 
@@ -20,8 +59,20 @@ html, body {
   content: "";
   display: block;
 }
+
 footer, .body-content:after {
   height: 70px; 
+}
+
+footer{
+    padding:.5em;
+    text-align:center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2{
+    
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -39,21 +90,26 @@ textarea,
     max-width: 280px;
 }
 
-.navbar.navbar-inverse, footer {
+/* Navigation */
+
+.navbar.navbar-inverse, footer{
     background-color:#9499e8;
 }
+
 
 .navbar.navbar-inverse a, .navbar-inverse .navbar-nav > li > a{
     color:black;
 }
 
+
+/* Buttons */
+
 input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
-   color:black;
-   background-color: #9499e8;
    border: 1px solid white;
    margin-right:2em;
 }
 
+/* Tables */
 
 .table {
     border-collapse: collapse;
@@ -63,6 +119,32 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
     border: 3px solid darkgray;
     color:black;
 }
+
+.table {
+    border-radius:1em;
+}
+
+.table tbody tr {
+    background-color: white;
+}
+
+.table tbody tr:first-child {
+    background-color:#aeb2ef;
+}
+
+/* Home Page */
+
+.homeLogo{
+   padding-top:10em;
+   text-align:center;
+   height:100vh;
+}
+
+.homeLogo img.img-responsive{
+    display:inline-block;
+}
+
+/* Replay Event Type Category Styling */
 
 #ReplayEventTypes li span {
     margin-left:10px;
@@ -78,40 +160,7 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
     min-height:34px;
 }
 
-.table {
-    border-radius:1em;
-}
 
-.table tbody tr {
-    background-color: white;
-}
-
-/*.table tbody tr:nth-child(even){
-    background-color: white;
-
-}*/
-
-.table tbody tr:first-child {
-    
-    background-color: rgba(148, 153, 182, 1);
-}
-
-footer{
-    padding:.5em;
-    text-align:center;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.homeLogo{
-   padding-top:10em;
-   text-align:center;
-   background:black;
-   height:100vh;
-}
-
-.homeLogo img.img-responsive{
-    display:inline-block;
-}
 
 span#AddType {
     display:inline-block;
@@ -127,8 +176,11 @@ select.form-control{
     display:inline-block;
 }
 
+
+/*Delete Page*/
+
 .deleteWarning {
-    background:#813051;
+    background:#d5696a;
     padding:.25em;
     border-radius:.25em;
     max-width:450px;
@@ -139,15 +191,22 @@ select.form-control{
     margin-right:50px;
 }
 
+.categoryType:after{
+    content: ", "
+}
+
+.categoryType:last-of-type:after{
+    content:" "
+}
+
+/* Data Lists */
+
 .dl-horizontal dt, .dl-horizontal dd{
     vertical-align:middle;
 }
 .dl-horizontal dt {
     text-align:left;
-    /*font-weight:600;*/
-    padding-left:10px;
-    padding-right:30px;
-    border-right:3px solid darkgray;
+    padding:5px 30px 5px 10px;
 }
 
 .dl-horizontal dt:first-of-type, .dl-horizontal dd:first-of-type{
@@ -161,7 +220,7 @@ select.form-control{
 }
 
 .dl-horizontal dt:nth-of-type(odd), .dl-horizontal dd:nth-of-type(odd){
-    background-color:rgba(148, 153, 182, 1);
+    background-color:#aeb2ef;
      color:black;
 }
 
@@ -174,26 +233,59 @@ select.form-control{
 
 
 
-
 @media screen and (max-width: 768px) {
-  table.replayTable th { display: none; }
-  table.replayTable tbody td { 
-    display: block; padding: .6rem; 
-  }
-  table.replayTable tbody tr td:first-child { 
-    background: rgba(148, 153, 182, 1);
-    color: #000;
-    font-weight:700;
-  }
-	table.replayTable tbody td:before { 
-    content: attr(data-th); 
-    font-weight: bold;
-    display: inline-block;
-    width: 6rem;
-    margin-right:50px;  
-  }
+    table.replayTable th {
+        display: none;
+    }
+
+    table.replayTable tbody td {
+        display: block;
+        padding: .6rem;
+        vertical-align:middle;
+    }
+
+    table.replayTable tbody tr td:first-child {
+        background: rgba(148, 153, 182, 1);
+        color: #000;
+        font-weight: 700;
+    }
+
+    table.replayTable tbody td:before {
+        content: attr(data-th);
+        font-weight: bold;
+        display: inline-block;
+        width: 6rem;
+        margin-right: 50px;
+        vertical-align:top;
+    }
+
+    .dl-horizontal dd, .dl-horizontal dd:nth-child(even), .dl-horizontal dd:nth-child(odd) {
+        padding-left: 10px;
+        background-color: white;
+    }
+
+    .dl-horizontal dt, .dl-horizontal dt:nth-child(even), .dl-horizontal dt:nth-child(odd){
+         background-color:#aeb2ef;
+    }
+
+
 }
 
+@media screen and (min-width: 480px) and (max-width: 768px){
+  .responsiveTD {
+    display: inline-block;
+    width: 60%;
+}
+  }
+
+
+
+@media screen and (max-width: 479px) {
+    .responsiveTD {
+        display: inline-block;
+        width: 50%;
+    }
+}
 
 
 
