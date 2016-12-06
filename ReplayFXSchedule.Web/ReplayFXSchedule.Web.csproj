@@ -195,6 +195,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201612020059254_InitialDatabaseCreation.Designer.cs">
       <DependentUpon>201612020059254_InitialDatabaseCreation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201612062130289_Images.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201612062130289_Images.Designer.cs">
+      <DependentUpon>201612062130289_Images.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -295,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201612020059254_InitialDatabaseCreation.resx">
       <DependentUpon>201612020059254_InitialDatabaseCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201612062130289_Images.resx">
+      <DependentUpon>201612062130289_Images.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

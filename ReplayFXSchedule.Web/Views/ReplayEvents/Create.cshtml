@@ -71,6 +71,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="control-label col-md-2">Categories</label>
             <div class="col-md-10">
                 <div id="CatList"></div>
@@ -128,9 +136,7 @@
                 var i = categories.indexOf(id);
                 categories.splice(i, 1);
                 $('#categories').val(categories.toString());
-                $('#catadd' + id).remove();
                 $('#catspan' + id).removeClass('fa fa-times');
-
             }
         }
 

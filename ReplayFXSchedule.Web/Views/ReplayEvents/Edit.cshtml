@@ -73,6 +73,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="control-label col-md-2">Current Categories</label>
             <div class="col-md-10">
                 <div id="ReplayEventTypes" class="form-control"></div>
@@ -128,7 +136,6 @@
 
         function DeleteType()
         {
-            console.log('delete type');
             $.ajax({
                 url: '/replayevents/removetype/@Model.Id?typeId=' + $(this).attr('data-id'),
                 type: 'get',
@@ -156,7 +163,6 @@
                 url: '/replayevents/addtype/@Model.Id?typeId=' + $('#ReplaySelect').val(),
                 type: 'get',
                 success: function () {
-                    console.log("did I work?");
                     UpdateEventTypes();
                 }
             });

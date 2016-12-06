@@ -26,6 +26,7 @@ namespace ReplayFXSchedule.Web.Models
         [Display(Name = "Extended Description")]
         public string ExtendedDescription { get; set; }
         public string Location { get; set; }
+        public string Image { get; set; }
 
         [Display(Name = "Event Type")]
         public virtual List<ReplayEventType> ReplayEventTypes { get; set; }

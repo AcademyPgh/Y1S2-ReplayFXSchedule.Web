@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ReplayFXSchedule.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace ReplayFXSchedule.Web.Controllers
             var result = JsonConvert.SerializeObject(db.ReplayEvents.ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
-                           ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                           ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                           ContractResolver = new CamelCasePropertyNamesContractResolver()
                        });
 
             return Content(result, "application/json");
