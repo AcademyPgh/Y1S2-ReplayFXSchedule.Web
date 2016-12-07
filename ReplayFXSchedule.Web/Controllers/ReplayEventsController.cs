@@ -50,6 +50,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayEvents/Create
         public ActionResult Create()
         {
+            ViewBag.ReplayEventTypeIDs = "";
             return View();
         }
 
@@ -87,6 +88,8 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.ReplayEventTypeIDs = string.Join(",", replayEvent.ReplayEventTypes.Select(r => r.Id));
             return View(replayEvent);
         }
 
@@ -131,15 +134,87 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] ReplayEvent replayEvent)
+        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] ReplayEvent replayEvent, string categories)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(replayEvent).State = EntityState.Modified;
+                //Modified entity state causes us to not be able to update connected replayeeventtypes
+                ReplayEvent rpe = db.ReplayEvents.Find(replayEvent.Id);
+
+                rpe.Title = replayEvent.Title;
+                rpe.Date = replayEvent.Date;
+                rpe.StartTime = replayEvent.StartTime;
+                rpe.EndTime = replayEvent.EndTime;
+                rpe.Description = replayEvent.Description;
+                rpe.ExtendedDescription = replayEvent.ExtendedDescription;
+                rpe.Location = replayEvent.Location;
+                rpe.Image = replayEvent.Image;
+
+                SaveReplayEventTypes(replayEvent.Id, categories.Split(','));
                 db.SaveChanges();
+
+                //RemoveAllEventTypes(replayEvent.Id);
+                //SaveReplayEventTypes(replayEvent.Id, categories.Split(','));
                 return RedirectToAction("Index");
             }
             return View(replayEvent);
+        }
+
+        public string RemoveAllEventTypes(int id)
+        {
+            var replayEvent = db.ReplayEvents.Find(id);
+            var eventsToRemove = new List<ReplayEventType>();
+            if (replayEvent.ReplayEventTypes != null)
+            {
+                foreach (var eventType in replayEvent.ReplayEventTypes)
+                {
+                    eventsToRemove.Add(eventType);
+                }
+                foreach (var eventToRemove in eventsToRemove)
+                {
+                    replayEvent.ReplayEventTypes.Remove(eventToRemove);
+                }
+                db.SaveChanges();
+            }
+        
+            return "success";
+        }
+
+        private void SaveReplayEventTypes(int id, string[] EventTypeIDs)
+        {
+            List<int> ids = new List<int>();
+            List<ReplayEventType> typesToRemove = new List<ReplayEventType>();
+            foreach (var eventId in EventTypeIDs)
+            {
+                int i;
+                if (int.TryParse(eventId, out i))
+                {
+                    ids.Add(i);
+                }
+            }
+
+            var replayEvent = db.ReplayEvents.Find(id);
+            foreach (var eventType in replayEvent.ReplayEventTypes)
+            {
+                if (ids.Contains(eventType.Id))
+                {
+                    // keep it, remove from the ids list
+                    ids.Remove(eventType.Id);
+                }
+                else
+                {
+                    
+                    typesToRemove.Add(eventType);
+                }
+            }
+            foreach (var type in typesToRemove)
+            {
+                replayEvent.ReplayEventTypes.Remove(type);
+            }
+            foreach (var i in ids)
+            {
+                replayEvent.ReplayEventTypes.Add(db.ReplayEventTypes.Find(i));
+            }
         }
 
         // GET: ReplayEvents/Delete/5

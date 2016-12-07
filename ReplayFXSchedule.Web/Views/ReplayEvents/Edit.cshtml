@@ -81,27 +81,15 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2">Current Categories</label>
+            <label class="control-label col-md-2">Categories</label>
             <div class="col-md-10">
                 <div id="ReplayEventTypes" class="form-control"></div>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2">Add Categories</label>
-            <div class="col-md-10">
-                <div id="ReplayEventAddTypes">
-                    <select class="form-control" id="ReplaySelect">
-                        <option>DON'T SELECT ME</option>
-
-                    </select>
-                    <span id="AddType"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                <input name="categories" id="categories" type="hidden" />
                 <input type="submit" value="Save" class="btn btn-default" />
                 @Html.ActionLink("Back to List", "Index","ReplayEvents", null, new { @class = "replayButton btn btn-default" })
             </div>
@@ -109,72 +97,56 @@
     </div>
 }
 
-@*<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-        function UpdateEventTypes() {
-            $.ajax({
-                url: '/replayevents/gettypes/@Model.Id',
-                type: 'get',
-                success: function (data) {
-                    var html = '';
-                    data.map(function (replayEvent) {
-                        //html += '<li>' + replayEvent.DisplayName + '<span data-id=' + replayEvent.Id + ' class="DeleteButton btn btn-primary">Delete</span></li>'
-                        html += '<li>' + replayEvent.DisplayName + '<span data-id=' + replayEvent.Id + ' class="DeleteButton"><i class="fa fa-times" aria-hidden="true"></i></span></li>'
-                    });
+        categories = [@ViewBag.ReplayEventTypeIDs];
 
-                    $('#ReplayEventTypes').html(html);
-                    $('.DeleteButton').click(DeleteType);
-                }
-            });
+            function load_categories() {
+            $.ajax({
+                    url: '/public/categories',
+                type: 'GET',
+                success: function (data) {
+                    $('#ReplayEventTypes').html('');
+                        data.map(function (category) {
+                        $('#ReplayEventTypes').append('<li id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</li>');
+                        $('#cat' + category.Id).click(function () { toggle_category(category.Id); });
+                            if (categories.indexOf(category.Id) > -1)
+                            { $('#catspan' + category.Id).addClass('fa fa-check');}
+                        });
+                        //$('#CatList').append('</ul>');
+                    }
+                })
         }
 
-        function DeleteType()
+            function toggle_category(id) {
+                // if it is not there
+                // add the hidden input element
+                // add the checkmark to the category
+                if (!$('#catspan' + id).hasClass('fa fa-check')) {
+                    categories.push(id);
+                $('#categories').val(categories.toString());
+                $('#catspan' + id).addClass('fa fa-check');
+                }
+            else {
+
+                    // if it is there
+                    // remove the hidden input element
+                    // remove the checkmark on the category
+                    var i = categories.indexOf(id);
+                    categories.splice(i, 1);
+                $('#categories').val(categories.toString());
+                $('#catspan' + id).removeClass('fa fa-check');
+                }
+            }
+
+            function initialize()
         {
-            $.ajax({
-                url: '/replayevents/removetype/@Model.Id?typeId=' + $(this).attr('data-id'),
-                type: 'get',
-                success: function () {
-                    UpdateEventTypes();
-                }
-            })
-            $(this)
-        }
-
-        function SetupEventTypeDropDown() {
-            $.ajax({
-                url: '/replayevents/GetAllEventTypes',
-                type: 'get',
-                success: function (data) {
-                    data.map(function (replayEvent) {
-                        $('#ReplaySelect').append('<option value=' + replayEvent.Id + '>' + replayEvent.DisplayName + '</option');
-                    })
-                }
-            });
-        }
-
-        function AddTypeClick() {
-            $.ajax({
-                url: '/replayevents/addtype/@Model.Id?typeId=' + $('#ReplaySelect').val(),
-                type: 'get',
-                success: function () {
-                    UpdateEventTypes();
-                }
-            });
-        }
-
-        function initialize() {
-            UpdateEventTypes();
-            SetupEventTypeDropDown();
-            $('#AddType').click(AddTypeClick);
-        }
+                load_categories();
+            }
 
         $(initialize);
-
-    </script>
+</script>
 }

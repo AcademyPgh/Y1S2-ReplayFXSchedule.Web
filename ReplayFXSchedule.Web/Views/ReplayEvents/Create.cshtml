@@ -100,9 +100,7 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-        //   time to fill this fozizzel
-
-        categories = [];
+        categories = [@ViewBag.ReplayEventTypeIDs];
 
         function load_categories() {
             $.ajax({
@@ -113,6 +111,8 @@
                     data.map(function (category) {
                         $('#ReplayEventTypes').append('<li id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</li>');
                         $('#cat' + category.Id).click(function () { toggle_category(category.Id); });
+                        if (categories.indexOf(category.Id) > -1)
+                        { $('#catspan' + category.Id).addClass('fa fa-check');}
                     });
                     //$('#CatList').append('</ul>');
                 }
