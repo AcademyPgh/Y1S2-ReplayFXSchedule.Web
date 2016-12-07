@@ -55,18 +55,18 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ExtendedDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ExtendedDescription, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ExtendedDescription, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ExtendedDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExtendedDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ExtendedDescription, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -81,13 +81,13 @@
         <div class="form-group">
             <label class="control-label col-md-2">Categories</label>
             <div class="col-md-10">
-                <div id="CatList"></div>
-                <input name="categories" id="categories" type="hidden" />
+                <div id="ReplayEventTypes" class="form-control"></div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                <input name="categories" id="categories" type="hidden" />
                 <input type="submit" value="Create" class="btn btn-default" />
                 @Html.ActionLink("Back to List", "Index", "ReplayEvents", null, new { @class = "replayButton btn btn-default" })
             </div>
@@ -109,12 +109,12 @@
                 url: '/public/categories',
                 type: 'GET',
                 success: function (data) {
-                    $('#CatList').html('<ul>');
+                    $('#ReplayEventTypes').html('');
                     data.map(function (category) {
-                        $('#CatList').append('<li id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</li>');
+                        $('#ReplayEventTypes').append('<li id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</li>');
                         $('#cat' + category.Id).click(function () { toggle_category(category.Id); });
                     });
-                    $('#CatList').append('</ul>');
+                    //$('#CatList').append('</ul>');
                 }
             })
         }
@@ -123,10 +123,10 @@
             // if it is not there
             // add the hidden input element
             // add the checkmark to the category
-            if (!$('#catspan' + id).hasClass('fa fa-times')) {
+            if (!$('#catspan' + id).hasClass('fa fa-check')) {
                 categories.push(id);
                 $('#categories').val(categories.toString());
-                $('#catspan' + id).addClass('fa fa-times');
+                $('#catspan' + id).addClass('fa fa-check');
             }
             else {
 
@@ -136,7 +136,7 @@
                 var i = categories.indexOf(id);
                 categories.splice(i, 1);
                 $('#categories').val(categories.toString());
-                $('#catspan' + id).removeClass('fa fa-times');
+                $('#catspan' + id).removeClass('fa fa-check');
             }
         }
 

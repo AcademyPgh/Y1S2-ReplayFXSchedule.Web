@@ -10,7 +10,7 @@ namespace ReplayFXSchedule.Web.Migrations.ReplayFXDbContext
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             MigrationsDirectory = @"Migrations\ReplayFXDbContext";
         }
 

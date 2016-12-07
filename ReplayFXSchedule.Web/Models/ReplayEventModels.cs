@@ -13,7 +13,7 @@ namespace ReplayFXSchedule.Web.Models
         public int Id { get; set; }
         public string Title { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name ="Date")]
         public DateTime Date { get; set; }
         [DataType(DataType.Time)]
