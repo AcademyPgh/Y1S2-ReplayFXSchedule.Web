@@ -16,7 +16,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: Public
         public ActionResult Index()
         {
-            var result = JsonConvert.SerializeObject(db.ReplayEvents.ToList(), Formatting.None,
+            var result = JsonConvert.SerializeObject(db.ReplayEvents.OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
