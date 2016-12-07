@@ -93,7 +93,7 @@ namespace ReplayFXSchedule.Web.Controllers
             return View(replayEvent);
         }
 
-        public string AddType(int id, int typeId)
+        private string AddType(int id, int typeId)
         {
             ReplayEvent rpe = db.ReplayEvents.Find(id);
             ReplayEventType rpet = db.ReplayEventTypes.Find(typeId);
@@ -104,7 +104,7 @@ namespace ReplayFXSchedule.Web.Controllers
             return "success";
         }
 
-        public string RemoveType(int id, int typeId)
+        private string RemoveType(int id, int typeId)
         {
             ReplayEvent rpe = db.ReplayEvents.Find(id);
             ReplayEventType typetoremove = new ReplayEventType();
@@ -158,26 +158,6 @@ namespace ReplayFXSchedule.Web.Controllers
                 return RedirectToAction("Index");
             }
             return View(replayEvent);
-        }
-
-        public string RemoveAllEventTypes(int id)
-        {
-            var replayEvent = db.ReplayEvents.Find(id);
-            var eventsToRemove = new List<ReplayEventType>();
-            if (replayEvent.ReplayEventTypes != null)
-            {
-                foreach (var eventType in replayEvent.ReplayEventTypes)
-                {
-                    eventsToRemove.Add(eventType);
-                }
-                foreach (var eventToRemove in eventsToRemove)
-                {
-                    replayEvent.ReplayEventTypes.Remove(eventToRemove);
-                }
-                db.SaveChanges();
-            }
-        
-            return "success";
         }
 
         private void SaveReplayEventTypes(int id, string[] EventTypeIDs)
