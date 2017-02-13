@@ -10,6 +10,7 @@ using ReplayFXSchedule.Web.Models;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
+    [Authorize]
     public class ReplayEventTypesController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();

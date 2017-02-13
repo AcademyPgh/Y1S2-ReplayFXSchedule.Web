@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
+    [Authorize]
     public class ReplayEventsController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();

@@ -14,15 +14,28 @@ namespace ReplayFXSchedule.Web.Controllers
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
         // GET: Public
-        public ActionResult Index()
+        public ActionResult Index(string category)
         {
-            var result = JsonConvert.SerializeObject(db.ReplayEvents.OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+            string result;
+            if (String.IsNullOrEmpty(category))
+            {
+                result = JsonConvert.SerializeObject(db.ReplayEvents.OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                            ContractResolver = new CamelCasePropertyNamesContractResolver()
                        });
-
+            }
+            else
+            {
+                // select all replay events where the replayeventtype.name = category
+                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(r => r.ReplayEventTypes.Any(e => e.Name == category)).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+                        new JsonSerializerSettings
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        });
+            }
             return Content(result, "application/json");
         }
 

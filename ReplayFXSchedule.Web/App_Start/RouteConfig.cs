@@ -14,10 +14,17 @@ namespace ReplayFXSchedule.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Schedule",
+                url: "schedule/{category}",
+                defaults: new { controller = "Public", action = "Index", category = UrlParameter.Optional }
+            );
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+
         }
     }
 }
