@@ -160,8 +160,7 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             return View(replayEvent);
         }
-
-        private void SaveReplayEventTypes(int id, string[] EventTypeIDs)
+         private void SaveReplayEventTypes(int id, string[] EventTypeIDs)
         {
             List<int> ids = new List<int>();
             List<ReplayEventType> typesToRemove = new List<ReplayEventType>();
