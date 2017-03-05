@@ -1,108 +1,105 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
+using System.Data.Entity;
+using System.Net;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
     [Authorize]
-    public class ReplayEventTypesController : Controller
+    public class ReplayGameLocationController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
-        // GET: ReplayEventTypes
+        // GET: ReplayGameLocation
         public ActionResult Index()
         {
-            return View(db.ReplayEventTypes.ToList());
+            return View(db.ReplayGameLocations.ToList());
         }
 
-        // GET: ReplayEventTypes/Details/5
+        // GET: ReplayGameLocation/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult
+                    (HttpStatusCode.BadRequest);
             }
-            ReplayEventType replayEventType = db.ReplayEventTypes.Find(id);
-            if (replayEventType == null)
+            ReplayGameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            if (replayGameLocation == null)
             {
                 return HttpNotFound();
             }
-            return View(replayEventType);
+            return View(replayGameLocation);
         }
 
-        // GET: ReplayEventTypes/Create
+
+        // GET: ReplayGameLocation/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ReplayEventTypes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: ReplayGameLocation/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,DisplayName")] ReplayEventType replayEventType)
+        public ActionResult Create([Bind(Include = "Id,Location")] ReplayGameLocation replayGameLocation)
         {
             if (ModelState.IsValid)
             {
-                db.ReplayEventTypes.Add(replayEventType);
+                db.ReplayGameLocations.Add(replayGameLocation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(replayEventType);
+            return View(replayGameLocation);
         }
 
-        // GET: ReplayEventTypes/Edit/5
+        // GET: ReplayGameLocation/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayEventType replayEventType = db.ReplayEventTypes.Find(id);
-            if (replayEventType == null)
+            ReplayGameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            if (replayGameLocation == null)
             {
                 return HttpNotFound();
             }
-            return View(replayEventType);
+            return View(replayGameLocation);
         }
 
-        // POST: ReplayEventTypes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: ReplayGameLocation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,DisplayName")] ReplayEventType replayEventType)
+        public ActionResult Edit([Bind(Include = "Id,Location")] ReplayGameLocation replayGameLocation)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(replayEventType).State = EntityState.Modified;
+                db.Entry(replayGameLocation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(replayEventType);
+            return View(replayGameLocation);
         }
 
-        // GET: ReplayEventTypes/Delete/5
+        // GET: ReplayGameLocation/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayEventType replayEventType = db.ReplayEventTypes.Find(id);
-            if (replayEventType == null)
+            ReplayGameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            if (replayGameLocation == null)
             {
                 return HttpNotFound();
             }
-            return View(replayEventType);
+            return View(replayGameLocation);
         }
 
         // POST: ReplayEventTypes/Delete/5
@@ -110,9 +107,9 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ReplayEventType replayEventType = db.ReplayEventTypes.Find(id);
-            db.ReplayEventTypes.Remove(replayEventType);
-            db.SaveChanges();
+            ReplayGameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            db.ReplayGameLocations.Remove(replayGameLocation);
+            db.SaveChanges(); 
             return RedirectToAction("Index");
         }
 

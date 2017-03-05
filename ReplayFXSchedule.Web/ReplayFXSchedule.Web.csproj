@@ -178,12 +178,16 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ReplayGameLocationController.cs" />
+    <Compile Include="Controllers\ReplayGameLocationsController.cs" />
+    <Compile Include="Controllers\ReplayGameTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PublicController.cs" />
     <Compile Include="Controllers\ReplayEventsController.cs" />
     <Compile Include="Controllers\ReplayEventTypesController.cs" />
     <Compile Include="Controllers\ReplayGamesController.cs" />
+    <Compile Include="Controllers\ReplayGameTypesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -192,7 +196,6 @@
       <DependentUpon>201612020058501_InitialDatabaseCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ApplicationDbContext\Configuration.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\ReplayFXDbContext\201612020059254_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ReplayFXDbContext\201612020059254_InitialDatabaseCreation.Designer.cs">
       <DependentUpon>201612020059254_InitialDatabaseCreation.cs</DependentUpon>
@@ -200,6 +203,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201612062130289_Images.cs" />
     <Compile Include="Migrations\ReplayFXDbContext\201612062130289_Images.Designer.cs">
       <DependentUpon>201612062130289_Images.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201703051902243_AddGames.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201703051902243_AddGames.Designer.cs">
+      <DependentUpon>201703051902243_AddGames.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -275,11 +282,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\ReplayEventTypes\Create.cshtml" />
-    <Content Include="Views\ReplayEventTypes\Delete.cshtml" />
-    <Content Include="Views\ReplayEventTypes\Details.cshtml" />
-    <Content Include="Views\ReplayEventTypes\Edit.cshtml" />
-    <Content Include="Views\ReplayEventTypes\Index.cshtml" />
+    <Content Include="Views\ReplayEvents\ReplayEventTypes\Create.cshtml" />
+    <Content Include="Views\ReplayEvents\ReplayEventTypes\Delete.cshtml" />
+    <Content Include="Views\ReplayEvents\ReplayEventTypes\Details.cshtml" />
+    <Content Include="Views\ReplayEvents\ReplayEventTypes\Edit.cshtml" />
+    <Content Include="Views\ReplayEvents\ReplayEventTypes\Index.cshtml" />
     <Content Include="Views\ReplayEvents\Create.cshtml" />
     <Content Include="Views\ReplayEvents\Delete.cshtml" />
     <Content Include="Views\ReplayEvents\Details.cshtml" />
@@ -291,6 +298,16 @@
     <Content Include="Views\ReplayGames\Details.cshtml" />
     <Content Include="Views\ReplayGames\Edit.cshtml" />
     <Content Include="Views\ReplayGames\Index.cshtml" />
+    <Content Include="Views\ReplayGameTypes\Create.cshtml" />
+    <Content Include="Views\ReplayGameTypes\Delete.cshtml" />
+    <Content Include="Views\ReplayGameTypes\Details.cshtml" />
+    <Content Include="Views\ReplayGameTypes\Edit.cshtml" />
+    <Content Include="Views\ReplayGameTypes\Index.cshtml" />
+    <Content Include="Views\ReplayGameLocations\Create.cshtml" />
+    <Content Include="Views\ReplayGameLocations\Delete.cshtml" />
+    <Content Include="Views\ReplayGameLocations\Details.cshtml" />
+    <Content Include="Views\ReplayGameLocations\Edit.cshtml" />
+    <Content Include="Views\ReplayGameLocations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -313,6 +330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201612062130289_Images.resx">
       <DependentUpon>201612062130289_Images.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201703051902243_AddGames.resx">
+      <DependentUpon>201703051902243_AddGames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

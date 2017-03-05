@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,24 +12,27 @@ namespace ReplayFXSchedule.Web.Models
     public class ReplayGame
     {
         public int Id { get; set; }
+        [Required]
         [Display(Name = "Game Title")]
         public string GameTitle { get; set; }
         [Display(Name = "Game Description")]
-        public string Overview { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public string Overview { get; set; } 
+        [StringLengthAttribute(4, MinimumLength=4, ErrorMessage =  "Date must include 4 digits, eg. 1995")]
         [Display(Name = "Release Date")]
-        public DateTime ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
         public string Developer { get; set; }
-        public string Genres { get; set; }
+        public string Genre { get; set; }
         [Display(Name = "Number of Players")]
         public string Players { get; set; }
+        [Required]
+        [Display(Name = "Game Type")]
+        public virtual ReplayGameType
+           ReplayGameType { get; set; }
+        [Required]
         [Display(Name = "Game Locations")]
-        public List<ReplayGameLocation> ReplayGameLocations { get; set; }
-        public List<ReplayGameType> ReplayGameTypes { get; set; }
+        public virtual List<ReplayGameLocation> ReplayGameLocations { get; set; }
 
-
-
+    }
 
         public class ReplayGameLocation
         {
@@ -42,17 +45,9 @@ namespace ReplayFXSchedule.Web.Models
     public class ReplayGameType
     {
             public int Id { get; set; }
-            public string Type { get; set; }
+            public string Name { get; set; }
             [JsonIgnore]
             public virtual List<ReplayGame> ReplayGames { get; set; }
-    }
-
-        public class ReplayFXDbContext : DbContext
-        {
-            public DbSet<ReplayGame> ReplayGames { get; set; }
-            public DbSet<ReplayGameLocation> ReplayGameLocations { get; set; }
-            public DbSet<ReplayGameType> ReplayGameTypes { get; set; }
-        }
     }
 
 }

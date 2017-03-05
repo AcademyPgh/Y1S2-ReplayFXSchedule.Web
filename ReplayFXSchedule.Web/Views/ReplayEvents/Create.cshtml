@@ -1,4 +1,4 @@
-﻿@model ReplayFXSchedule.Web.Models.ReplayEvent
+﻿ @model ReplayFXSchedule.Web.Models.ReplayEvent
 
 @{
     ViewBag.Title = "Create Event";
@@ -89,6 +89,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <input name="categories" id="categories" type="hidden" />
                 <input type="submit" value="Create" class="btn btn-default" />
+
                 @Html.ActionLink("Back to List", "Index", "ReplayEvents", null, new { @class = "replayButton btn btn-default" })
             </div>
         </div>

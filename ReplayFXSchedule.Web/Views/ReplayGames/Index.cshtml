@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<ReplayFXSchedule.Web.Models.ReplayGame>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Manage Replay Games";
 }
 
-<h2>Index</h2>
+<h2>Manage Games</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default replayButton" })
 </p>
-<table class="table">
+<table class="table replayTable">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.GameTitle)
@@ -24,37 +24,67 @@
             @Html.DisplayNameFor(model => model.Developer)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Genres)
+            @Html.DisplayNameFor(model => model.Genre)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Players)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReplayGameType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReplayGameLocations)
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.GameTitle)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.GameTitle)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.Overview)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.Overview)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.ReleaseDate)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.Developer)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.Developer)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.Genres)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.Genre)
+                </div>
+</td>
         <td>
-            @Html.DisplayFor(modelItem => item.Players)
-        </td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.Players)
+                </div>
+</td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.ReplayGameType)
+            </div>
+        </td>   
+        <td>
+            <div class="responsiveTD">
+                @foreach (var gameLocation in item.ReplayGameLocations)
+                {
+                    <span class="categoryType">@Html.DisplayFor(model => gameLocation.Location) </span><br />
+                }
+            </div>
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) 
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>

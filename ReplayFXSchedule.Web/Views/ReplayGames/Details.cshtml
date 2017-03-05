@@ -43,11 +43,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Genres)
+            @Html.DisplayNameFor(model => model.Genre)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Genres)
+            @Html.DisplayFor(model => model.Genre)
         </dd>
 
         <dt>
@@ -57,10 +57,17 @@
         <dd>
             @Html.DisplayFor(model => model.Players)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplayGameType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReplayGameType)
+        </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "replayButton btn btn-default" }) 
+    @Html.ActionLink("Back to List", "Index", "ReplayGames", null, new { @class = "replayButton btn btn-default" })
 </p>

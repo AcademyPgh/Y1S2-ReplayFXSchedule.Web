@@ -1,18 +1,17 @@
 ﻿@model ReplayFXSchedule.Web.Models.ReplayGame
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Replay Games";
 }
 
-<h2>Create</h2>
+<h2>Create ReplayFX Games</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>ReplayGame</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -48,10 +47,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Genres, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Genres, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Genres, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Genre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -63,18 +62,86 @@
             </div>
         </div>
 
+         <div class="form-group">
+            <label class="control-label col-md-2">Game Types</label>
+            <div class="col-md-10">
+                <select class="form-control" typeof="text" name="gametype" id="gametype">
+                    @foreach (var gametype in ViewBag.ReplayGameTypes)
+                    {
+                         <option value="@gametype.Id" label="@gametype.Name" name="@gametype.Id">@gametype.Name</option>}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Locations</label>
+            <div class="col-md-10">
+                <div id="ReplayGameLocations" class="form-control"></div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                <input name="locations" id="locations" type="hidden" />
                 <input type="submit" value="Create" class="btn btn-default" />
+                @Html.ActionLink("Back to List", "Index", "ReplayGames", null, new { @class = "replayButton btn btn-default" })
             </div>
         </div>
     </div>
+
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+    locations = [@ViewBag.ReplayGameLocationIDs];
+
+        function load_locations() {
+            $.ajax({
+                url: '/public/locations',
+                type: 'GET',
+                success: function (data) {
+                    $('#ReplayGameLocations').html('');
+                    data.map(function (location) {
+                        $('#ReplayGameLocations').append('<li id="cat' + location.Id + '" data-id=' + location.Id + '><span id="catspan' + location.Id + '"></span>' + location.Location + '</li>');
+                        $('#cat' + location.Id).click(function () { toggle_location(location.Id); });
+                        if (locations.indexOf(location.Id) > -1)
+                        { $('#catspan' + location.Id).addClass('fa fa-check');}
+                    });
+                    //$('#CatList').append('</ul>');
+                }
+            })
+        }
+
+        function toggle_location(id) {
+            // if it is not there
+            // add the hidden input element
+            // add the checkmark to the category
+            if (!$('#catspan' + id).hasClass('fa fa-check')) {
+                locations.push(id);
+                $('#locations').val(locations.toString());
+                $('#catspan' + id).addClass('fa fa-check');
+            }
+            else {
+
+                // if it is there
+                // remove the hidden input element
+                // remove the checkmark on the category
+                var i = locations.indexOf(id);
+                locations.splice(i, 1);
+                $('#locations').val(locations.toString());
+                $('#catspan' + id).removeClass('fa fa-check');
+            }
+        }
+
+        function initialize()
+        {
+            load_locations();
+        }
+
+        $(initialize);
+</script>
 }
+
+
+
