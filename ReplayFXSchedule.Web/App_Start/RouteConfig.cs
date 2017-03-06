@@ -25,7 +25,7 @@ namespace ReplayFXSchedule.Web
             );
             routes.MapRoute(
                 name: "Games",
-                url: "games/{game type}",
+                url: "games/{gametype}",
                 defaults: new { controller = "Public", action = "Games", gametype = UrlParameter.Optional }
                 );
 
