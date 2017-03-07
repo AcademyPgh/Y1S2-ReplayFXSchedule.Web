@@ -60,12 +60,15 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,ReplayGameType.Id")] ReplayGame replayGame, string locations)
-        {
+        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players")] ReplayGame replayGame, string gametype, string locations)
+         {
+            replayGame.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
+            ModelState.Clear();
+            TryValidateModel(replayGame);
             if (ModelState.IsValid)
             {
                 db.ReplayGames.Add(replayGame);
-                //replayGame.ReplayGameType=(db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
+                
 
                 replayGame.ReplayGameLocations = new List<ReplayGameLocation>();
                 foreach (var id in locations.Split(','))
@@ -77,7 +80,7 @@ namespace ReplayFXSchedule.Web.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+            ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
             return View(replayGame);
         }
 
@@ -95,6 +98,7 @@ namespace ReplayFXSchedule.Web.Controllers
             }
         
            ViewBag.ReplayGameLocationIDs = string.Join(",", replayGame.ReplayGameLocations.Select(r => r.Id));
+            ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
 
             return View(replayGame);
             }
@@ -141,8 +145,11 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,ReplayGameType.Id")] ReplayGame replayGame, string locations)
+        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,ReplayGameType.Id")] ReplayGame replayGame, string gametype, string locations)
         {
+            replayGame.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
+            ModelState.Clear();
+            TryValidateModel(replayGame);
             if (ModelState.IsValid)
             {
                 ReplayGame rpg = db.ReplayGames.Find(replayGame.Id);
@@ -152,7 +159,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpg.Developer = replayGame.Developer;
                 rpg.Genre = replayGame.Genre;
                 rpg.Players = replayGame.Players;
-              //  rpg.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
+               rpg.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
 
                 SaveReplayGameLocations(replayGame.Id, locations.Split(','));
 
@@ -161,6 +168,8 @@ namespace ReplayFXSchedule.Web.Controllers
 
                 return RedirectToAction("Index");
             }
+            //ViewBag.ReplayGameLocationIDs = string.Join(",", replayGame.ReplayGameLocations.Select(r => r.Id));
+            ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
             return View(replayGame);
         }
 

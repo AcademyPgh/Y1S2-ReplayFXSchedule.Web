@@ -13,7 +13,7 @@ namespace ReplayFXSchedule.Web.Migrations.ReplayFXDbContext
         
         string IMigrationMetadata.Id
         {
-            get { return "201703051902243_AddGames"; }
+            get { return "201703071836520_AddGames"; }
         }
         
         string IMigrationMetadata.Source

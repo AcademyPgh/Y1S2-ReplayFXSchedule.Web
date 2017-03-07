@@ -204,9 +204,9 @@
     <Compile Include="Migrations\ReplayFXDbContext\201612062130289_Images.Designer.cs">
       <DependentUpon>201612062130289_Images.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\ReplayFXDbContext\201703051902243_AddGames.cs" />
-    <Compile Include="Migrations\ReplayFXDbContext\201703051902243_AddGames.Designer.cs">
-      <DependentUpon>201703051902243_AddGames.cs</DependentUpon>
+    <Compile Include="Migrations\ReplayFXDbContext\201703071836520_AddGames.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201703071836520_AddGames.Designer.cs">
+      <DependentUpon>201703071836520_AddGames.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -331,8 +331,8 @@
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201612062130289_Images.resx">
       <DependentUpon>201612062130289_Images.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201703051902243_AddGames.resx">
-      <DependentUpon>201703051902243_AddGames.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201703071836520_AddGames.resx">
+      <DependentUpon>201703071836520_AddGames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

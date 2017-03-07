@@ -18,7 +18,7 @@ namespace ReplayFXSchedule.Web.Models
         [Display(Name = "Game Description")]
         public string Overview { get; set; } 
         [StringLengthAttribute(4, MinimumLength=4, ErrorMessage =  "Date must include 4 digits, eg. 1995")]
-        [Display(Name = "Release Date")]
+        [Display(Name = "Release Year")]
         public string ReleaseDate { get; set; }
         public string Developer { get; set; }
         public string Genre { get; set; }
@@ -28,7 +28,6 @@ namespace ReplayFXSchedule.Web.Models
         [Display(Name = "Game Type")]
         public virtual ReplayGameType
            ReplayGameType { get; set; }
-        [Required]
         [Display(Name = "Game Locations")]
         public virtual List<ReplayGameLocation> ReplayGameLocations { get; set; }
 

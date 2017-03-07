@@ -66,10 +66,11 @@
         <div class="form-group">
             <label class="control-label col-md-2">Game Types</label>
             <div class="col-md-10">
-                <select class="form-control" typeof="text" name="GameType" id="ReplayGameTypes">
-                    @foreach (var type in ViewBag.ReplayGameTypes)
+                <select class="form-control" typeof="text" name="gametype" id="gametype">
+                    @foreach (var gametype in ViewBag.ReplayGameTypes)
                     {
-                        <option value="@type.Id" label="@type.Name">@type.Name</option>}
+                        <option value="@gametype.Id" label="@gametype.Name">@gametype.Name</option>
+                    }
                 </select>
             </div>
         </div>
@@ -82,12 +83,11 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input name="locations" id="locations" type="hidden" /> <input type="submit" value="Save" class="btn btn-default" />
+                <input name="locations" id="locations" type="hidden" /> 
+                <input type="submit" value="Save" class="btn btn-default" />
                 @Html.ActionLink("Back to List", "Index", "ReplayGames", null, new { @class = "replayButton btn btn-default" })
             </div>
         </div>
- 
-    
     </div>
 }
 
@@ -100,7 +100,7 @@
 
         function load_locations() {
             $.ajax({
-                url: '/public/gamelocations',
+                url: '/public/locations',
                 type: 'GET',
                 success: function (data) {
                     $('#ReplayGameLocations').html('');
@@ -149,4 +149,4 @@
 
 
 
-}
+
