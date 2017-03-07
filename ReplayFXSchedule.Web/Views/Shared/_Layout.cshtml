@@ -21,7 +21,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-</head>
+</head> 
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -31,12 +31,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("ReplayFX Event Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("ReplayFX App Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Manage Events", "Index", "ReplayEvents")</li>
                     <li>@Html.ActionLink("Manage Categories", "Index", "ReplayEventTypes")</li>
+                    <li>@Html.ActionLink("Manage Games", "Index", "ReplayGames")</li>
+                    <li>@Html.ActionLink("Manage Game Types", "Index", "ReplayGameTypes")</li>
+                    <li>@Html.ActionLink("Manage Game Locations", "Index", "ReplayGameLocations")</li>
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

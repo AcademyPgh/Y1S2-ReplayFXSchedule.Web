@@ -38,7 +38,7 @@
 /* General Styles */
 
 body {
-    padding-top: 50px;
+    padding-top: 100px;
 }
 
 html, body {
@@ -52,7 +52,7 @@ html, body {
     padding-bottom:30px;
     min-height: 100%;
     /* equal to footer height */
-    margin-bottom: -70px; 
+    margin-bottom:-70px; 
 }
 
 .body-content:after {
@@ -86,7 +86,10 @@ h1, h2{
 input,
 select,
 textarea,
-#ReplayEventTypes {
+#ReplayEventTypes,
+#ReplayGameTypes,
+#ReplayGameLocations
+ {
     max-width: 280px;
 }
 
@@ -113,6 +116,7 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
 
 .table {
     border-collapse: collapse;
+  //  margin-top: 50px;
 }
 
 .table, th, td {
@@ -144,7 +148,7 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
     display:inline-block;
 }
 
-/* Replay Event Type Category Styling */
+/* Replay Event Type/ Game Type/ Game Location Category Styling */
 
 #ReplayEventTypes li span {
     margin-left:10px;
@@ -160,8 +164,33 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
     min-height:34px;
 }
 
+#ReplayGameTypes li span {
+    margin-left:10px;
+}
 
+#ReplayGameTypes li
+{
+    list-style-type:none;
+}
 
+#ReplayGameTypes.form-control{
+    height:auto;
+    min-height:34px;
+}
+
+#ReplayGameLocations li span {
+    margin-left:10px;
+}
+
+#ReplayGameLocations li
+{
+    list-style-type:none;
+}
+
+#ReplayGameLocations.form-control{
+    height:auto;
+    min-height:34px;
+}
 span#AddType {
     display:inline-block;
     font-size:2rem;
@@ -198,6 +227,8 @@ select.form-control{
 .categoryType:last-of-type:after{
     content:" "
 }
+
+
 
 /* Data Lists */
 

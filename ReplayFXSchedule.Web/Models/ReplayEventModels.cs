@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -54,5 +54,9 @@ namespace ReplayFXSchedule.Web.Models
     {
         public DbSet<ReplayEvent> ReplayEvents { get; set; }
         public DbSet<ReplayEventType> ReplayEventTypes { get; set; }
+
+        public DbSet<ReplayGame> ReplayGames { get; set; }
+        public DbSet<ReplayGameLocation> ReplayGameLocations { get; set; }
+        public DbSet<ReplayGameType> ReplayGameTypes { get; set; }
     }
 }
