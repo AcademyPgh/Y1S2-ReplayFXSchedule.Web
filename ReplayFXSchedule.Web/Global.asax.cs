@@ -6,6 +6,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Configuration;
+using System.Data.Entity.Migrations;
 
 namespace ReplayFXSchedule.Web
 {
@@ -20,6 +22,14 @@ namespace ReplayFXSchedule.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             // GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+            // Configure DB updates to occur if the web.config says it is ok
+            if (bool.Parse(ConfigurationManager.AppSettings["MigrateDatabaseToLatestVersion"]))
+            {
+                var configuration = new ReplayFXSchedule.Web.Migrations.ReplayFXDbContext.Configuration();
+                var migrator = new DbMigrator(configuration);
+                migrator.Update();
+            }
         }
     }
 }
