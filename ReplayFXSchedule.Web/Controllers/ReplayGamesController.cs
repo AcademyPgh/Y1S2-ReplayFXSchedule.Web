@@ -10,7 +10,8 @@ using ReplayFXSchedule.Web.Models;
 using Newtonsoft.Json;
 
 namespace ReplayFXSchedule.Web.Controllers
-{   [Authorize]
+{
+    [Authorize]
     public class ReplayGamesController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();

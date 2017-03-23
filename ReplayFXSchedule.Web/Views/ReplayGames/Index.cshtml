@@ -35,6 +35,9 @@
         <th>
             @Html.DisplayNameFor(model => model.ReplayGameLocations)
         </th>
+        <td>
+            Actions
+        </td>
     </tr>
 
 @foreach (var item in Model) {
@@ -71,7 +74,7 @@
 </td>
         <td>
             <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.ReplayGameType)
+                @Html.DisplayFor(modelItem => item.ReplayGameType.Name)
             </div>
         </td>   
         <td>

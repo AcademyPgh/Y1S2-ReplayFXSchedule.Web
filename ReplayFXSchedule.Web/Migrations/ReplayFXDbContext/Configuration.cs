@@ -16,18 +16,18 @@ namespace ReplayFXSchedule.Web.Migrations.ReplayFXDbContext
 
         protected override void  Seed(ReplayFXSchedule.Web.Models.ReplayFXDbContext context)
         {
-            string[] eventTypes = { "featured", "games", "competition", "movies", "music", "seminar" };
-            string[] eventTypeDisplays = { "Featured", "Play", "Compete", "Watch", "Listen", "Learn" };
+            //string[] eventTypes = { "featured", "games", "competition", "movies", "music", "seminar" };
+            //string[] eventTypeDisplays = { "Featured", "Play", "Compete", "Watch", "Listen", "Learn" };
 
-            for (int i = 0; i < eventTypes.Length; i++)
-            {
+            //for (int i = 0; i < eventTypes.Length; i++)
+            //{
                 
-                ReplayEventType tempEventType = new ReplayEventType();
-                tempEventType.Name = eventTypes[i];
-                tempEventType.DisplayName = eventTypeDisplays[i];
-                context.ReplayEventTypes.AddOrUpdate(tempEventType);
-            }
-            context.SaveChanges();
+            //    ReplayEventType tempEventType = new ReplayEventType();
+            //    tempEventType.Name = eventTypes[i];
+            //    tempEventType.DisplayName = eventTypeDisplays[i];
+            //    context.ReplayEventTypes.AddOrUpdate(tempEventType);
+            //}
+            //context.SaveChanges();
 
             //string[] gameTypes = { "console", "arcade", "tabletop", "pinball" };
 
