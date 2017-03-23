@@ -38,6 +38,32 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             return Content(result, "application/json");
         }
+        
+        public ActionResult ScheduleWeb(string date, string category)
+        {
+            DateTime tempdate = Convert.ToDateTime(date);
+            string result;
+            if (String.IsNullOrEmpty(category))
+            {
+               result = JsonConvert.SerializeObject(db.ReplayEvents.Where(d => d.Date==tempdate).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+                       new JsonSerializerSettings
+                       {
+                           ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                           ContractResolver = new CamelCasePropertyNamesContractResolver()
+                       });
+            }
+            else
+            {
+                // select all replay events where the replayeventtype.name = category
+                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(d => d.Date == tempdate).Where(r => r.ReplayEventTypes.Any(e => e.Name == category)).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+                        new JsonSerializerSettings
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        });
+            }
+            return Content(result, "application/json");
+        }
 
         public ActionResult Categories()
         {
@@ -47,6 +73,49 @@ namespace ReplayFXSchedule.Web.Controllers
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
 
+            return Content(result, "application/json");
+        }
+
+        public ActionResult Games(string gametype)
+        {
+            string result;
+            if (String.IsNullOrEmpty(gametype))
+            {
+                result = JsonConvert.SerializeObject(db.ReplayGames.OrderBy(r => new { r.GameTitle }).ToList(), Formatting.None,
+                       new JsonSerializerSettings
+                       {
+                           ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                           ContractResolver = new CamelCasePropertyNamesContractResolver()
+                       });
+            }
+            else
+            {
+                // select all replay games where the replaygametype.name = gametypes
+                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype).OrderBy(r =>  r.GameTitle ).ToList(), Formatting.None,
+                        new JsonSerializerSettings
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        });
+            }
+            return Content(result, "application/json");
+        }
+        public ActionResult GameTypes()
+        {
+            var result = JsonConvert.SerializeObject(db.ReplayGameTypes.ToList(), Formatting.None,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            return Content(result, "application/json");
+        }
+        public ActionResult Locations()
+        {
+            var result = JsonConvert.SerializeObject(db.ReplayGameLocations.ToList(), Formatting.None,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
             return Content(result, "application/json");
         }
     }

@@ -14,20 +14,34 @@ namespace ReplayFXSchedule.Web.Migrations.ReplayFXDbContext
             MigrationsDirectory = @"Migrations\ReplayFXDbContext";
         }
 
-        protected override void Seed(ReplayFXSchedule.Web.Models.ReplayFXDbContext context)
+        protected override void  Seed(ReplayFXSchedule.Web.Models.ReplayFXDbContext context)
         {
-            string[] eventTypes = { "featured", "games", "competition", "movies", "music", "seminar" };
-            string[] eventTypeDisplays = { "Featured", "Play", "Compete", "Watch", "Listen", "Learn" };
+            //string[] eventTypes = { "featured", "games", "competition", "movies", "music", "seminar" };
+            //string[] eventTypeDisplays = { "Featured", "Play", "Compete", "Watch", "Listen", "Learn" };
 
-            for (int i = 0; i < eventTypes.Length; i++)
-            {
+            //for (int i = 0; i < eventTypes.Length; i++)
+            //{
                 
-                ReplayEventType tempEventType = new ReplayEventType();
-                tempEventType.Name = eventTypes[i];
-                tempEventType.DisplayName = eventTypeDisplays[i];
-                context.ReplayEventTypes.AddOrUpdate(tempEventType);
-            }
-            context.SaveChanges();
+            //    ReplayEventType tempEventType = new ReplayEventType();
+            //    tempEventType.Name = eventTypes[i];
+            //    tempEventType.DisplayName = eventTypeDisplays[i];
+            //    context.ReplayEventTypes.AddOrUpdate(tempEventType);
+            //}
+            //context.SaveChanges();
+
+            //string[] gameTypes = { "console", "arcade", "tabletop", "pinball" };
+
+            //for (int i = 0; i < gameTypes.Length; i++)
+            //{
+            //    ReplayGameType tempGameType = new ReplayGameType();
+            //    tempGameType.Name = gameTypes[i];
+            //    context.ReplayGameTypes.AddOrUpdate(tempGameType);
+            //}
+            //context.SaveChanges();
+            
+
+
+
 
             //  This method will be called after migrating to the latest version.
 
