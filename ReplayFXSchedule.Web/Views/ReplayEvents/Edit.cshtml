@@ -103,6 +103,7 @@
 
     <script>
         categories = [@ViewBag.ReplayEventTypeIDs];
+        $('#categories').val(categories.toString());
 
             function load_categories() {
             $.ajax({
