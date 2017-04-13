@@ -5,7 +5,7 @@ With so many events and attractions, we thought it might be useful to provide an
 This code is for the web interface which allows organizers to manage the app, including adding and changing scheduled events. It was written and designed by John Lange and Mandy Kendall.
 
 
-Development
+#Development
 
 The ReplayFX Web Interface was created as part of the second session of Academy Pittsburgh.  The back end was initially mob-programmed at a build night at Looking for Group, and was later refined by Mandy Kendall and John Lange.  It is written in C# / MVC with Entity Framework, and the front end was built utilizing HTML, CSS, Bootstrap and jQuery.
 
