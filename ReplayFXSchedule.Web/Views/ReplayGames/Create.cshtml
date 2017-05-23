@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div class="form-horizontal active">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -19,13 +19,17 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.GameTitle, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.GameTitle, "", new { @class = "text-danger" })
+                <div class="btn btn-default"id="lookup-game">Lookup Game</div>
             </div>
         </div>
-
+               <div id="games-display">
+                   <p>Click on the Correct Game or <span class="btn btn-default" id="clear-games">Clear Games List</span></p>
+                   <ul id="games-by-id" class="list-group"></ul>
+               </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Overview, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Overview, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Overview, new { htmlAttributes = new { @class = "form-control"} })
                 @Html.ValidationMessageFor(model => model.Overview, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -87,6 +91,8 @@
             </div>
         </div>
     </div>
+   
+
 
 }
 
@@ -134,6 +140,72 @@
                 $('#catspan' + id).removeClass('fa fa-check');
             }
         }
+    // 
+    //php block ?
+       // $url = "your url";
+       // $xmlinfo = simplexml_load_file($url);
+        // print_r($xmlinfo);
+
+   
+        $('#lookup-game').click(function () {
+            var gamerequested = $('#GameTitle').val().toLowerCase();
+            $('#GameTitle').html('');
+            $.ajax({
+                url: 'http://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
+                type: 'GET',
+                dataType: 'xml',
+                success: function (data) {
+                    $('Game', data).each(function () {
+                        var id = $(this).find('id').text(),
+                         gameTitle = $(this).find('GameTitle').text(),
+                         releaseDate = $(this).find('ReleaseDate').text(),
+                         platform = $(this).find('Platform').text();
+                      //  console.log(id + '-' + gameTitle + '-' + platform);
+                        $('#games-by-id').append('<li class="list-group-item" id="game' + id + '" data-id=' + id + '><span id="catspan' + id + '"></span>' + gameTitle + '</br>' + releaseDate + '  ' + platform  + '</li>');
+                        $('#game' + id).click(function () { fill_form(id); });
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
+
+        $('#clear-games').click(function() {
+            $('#games-by-id').empty();})
+
+        function fill_form(id) {
+            $('#games-by-id').html('');
+            $.ajax({
+                url: 'http://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGame.php?id=' + id,
+                type: 'GET',
+                dataType: 'xml',
+                success: function (data) {
+                    var gameTitle = $(data).find('GameTitle').text(),
+                        overview = $(data).find('Overview').text(),
+                        releaseDate = $(data).find('ReleaseDate').text(),
+                        developer = $(data).find('Developer').text(),
+                        genre = $(data).find('genre').text(),
+                        players = $(data).find('Players').text();
+                    var tempReleaseDate = new Date(releaseDate);
+                    console.log(tempReleaseDate);
+                    var releaseYear = tempReleaseDate.getFullYear();
+                   console.log(releaseYear);
+                    $('#GameTitle').val(gameTitle);
+                    $('#Overview').val(overview);
+                    $('#ReleaseDate').val(releaseYear);
+                    $('#Developer').val(developer);
+                    $('#Genre').val(genre);
+                    $('#Players').val(players);
+                   // console.log(gameTitle + '-' + overview + '-' + genre);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        
 
         function initialize()
         {
