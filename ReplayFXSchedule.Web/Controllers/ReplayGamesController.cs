@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
 using Newtonsoft.Json;
-
  
 namespace ReplayFXSchedule.Web.Controllers
 {

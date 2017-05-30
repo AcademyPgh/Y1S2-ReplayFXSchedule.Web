@@ -58,7 +58,6 @@ namespace ReplayFXSchedule.Web.Controllers
                 result = JsonConvert.SerializeObject(db.ReplayEvents.Where(d => d.Date == tempdate).Where(r => r.ReplayEventTypes.Any(e => e.Name == category)).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
                         new JsonSerializerSettings
                         {
-                            DateFormatString = "hh:mm",
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         });

@@ -1,10 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
-using System.Web.Http;
-using System.Web.Http.Cors;
 
 
-[assembly: OwinStartup(typeof(ReplayFXSchedule.Web.Startup))]
+[assembly: OwinStartupAttribute(typeof(ReplayFXSchedule.Web.Startup))]
 
 namespace ReplayFXSchedule.Web
 {
@@ -12,7 +10,6 @@ namespace ReplayFXSchedule.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             ConfigureAuth(app);
         }
     }
