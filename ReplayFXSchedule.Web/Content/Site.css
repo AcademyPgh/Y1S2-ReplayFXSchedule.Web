@@ -164,6 +164,15 @@ input[type="submit"], .btn-default.replayButton, .btn-default, .btn-primary{
     min-height:34px;
 }
 
+#Overview.form-control {
+    max-height: 100px;
+    overflow-y: scroll;
+}
+textarea#Overview {
+    width: 300px;
+    border-radius: 4px;
+}
+
 #ReplayGameTypes li span {
     margin-left:10px;
 }
@@ -204,6 +213,42 @@ span#AddType i{
 select.form-control{
     display:inline-block;
 }
+
+#games-display {
+    min-height: 50px;
+    max-height: 400px;
+    background-color: white;
+    color: black;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 190px;
+    left: 810px;
+    width: 500px;
+}
+
+#games-display p{
+    font-weight: bold;
+    margin-left: 10px;
+    max-height: 100px;
+}
+#games-by-id li{
+    list-style-type: none;
+    margin-left:10px;
+}
+
+#add-image {
+    position: absolute;
+    top: 535px;
+    left: 810px;
+    min-width: 500px;
+    background-color: white;
+    color: black;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
 
 
 /*Delete Page*/
@@ -317,6 +362,8 @@ select.form-control{
         width: 50%;
     }
 }
+
+
 
 
 
