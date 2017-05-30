@@ -24,6 +24,7 @@ namespace ReplayFXSchedule.Web.Models
         public string Genre { get; set; }
         [Display(Name = "Number of Players")]
         public string Players { get; set; }
+        public string Image { get; set; }
         [Required]
         [Display(Name = "Game Type")]
         public virtual ReplayGameType

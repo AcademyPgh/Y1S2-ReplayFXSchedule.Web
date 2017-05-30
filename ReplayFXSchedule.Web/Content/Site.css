@@ -227,9 +227,7 @@ select.form-control{
     left: 810px;
     width: 500px;
 }
-/*#games-by-id {
-    font-weight: bold; 
-}*/
+
 #games-display p{
     font-weight: bold;
     margin-left: 10px;
@@ -238,6 +236,17 @@ select.form-control{
 #games-by-id li{
     list-style-type: none;
     margin-left:10px;
+}
+
+#add-image {
+    position: absolute;
+    top: 535px;
+    left: 810px;
+    min-width: 500px;
+    background-color: white;
+    color: black;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
 }
 
 

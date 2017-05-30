@@ -30,6 +30,15 @@ namespace ReplayFXSchedule.Web.Models
 
         [Display(Name = "Event Type")]
         public virtual List<ReplayEventType> ReplayEventTypes { get; set; }
+        public string StartTime12
+        {
+            get { return DateTime.Parse(StartTime).ToString("hh\\:mm tt"); }
+        }
+
+        public string EndTime12
+        {
+            get { return DateTime.Parse(EndTime).ToString("hh\\:mm tt"); }
+        }
     }
 
     public class ReplayEventType

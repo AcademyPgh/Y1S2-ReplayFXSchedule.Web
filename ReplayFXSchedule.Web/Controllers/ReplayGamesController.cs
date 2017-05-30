@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
 using Newtonsoft.Json;
 
+ 
 namespace ReplayFXSchedule.Web.Controllers
 {
     [Authorize]
@@ -61,7 +62,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players")] ReplayGame replayGame, string gametype, string locations)
+        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,Image")] ReplayGame replayGame, string gametype, string locations)
          {
             replayGame.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
             ModelState.Clear();
@@ -146,7 +147,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,ReplayGameType.Id")] ReplayGame replayGame, string gametype, string locations)
+        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,Image,ReplayGameType.Id")] ReplayGame replayGame, string gametype, string locations)
         {
             replayGame.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
             ModelState.Clear();
@@ -160,6 +161,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpg.Developer = replayGame.Developer;
                 rpg.Genre = replayGame.Genre;
                 rpg.Players = replayGame.Players;
+                rpg.Image = replayGame.Image;
                rpg.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
 
                 SaveReplayGameLocations(replayGame.Id, locations.Split(','));

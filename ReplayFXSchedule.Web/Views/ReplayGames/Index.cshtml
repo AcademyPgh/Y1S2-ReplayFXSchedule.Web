@@ -30,6 +30,9 @@
             @Html.DisplayNameFor(model => model.Players)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.ReplayGameType)
         </th>
         <th>
@@ -72,6 +75,11 @@
                 @Html.DisplayFor(modelItem => item.Players)
                 </div>
 </td>
+        <td>
+            <div class="responsiveTD">
+                @Html.DisplayFor(modelItem => item.Image)
+            </div>
+        </td>
         <td>
             <div class="responsiveTD">
                 @Html.DisplayFor(modelItem => item.ReplayGameType.Name)
