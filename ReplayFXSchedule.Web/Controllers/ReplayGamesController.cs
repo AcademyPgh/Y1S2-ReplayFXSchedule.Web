@@ -7,7 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
-using Newtonsoft.Json;
+using Newtonsoft.Json; 
  
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -69,13 +69,15 @@ namespace ReplayFXSchedule.Web.Controllers
             if (ModelState.IsValid)
             {
                 db.ReplayGames.Add(replayGame);
-                
 
-                replayGame.ReplayGameLocations = new List<ReplayGameLocation>();
-                foreach (var id in locations.Split(','))
+                if (locations != "")
                 {
-                    replayGame.ReplayGameLocations.Add(db.ReplayGameLocations.Find
-                        (Convert.ToInt32(id)));
+                    replayGame.ReplayGameLocations = new List<ReplayGameLocation>();
+                    foreach (var id in locations.Split(','))
+                    {
+                        replayGame.ReplayGameLocations.Add(db.ReplayGameLocations.Find
+                            (Convert.ToInt32(id)));
+                    }
                 }
               
             db.SaveChanges();
