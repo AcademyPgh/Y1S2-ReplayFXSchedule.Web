@@ -7,7 +7,7 @@
 <h2>Edit Game</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "ReplayGames", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -64,12 +64,15 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="btn btn-default" id="delete-image">Delete Image</div>
+                </div>
+            <div class="col-md-10 col-md-offset-2">
+                <div id="add-image" class="form-control"><input type="file" id="upload" name="upload" /></div>
             </div>
-        </div>
+                </div>
         <div class="form-group">
             <label class="control-label col-md-2">Game Types</label>
             <div class="col-md-10">
@@ -142,7 +145,12 @@
                 $('#catspan' + id).removeClass('fa fa-check');
             }
         }
-
+        $('#delete-image').click(function () {
+        
+            var image = $("#Image").val();
+            console.log("the value of image is: " + image);
+            $('#Image').val('');
+        })
         function initialize()
         {
             load_locations();

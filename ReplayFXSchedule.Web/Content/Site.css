@@ -239,17 +239,8 @@ select.form-control{
 }
 
 #add-image {
-    position: absolute;
-    top: 535px;
-    left: 810px;
-    min-width: 500px;
-    background-color: white;
-    color: black;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
+    width: 30%
 }
-
-
 
 /*Delete Page*/
 
