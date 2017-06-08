@@ -7,8 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
-using Newtonsoft.Json; 
- 
+using Newtonsoft.Json;
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace ReplayFXSchedule.Web.Controllers
 {
     [Authorize]
@@ -61,14 +64,25 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,Image")] ReplayGame replayGame, string gametype, string locations)
+        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,Image")] ReplayGame replayGame, string gametype, string locations, HttpPostedFileBase upload)
          {
+            int indexExt = 0;
+            string ext = "";
             replayGame.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
             ModelState.Clear();
             TryValidateModel(replayGame);
             if (ModelState.IsValid)
             {
+                if (upload != null)
+                {
+                    indexExt = upload.FileName.IndexOf(".");
+                    ext = upload.FileName.Substring(indexExt);
+                    Guid imagename = Guid.NewGuid();
+                    replayGame.Image = imagename.ToString() + ext;
+                    uploadtoAzure(imagename.ToString() + ext, upload);
+                }
                 db.ReplayGames.Add(replayGame);
+
 
                 if (locations != "")
                 {
@@ -85,6 +99,33 @@ namespace ReplayFXSchedule.Web.Controllers
         }
             ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
             return View(replayGame);
+        }
+
+        private void uploadtoAzure(string filename, HttpPostedFileBase upload)
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            // Retrieve reference to a previously created container.
+            CloudBlobContainer container = blobClient.GetContainerReference("images");
+            // Retrieve reference to a blob named "someimage.jpg".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
+            // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.
+                blockBlob.UploadFromStream(upload.InputStream); 
+        }
+        private void deletefromAzure(string filename)
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            // Retrieve reference to a previously created container.
+            CloudBlobContainer container = blobClient.GetContainerReference("images");
+            // Retrieve reference to a blob named "someimage.jpg".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
+            // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.
+            blockBlob.Delete();
         }
 
         // GET: ReplayGames/Edit/5
@@ -148,13 +189,27 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,Image,ReplayGameType.Id")] ReplayGame replayGame, string gametype, string locations)
+        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,Image,ReplayGameType.Id")] ReplayGame replayGame, string gametype, string locations, HttpPostedFileBase upload, string image)
         {
+            int indexExt = 0;
+            string ext = "";
             replayGame.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
             ModelState.Clear();
             TryValidateModel(replayGame);
             if (ModelState.IsValid)
             {
+                if (upload != null)
+                { indexExt = upload.FileName.IndexOf(".");
+                    ext = upload.FileName.Substring(indexExt);
+                    if (!string.IsNullOrEmpty(image))
+                    {
+                        deletefromAzure(image);
+                        image = null;
+                    }
+                    Guid imagename = Guid.NewGuid();
+                    replayGame.Image = imagename.ToString() + ext;
+                    uploadtoAzure(imagename.ToString(), upload);
+                }
                 ReplayGame rpg = db.ReplayGames.Find(replayGame.Id);
                 rpg.GameTitle = replayGame.GameTitle;
                 rpg.Overview = replayGame.Overview;
@@ -163,7 +218,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpg.Genre = replayGame.Genre;
                 rpg.Players = replayGame.Players;
                 rpg.Image = replayGame.Image;
-               rpg.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
+                rpg.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
 
                 SaveReplayGameLocations(replayGame.Id, locations.Split(','));
 
@@ -236,6 +291,8 @@ namespace ReplayFXSchedule.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             ReplayGame replayGame = db.ReplayGames.Find(id);
+            if (replayGame.Image != null)
+            { deletefromAzure(replayGame.Image); }
             db.ReplayGames.Remove(replayGame);
             db.SaveChanges();
             return RedirectToAction("Index");

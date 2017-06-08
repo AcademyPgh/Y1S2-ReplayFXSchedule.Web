@@ -7,7 +7,7 @@
 <h2>Create ReplayFX Games</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "ReplayGames", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -65,15 +65,13 @@
                 @Html.ValidationMessageFor(model => model.Players, "", new { @class = "text-danger" })
             </div>
         </div>
-        @*<div class="form-group">
+        <div class="form-group">
             @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-                <div class="btn btn-default" id="lookup-image">Lookup Image</div>
+                <div id="add-image" class="form-control"><input type="file" id="upload" name="upload" /></div>
             </div>
         </div> 
-        <div id="add-image"></div>*@
+        
 
         <div class="form-group">
                     <label class="control-label col-md-2">Game Types</label>
@@ -213,9 +211,6 @@
                 }
             })
         }
-        $('#lookup-image').click(function () {
-            $('#add-image').append('<form action=""><input type=file name="imageupload" value="imageupload" id="fileupload"><label for="fileupload">Select an image to upload</label><input type="submit" value="+"></form>');
-        })
 
         function initialize()
         {
