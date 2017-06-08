@@ -125,7 +125,10 @@ namespace ReplayFXSchedule.Web.Controllers
             // Retrieve reference to a blob named "someimage.jpg".
             CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
             // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.
-            blockBlob.Delete();
+            if (blockBlob.Exists())
+            {
+                blockBlob.Delete();
+            }
         }
 
         // GET: ReplayGames/Edit/5
