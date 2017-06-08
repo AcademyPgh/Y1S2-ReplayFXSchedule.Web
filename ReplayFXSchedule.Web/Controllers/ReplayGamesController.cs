@@ -77,9 +77,9 @@ namespace ReplayFXSchedule.Web.Controllers
                 {
                     indexExt = upload.FileName.IndexOf(".");
                     ext = upload.FileName.Substring(indexExt);
-                    Guid imagename = Guid.NewGuid();
-                    replayGame.Image = imagename.ToString() + ext;
-                    uploadtoAzure(imagename.ToString() + ext, upload);
+                    string imagename = Guid.NewGuid() + ext;
+                    replayGame.Image = imagename;
+                    uploadtoAzure(imagename, upload);
                 }
                 db.ReplayGames.Add(replayGame);
 
@@ -199,16 +199,17 @@ namespace ReplayFXSchedule.Web.Controllers
             if (ModelState.IsValid)
             {
                 if (upload != null)
-                { indexExt = upload.FileName.IndexOf(".");
-                    ext = upload.FileName.Substring(indexExt);
+                { 
                     if (!string.IsNullOrEmpty(image))
                     {
                         deletefromAzure(image);
                         image = null;
                     }
-                    Guid imagename = Guid.NewGuid();
-                    replayGame.Image = imagename.ToString() + ext;
-                    uploadtoAzure(imagename.ToString(), upload);
+                    indexExt = upload.FileName.IndexOf(".");
+                    ext = upload.FileName.Substring(indexExt);
+                    string imagename = Guid.NewGuid() + ext;
+                    replayGame.Image = imagename;
+                    uploadtoAzure(imagename, upload);
                 }
                 ReplayGame rpg = db.ReplayGames.Find(replayGame.Id);
                 rpg.GameTitle = replayGame.GameTitle;
