@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Configuration;
 
 
 namespace ReplayFXSchedule.Web.Models
@@ -31,6 +32,10 @@ namespace ReplayFXSchedule.Web.Models
            ReplayGameType { get; set; }
         [Display(Name = "Game Locations")]
         public virtual List<ReplayGameLocation> ReplayGameLocations { get; set; }
+        public string ImageUrl { get
+            {
+                return ConfigurationManager.AppSettings["ImagePrefix"] + Image;
+            } }
 
     }
 
