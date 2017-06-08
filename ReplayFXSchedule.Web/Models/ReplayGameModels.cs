@@ -34,7 +34,14 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<ReplayGameLocation> ReplayGameLocations { get; set; }
         public string ImageUrl { get
             {
-                return ConfigurationManager.AppSettings["ImagePrefix"] + Image;
+                if (Image != null)
+                {
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + Image;
+                }
+                else
+                {
+                    return Image;
+                }
             } }
 
     }
