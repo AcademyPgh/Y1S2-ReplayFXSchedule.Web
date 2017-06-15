@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Configuration;
 
 namespace ReplayFXSchedule.Web.Models
 {
@@ -38,6 +39,20 @@ namespace ReplayFXSchedule.Web.Models
         public string EndTime12
         {
             get { return DateTime.Parse(EndTime).ToString("hh\\:mm tt"); }
+        }
+        public string ImageUrl
+        {
+            get
+            {
+                if (Image != null)
+                {
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + Image;
+                }
+                else
+                {
+                    return Image;
+                }
+            }
         }
     }
 

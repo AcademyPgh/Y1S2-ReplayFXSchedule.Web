@@ -68,7 +68,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div id="add-image" class="form-control"><input type="file" id="upload" name="upload" /></div>
+                <div id="add-image" class="form-control"><input type="file" id="upload" onchange="previewfile()" name="upload" /></div>
+                <img src="" id="img-display" class="photo"/>
             </div>
         </div> 
         
@@ -147,13 +148,19 @@
                 $('#catspan' + id).removeClass('fa fa-check');
             }
         }
-    // 
-    //php block ?
-       // $url = "your url";
-       // $xmlinfo = simplexml_load_file($url);
-        // print_r($xmlinfo);
 
-   
+        function previewfile() {
+            //displays a preview version of the image before it is saved to the database
+            var preview = document.querySelector('img');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
         $('#lookup-game').click(function () {
             var gamerequested = $('#GameTitle').val().toLowerCase();
             $('#GameTitle').html('');
@@ -179,7 +186,8 @@
         })
 
         $('#clear-games').click(function() {
-            $('#games-by-id').empty();})
+            $('#games-by-id').empty();
+        })
 
         function fill_form(id) {
             $('#games-by-id').html('');

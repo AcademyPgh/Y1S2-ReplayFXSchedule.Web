@@ -7,7 +7,7 @@
 <h2>Create ReplayFX Event</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "ReplayEvents", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -73,8 +73,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                <div id="add-image" class="form-control"><input type="file" onchange="previewfile()" id="upload" name="upload" /></div>
+                <img src="" id="img-display" class="photo" />
             </div>
         </div>
 
@@ -139,6 +139,18 @@
                 categories.splice(i, 1);
                 $('#categories').val(categories.toString());
                 $('#catspan' + id).removeClass('fa fa-check');
+            }
+        }
+        function previewfile() {
+            //displays a preview version of the image before it is saved to the database
+            var preview = document.querySelector('img');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+            if (file) {
+                reader.readAsDataURL(file);
             }
         }
 

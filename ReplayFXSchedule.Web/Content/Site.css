@@ -239,7 +239,20 @@ select.form-control{
 }
 
 #add-image {
-    width: 30%
+    width: 30%;
+}
+
+.photo {
+    width: 15em;
+     position: absolute;
+    top: -20px;
+    left: 310px;
+}
+.detail-img {
+    width: 20em;
+}
+.index-img {
+    width: 9em;
 }
 
 /*Delete Page*/

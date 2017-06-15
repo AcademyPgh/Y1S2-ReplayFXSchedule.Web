@@ -59,6 +59,15 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            @if (Model.ImageUrl != null)
+            {
+                <img src="@Url.Content(Model.ImageUrl)" class="detail-img" id="imageUrl" />}
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Location)
         </dt>
 

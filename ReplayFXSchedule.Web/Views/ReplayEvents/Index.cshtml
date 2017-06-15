@@ -27,6 +27,9 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
 
             @Html.DisplayNameFor(model => model.ReplayEventTypes)
 
@@ -65,7 +68,12 @@
             </div>
 </td>
         <td>
-
+            <div class="responsiveTD">
+                @if (item.ImageUrl != null)
+                {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
+            </div>
+</td>
+        <td>
             <div class="responsiveTD">
                     @foreach (var eventType in item.ReplayEventTypes)
                     {
