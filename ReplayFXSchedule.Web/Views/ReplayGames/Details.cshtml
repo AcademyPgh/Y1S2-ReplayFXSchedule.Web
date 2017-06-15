@@ -62,7 +62,9 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Image)
+            @if (Model.ImageUrl != null)
+            {
+                <img src="@Url.Content(Model.ImageUrl)" class="detail-img" id="imageUrl" />}
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ReplayGameType)

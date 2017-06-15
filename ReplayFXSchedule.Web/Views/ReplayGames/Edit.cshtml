@@ -8,9 +8,10 @@
 
 
 @using (Html.BeginForm("Edit", "ReplayGames", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
+
+    {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -21,9 +22,13 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.GameTitle, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.GameTitle, "", new { @class = "text-danger" })
+                <div class="btn btn-default" id="lookup-game">Lookup Game</div>
             </div>
         </div>
-
+        <div id="games-display">
+            <p>Click on the Correct Game or <span class="btn btn-default" id="clear-games">Clear Games List</span></p>
+            <ul id="games-by-id" class="list-group"></ul>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Overview, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -66,11 +71,14 @@
         <div class="form-group">
                 @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model =>  model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                @if (Model.ImageUrl != null)
+                { <img src="@Url.Content(Model.ImageUrl)" class="photo" id="imageUrl" />}
                     <div class="btn btn-default" id="delete-image">Delete Image</div>
                 </div>
             <div class="col-md-10 col-md-offset-2">
-                <div id="add-image" class="form-control"><input type="file" id="upload" name="upload" /></div>
+                <div id="add-image" class="form-control"><input type="file" id="upload" onchange="previewfile()" name="upload" /></div>
+                <img src="" id="img-display" class="photo" />
             </div>
                 </div>
         <div class="form-group">
@@ -150,7 +158,79 @@
             var image = $("#Image").val();
             console.log("the value of image is: " + image);
             $('#Image').val('');
+            $('#imageUrl').removeAttr('src');
         })
+        function previewfile() {
+            //displays a preview version of the image before it is saved to the database
+            var preview = document.querySelector('#img-display');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+        $('#lookup-game').click(function () {
+            var gamerequested = $('#GameTitle').val().toLowerCase();
+            $('#GameTitle').html('');
+            $.ajax({
+                url: 'http://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
+                type: 'GET',
+                dataType: 'xml',
+                success: function (data) {
+                    $('Game', data).each(function () {
+                        var id = $(this).find('id').text(),
+                            gameTitle = $(this).find('GameTitle').text(),
+                         releaseDate = $(this).find('ReleaseDate').text(),
+                         platform = $(this).find('Platform').text();
+                        //  console.log(id + '-' + gameTitle + '-' + platform);
+                        $('#games-by-id').append('<li class="list-group-item" id="game' + id + '" data-id=' + id + '><span id="catspan' + id + '"></span>' + gameTitle + '</br>' + releaseDate + '  ' + platform + '</li>');
+                        $('#game' + id).click(function () { fill_form(id); });
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
+
+        $('#clear-games').click(function () {
+            $('#games-by-id').empty();
+        })
+        function fill_form(id) {
+            $('#games-by-id').html('');
+            $.ajax({
+                url: 'http://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGame.php?id=' + id,
+                type: 'GET',
+                dataType: 'xml',
+                success: function (data) {
+                    var gameTitle = $(data).find('GameTitle').text(),
+                        overview = $(data).find('Overview').text(),
+                        releaseDate = $(data).find('ReleaseDate').text(),
+                        developer = $(data).find('Developer').text(),
+                        genre = $(data).find('genre').text(),
+                        players = $(data).find('Players').text();
+                    var tempReleaseDate = new Date(releaseDate);
+                    console.log(tempReleaseDate);
+                    var releaseYear = tempReleaseDate.getFullYear();
+                    console.log(releaseYear);
+                    $('#GameTitle').val(gameTitle);
+                    $('#Overview').val(overview);
+                    $('#ReleaseDate').val(releaseYear);
+                    $('#Developer').val(developer);
+                    $('#Genre').val(genre);
+                    $('#Players').val(players);
+                    // console.log(gameTitle + '-' + overview + '-' + genre);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+
         function initialize()
         {
             load_locations();

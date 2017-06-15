@@ -77,7 +77,8 @@
 </td>
         <td>
             <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.Image)
+                @if (item.ImageUrl != null)
+                {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
             </div>
         </td>
         <td>
