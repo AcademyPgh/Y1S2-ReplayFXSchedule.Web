@@ -32,7 +32,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Overview, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Overview, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Overview, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Overview, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -176,7 +176,7 @@
             var gamerequested = $('#GameTitle').val().toLowerCase();
             $('#GameTitle').html('');
             $.ajax({
-                url: 'http://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
+                url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
                 type: 'GET',
                 dataType: 'xml',
                 success: function (data) {
@@ -202,7 +202,7 @@
         function fill_form(id) {
             $('#games-by-id').html('');
             $.ajax({
-                url: 'http://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGame.php?id=' + id,
+                url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGame.php?id=' + id,
                 type: 'GET',
                 dataType: 'xml',
                 success: function (data) {

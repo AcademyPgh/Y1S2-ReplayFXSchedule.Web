@@ -42,8 +42,7 @@
             Actions
         </td>
     </tr>
-
-@foreach (var item in Model) {
+@foreach (var item in Model.OrderBy(item => item.GameTitle)) {
     <tr>
         <td>
             <div class="responsiveTD">
@@ -51,7 +50,7 @@
                 </div>
 </td>
         <td>
-            <div class="responsiveTD">
+            <div class="responsiveTDOverview">
                 @Html.DisplayFor(modelItem => item.Overview)
                 </div>
 </td>
