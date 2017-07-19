@@ -165,7 +165,7 @@
             var gamerequested = $('#GameTitle').val().toLowerCase();
             $('#GameTitle').html('');
             $.ajax({
-                url: 'http://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
+                url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
                 type: 'GET',
                 dataType: 'xml',
                 success: function (data) {
@@ -192,7 +192,7 @@
         function fill_form(id) {
             $('#games-by-id').html('');
             $.ajax({
-                url: 'http://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGame.php?id=' + id,
+                url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGame.php?id=' + id,
                 type: 'GET',
                 dataType: 'xml',
                 success: function (data) {
