@@ -350,9 +350,6 @@ select.form-control{
 
 
 }
-.responsiveTDOverview {
-    max-height: 100px;
-}
 
 @media screen and (min-width: 480px) and (max-width: 768px){
   .responsiveTD {
@@ -370,21 +367,7 @@ select.form-control{
     }
 }
 
-@media screen and (min-width: 480px) and (max-width: 768px){
-  .responsiveTDOverview {
-    display: inline-block;
-    width: 60%;
-}
-  }
 
-
-
-@media screen and (max-width: 479px) {
-    .responsiveTDOverview {
-        display: inline-block;
-        width: 50%;
-    }
-}
 
 
 
