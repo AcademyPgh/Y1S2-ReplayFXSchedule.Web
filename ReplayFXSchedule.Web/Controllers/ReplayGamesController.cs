@@ -20,11 +20,24 @@ namespace ReplayFXSchedule.Web.Controllers
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
         // GET: ReplayGames
-        public ActionResult Index()
-        {
-            return View(db.ReplayGames.ToList());
-        }
 
+        //the first parameter is the option that we choose and the second parameter will use the textbox value   
+        public ActionResult Index(string option, string search)
+        {
+
+            //if a user chooses the radio button option as Game Title   
+            if (option == "GameTitle")
+            {
+                //Index action method will return a view with games based on what a user specifies the value is in the textbox   
+                return View(db.ReplayGames.Where(x => x.GameTitle.StartsWith(search)|| search == null).ToList());
+
+            }
+            else
+            {
+                return View(db.ReplayGames.Where(x => x.Developer == search || search == null).ToList());
+            }
+        }
+       
         public ContentResult Json()
         {
             var result = JsonConvert.SerializeObject(db.ReplayGames.ToList(), Formatting.None,
