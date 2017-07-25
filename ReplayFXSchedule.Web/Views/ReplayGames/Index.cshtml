@@ -9,7 +9,15 @@
 <p>
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default replayButton" })
 </p>
-<table class="table replayTable">
+@using (Html.BeginForm("Index", "ReplayGames", FormMethod.Get))
+{
+    //the following are search options  
+    <b> Search Option: </b>@Html.RadioButton("option", "GameTitle") <text>Game Title</text> 
+    @Html.RadioButton("option", "Developer") <text>Developer</text> 
+        @Html.TextBox("search") <input type="submit" name ="submit" value="Search" />
+} 
+
+                        <table class="table replayTable">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.GameTitle)
@@ -42,63 +50,65 @@
             Actions
         </td>
     </tr>
-@foreach (var item in Model.OrderBy(item => item.GameTitle)) {
-    <tr>
-        <td>
-            <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.GameTitle)
+                            @foreach (var item in Model.OrderBy(item => item.GameTitle))
+                            {
+        <tr>
+            <td>
+                <div class="responsiveTD">
+                    @Html.DisplayFor(modelItem => item.GameTitle)
                 </div>
-</td>
-        <td>
-            <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.Overview)
+            </td>
+            <td>
+                <div class="responsiveTD">
+                    @Html.DisplayFor(modelItem => item.Overview)
                 </div>
-</td>
-        <td>
-            <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                <div class="responsiveTD">
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
                 </div>
-</td>
-        <td>
-            <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.Developer)
+            </td>
+            <td>
+                <div class="responsiveTD">
+                    @Html.DisplayFor(modelItem => item.Developer)
                 </div>
-</td>
-        <td>
-            <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                <div class="responsiveTD">
+                    @Html.DisplayFor(modelItem => item.Genre)
                 </div>
-</td>
-        <td>
-            <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.Players)
+            </td>
+            <td>
+                <div class="responsiveTD">
+                    @Html.DisplayFor(modelItem => item.Players)
                 </div>
-</td>
-        <td>
-            <div class="responsiveTD">
-                @if (item.ImageUrl != null)
-                {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
-            </div>
-        </td>
-        <td>
-            <div class="responsiveTD">
-                @Html.DisplayFor(modelItem => item.ReplayGameType.Name)
-            </div>
-        </td>   
-        <td>
-            <div class="responsiveTD">
-                @foreach (var gameLocation in item.ReplayGameLocations)
-                {
-                    <span class="categoryType">@Html.DisplayFor(model => gameLocation.Location) </span><br />
-                }
-            </div>
-        </td>
+            </td>
+            <td>
+                <div class="responsiveTD">
+                    @if (item.ImageUrl != null)
+                    {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
+                </div>
+            </td>
+            <td>
+                <div class="responsiveTD">
+                    @Html.DisplayFor(modelItem => item.ReplayGameType.Name)
+                </div>
+            </td>
+            <td>
+                <div class="responsiveTD">
+                    @foreach (var gameLocation in item.ReplayGameLocations)
+                    {
+                        <span class="categoryType">@Html.DisplayFor(model => gameLocation.Location) </span><br />
+                    }
+                </div>
+            </td>
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) 
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+                            }
 
-</table>
+                        </table>
+
