@@ -23,8 +23,8 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayEvents
         public ActionResult Index(string search)
         {
-             return View(db.ReplayEvents.Where(x => x.Title.StartsWith(search)|| search == null).ToList());
-            // return View(db.ReplayEvents.OrderBy(x => new { x.Date, x.StartTime }).ToList());
+            //  return View(db.ReplayEvents.Where(x => x.Title.StartsWith(search)|| search == null).ToList());
+            return View(db.ReplayEvents.OrderBy(x => new { x.Date, x.StartTime }).ToList());
         }
 
         public ContentResult Json()
