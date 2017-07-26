@@ -114,6 +114,7 @@
     @Scripts.Render("~/bundles/jqueryval")
 <script>
     locations = [@ViewBag.ReplayGameLocationIDs];
+    $('#locations').val(locations.toString());
 
 
         function load_locations() {
