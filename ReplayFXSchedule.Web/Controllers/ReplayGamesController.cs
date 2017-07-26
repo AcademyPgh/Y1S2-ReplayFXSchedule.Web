@@ -22,20 +22,12 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayGames
 
         //the first parameter is the option that we choose and the second parameter will use the textbox value   
-        public ActionResult Index(string option, string search)
+        public ActionResult Index(string search)
         {
 
             //if a user chooses the radio button option as Game Title   
-            if (option == "GameTitle")
-            {
                 //Index action method will return a view with games based on what a user specifies the value is in the textbox   
                 return View(db.ReplayGames.Where(x => x.GameTitle.StartsWith(search)|| search == null).ToList());
-
-            }
-            else
-            {
-                return View(db.ReplayGames.Where(x => x.Developer == search || search == null).ToList());
-            }
         }
        
         public ContentResult Json()
