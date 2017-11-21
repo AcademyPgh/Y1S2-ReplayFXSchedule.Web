@@ -100,6 +100,7 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             return Content(result, "application/json");
         }
+
         public ActionResult GameTypes()
         {
             var result = JsonConvert.SerializeObject(db.ReplayGameTypes.ToList(), Formatting.None,
@@ -109,6 +110,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 });
             return Content(result, "application/json");
         }
+
         public ActionResult Locations()
         {
             var result = JsonConvert.SerializeObject(db.ReplayGameLocations.ToList(), Formatting.None,
@@ -117,6 +119,19 @@ namespace ReplayFXSchedule.Web.Controllers
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
             return Content(result, "application/json");
+        }
+
+        public ActionResult Search(string s)
+        {
+            var events = db.ReplayEvents.Where(e => e.Title.ToLower().Contains(s.ToLower())).ToList();
+
+            var results = JsonConvert.SerializeObject(events, Formatting.None,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+            return Content(results, "application/json");
         }
     }
 }
