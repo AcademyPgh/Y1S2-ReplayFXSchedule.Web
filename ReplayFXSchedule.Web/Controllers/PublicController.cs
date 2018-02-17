@@ -38,30 +38,26 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             return Content(result, "application/json");
         }
-        
+
+        // api/daily
         public ActionResult ScheduleWeb(string date, string category)
         {
             DateTime tempdate = Convert.ToDateTime(date);
-            string result;
-            if (String.IsNullOrEmpty(category))
+            var resultList = db.ReplayEvents.Where(d => d.Date == tempdate).Where(r => r.ReplayEventTypes.Any(e => e.Name != "vendors"));
+            if (!string.IsNullOrEmpty(category))
             {
-               result = JsonConvert.SerializeObject(db.ReplayEvents.Where(d => d.Date==tempdate).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
-                       new JsonSerializerSettings
-                       {
-                           ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                           ContractResolver = new CamelCasePropertyNamesContractResolver()
-                       });
+                resultList = resultList.Where(r => r.ReplayEventTypes.Any(e => e.Name == category));
             }
-            else
+
+            
+            // select all replay events where the replayeventtype.name = category
+            string result = JsonConvert.SerializeObject(resultList.OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+            new JsonSerializerSettings
             {
-                // select all replay events where the replayeventtype.name = category
-                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(d => d.Date == tempdate).Where(r => r.ReplayEventTypes.Any(e => e.Name == category)).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
-                        new JsonSerializerSettings
-                        {
-                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                            ContractResolver = new CamelCasePropertyNamesContractResolver()
-                        });
-            }
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+            
             return Content(result, "application/json");
         }
 
