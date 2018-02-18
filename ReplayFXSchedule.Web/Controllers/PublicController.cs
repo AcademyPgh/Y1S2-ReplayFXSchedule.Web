@@ -75,25 +75,17 @@ namespace ReplayFXSchedule.Web.Controllers
         public ActionResult Games(string gametype)
         {
             string result;
-            if (String.IsNullOrEmpty(gametype))
-            {
-                result = JsonConvert.SerializeObject(db.ReplayGames.OrderBy(r => new { r.GameTitle }).ToList(), Formatting.None,
-                       new JsonSerializerSettings
-                       {
-                           ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                           ContractResolver = new CamelCasePropertyNamesContractResolver()
-                       });
-            }
-            else
-            {
-                // select all replay games where the replaygametype.name = gametypes
-                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype).OrderBy(r =>  r.GameTitle ).ToList(), Formatting.None,
+            IQueryable<ReplayGame> resultList = db.ReplayGames;
+
+            if (!String.IsNullOrEmpty(gametype))
+                resultList = resultList.Where(e => e.ReplayGameType.Name == gametype);
+            
+            result = JsonConvert.SerializeObject(resultList.OrderBy(r => r.GameTitle).ToList(), Formatting.None,
                         new JsonSerializerSettings
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         });
-            }
             return Content(result, "application/json");
         }
 
