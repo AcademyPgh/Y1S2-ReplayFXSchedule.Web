@@ -23,8 +23,10 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayEvents
         public ActionResult Index(string search)
         {
+            // Bad way to do this but here it is
+            var currentYear = DateTime.Parse("1/1/2018");
             //  return View(db.ReplayEvents.Where(x => x.Title.StartsWith(search)|| search == null).ToList());
-            return View(db.ReplayEvents.OrderBy(x => new { x.Date, x.StartTime }).ToList());
+            return View(db.ReplayEvents.Where(x => x.Date > currentYear).OrderBy(x => new { x.Date, x.StartTime }).ToList());
         }
 
         public ContentResult Json()
