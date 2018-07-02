@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -265,6 +266,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201705292226422_AddImageToGames.Designer.cs">
       <DependentUpon>201705292226422_AddImageToGames.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201807021857464_AddAtReplayToGames.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201807021857464_AddAtReplayToGames.Designer.cs">
+      <DependentUpon>201807021857464_AddAtReplayToGames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -394,6 +399,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201705292226422_AddImageToGames.resx">
       <DependentUpon>201705292226422_AddImageToGames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201807021857464_AddAtReplayToGames.resx">
+      <DependentUpon>201807021857464_AddAtReplayToGames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

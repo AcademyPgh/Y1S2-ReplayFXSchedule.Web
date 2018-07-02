@@ -69,7 +69,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,Image")] ReplayGame replayGame, string gametype, string locations, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,AtReplay,ReleaseDate,Developer,Genre,Players,Image")] ReplayGame replayGame, string gametype, string locations, HttpPostedFileBase upload)
          {
             int indexExt = 0;
             string ext = "";
@@ -197,7 +197,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,ReleaseDate,Developer,Genre,Players,Image,ReplayGameType.Id")] ReplayGame replayGame, string gametype, string locations, HttpPostedFileBase upload, string image)
+        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,AtReplay,ReleaseDate,Developer,Genre,Players,Image,ReplayGameType.Id")] ReplayGame replayGame, string gametype, string locations, HttpPostedFileBase upload, string image)
         {
             int indexExt = 0;
             string ext = "";
@@ -227,6 +227,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpg.Genre = replayGame.Genre;
                 rpg.Players = replayGame.Players;
                 rpg.Image = replayGame.Image;
+                rpg.AtReplay = replayGame.AtReplay;
                 rpg.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
 
                 SaveReplayGameLocations(replayGame.Id, locations.Split(','));
@@ -239,6 +240,19 @@ namespace ReplayFXSchedule.Web.Controllers
             //ViewBag.ReplayGameLocationIDs = string.Join(",", replayGame.ReplayGameLocations.Select(r => r.Id));
             ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
             return View(replayGame);
+        }
+
+        public ActionResult SwapAtReplayValue(int id)
+        {
+            var game = db.ReplayGames.Where(g => g.Id == id).Include(g => g.ReplayGameType).FirstOrDefault(); ;
+            game.AtReplay = !game.AtReplay;
+            db.SaveChanges();
+            var result = JsonConvert.SerializeObject(game, Formatting.None,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            return Content(result, "application/json");
         }
 
         private void SaveReplayGameLocations(int id, string[] GameLocationIDs)
