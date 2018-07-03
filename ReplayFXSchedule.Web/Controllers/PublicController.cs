@@ -14,12 +14,21 @@ namespace ReplayFXSchedule.Web.Controllers
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
         // GET: Public
-        public ActionResult Index(string category)
+        public ActionResult Index(string category, DateTime? start, DateTime? end)
         {
             string result;
+            if (start == null)
+            {
+                start = DateTime.Parse("1/1/2017");
+            }
+            if (end == null)
+            {
+                end = DateTime.Parse("1/1/2024");
+            }
+
             if (String.IsNullOrEmpty(category))
             {
-                result = JsonConvert.SerializeObject(db.ReplayEvents.OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(e => e.Date >= start && e.Date <= end).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
