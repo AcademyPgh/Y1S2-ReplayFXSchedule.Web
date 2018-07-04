@@ -44,7 +44,8 @@
             @Html.DisplayFor(modelItem => item.Location)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Image)
+            @if (item.ImageUrl != null)
+                {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

@@ -86,7 +86,8 @@ namespace ReplayFXSchedule.Web.Controllers
             var result = JsonConvert.SerializeObject(db.ReplayVendors.ToList(), Formatting.None,
                 new JsonSerializerSettings
                 {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
 
             return Content(result, "application/json");

@@ -24,6 +24,8 @@ namespace ReplayFXSchedule.Web.Shared
             }
             return imagename;
         }
+
+
         public void uploadtoAzure(string filename, HttpPostedFileBase upload)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
