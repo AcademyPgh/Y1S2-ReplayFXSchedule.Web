@@ -38,7 +38,7 @@ namespace ReplayFXSchedule.Web.Controllers
             else
             {
                 // select all replay events where the replayeventtype.name = category
-                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(r => r.ReplayEventTypes.Any(e => e.Name == category)).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(r => r.ReplayEventTypes.Any(e => e.Name == category) && r.Date >= start && r.Date <= end).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
                         new JsonSerializerSettings
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -96,7 +96,7 @@ namespace ReplayFXSchedule.Web.Controllers
             else
             {
                 // select all replay games where the replaygametype.name = gametypes
-                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype).OrderBy(r =>  r.GameTitle ).ToList(), Formatting.None,
+                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype && e.AtReplay == true).OrderBy(r =>  r.GameTitle ).ToList(), Formatting.None,
                         new JsonSerializerSettings
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
