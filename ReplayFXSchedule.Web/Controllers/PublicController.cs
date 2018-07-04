@@ -81,6 +81,17 @@ namespace ReplayFXSchedule.Web.Controllers
             return Content(result, "application/json");
         }
 
+        public ActionResult Vendors()
+        {
+            var result = JsonConvert.SerializeObject(db.ReplayVendors.ToList(), Formatting.None,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
+            return Content(result, "application/json");
+        }
+
         public ActionResult Games(string gametype)
         {
             string result;

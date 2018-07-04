@@ -8,33 +8,30 @@ using System.Web;
 
 namespace ReplayFXSchedule.Web.Models
 {
-    public class ReplayVendorModels
+    public class ReplayVendor
     {
-        public class ReplayVendor
-        {
-            public int Id { get; set; }
-            public string Title { get; set; }
-            public string Description { get; set; }
-            [Display(Name = "Extended Description")]
-            public string ExtendedDescription { get; set; }
-            public string Location { get; set; }
-            public string Image { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        [Display(Name = "Extended Description")]
+        public string ExtendedDescription { get; set; }
+        public string Location { get; set; }
+        public string Image { get; set; }
 
-            public string ImageUrl
+        public string ImageUrl
+        {
+            get
             {
-                get
+                if (Image != null)
                 {
-                    if (Image != null)
-                    {
-                        return ConfigurationManager.AppSettings["ImagePrefix"] + Image;
-                    }
-                    else
-                    {
-                        return Image;
-                    }
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + Image;
+                }
+                else
+                {
+                    return Image;
                 }
             }
         }
-
     }
 }
