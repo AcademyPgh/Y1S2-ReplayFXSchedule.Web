@@ -24,8 +24,13 @@ namespace ReplayFXSchedule.Web
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                      "~/Content/better-time-polyfill.css",
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/timeinput").Include(
+                      "~/Scripts/better-timeinput-polyfill.js"));
+
         }
     }
 }

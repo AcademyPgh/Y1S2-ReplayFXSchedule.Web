@@ -48,7 +48,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image")] ReplayVendor replayVendor, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] ReplayVendor replayVendor, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +81,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image")] ReplayVendor replayVendor, HttpPostedFileBase upload, string image)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] ReplayVendor replayVendor, HttpPostedFileBase upload, string image)
         {
             if (ModelState.IsValid)
             {

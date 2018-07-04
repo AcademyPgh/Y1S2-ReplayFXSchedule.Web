@@ -275,6 +275,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201807040138297_AddVendors.Designer.cs">
       <DependentUpon>201807040138297_AddVendors.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201807040231350_AddVendorUrl.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201807040231350_AddVendorUrl.Designer.cs">
+      <DependentUpon>201807040231350_AddVendorUrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -289,6 +293,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\better-time-polyfill.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-100.png" />
@@ -302,6 +307,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\better-timeinput-polyfill.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ClassDiagram1.cd" />
@@ -417,6 +423,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201807040138297_AddVendors.resx">
       <DependentUpon>201807040138297_AddVendors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201807040231350_AddVendorUrl.resx">
+      <DependentUpon>201807040231350_AddVendorUrl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
