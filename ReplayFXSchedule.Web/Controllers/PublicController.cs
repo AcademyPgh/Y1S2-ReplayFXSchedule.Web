@@ -52,7 +52,8 @@ namespace ReplayFXSchedule.Web.Controllers
         public ActionResult ScheduleWeb(string date, string category)
         {
             DateTime tempdate = Convert.ToDateTime(date);
-            var resultList = db.ReplayEvents.Where(d => d.Date == tempdate).Where(r => r.ReplayEventTypes.Any(e => e.Name != "vendors"));
+            DateTime tempdate1 = tempdate.AddDays(1);
+            var resultList = db.ReplayEvents.Where(d => d.Date == tempdate || (tempdate1 == d.Date && string.Compare(d.StartTime, "02:00") < 0)).Where(r => r.ReplayEventTypes.Any(e => e.Name != "vendors"));
             if (!string.IsNullOrEmpty(category))
             {
                 resultList = resultList.Where(r => r.ReplayEventTypes.Any(e => e.Name == category));
