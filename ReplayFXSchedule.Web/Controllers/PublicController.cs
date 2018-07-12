@@ -83,7 +83,7 @@ namespace ReplayFXSchedule.Web.Controllers
 
         public ActionResult Vendors()
         {
-            var result = JsonConvert.SerializeObject(db.ReplayVendors.ToList(), Formatting.None,
+            var result = JsonConvert.SerializeObject(db.ReplayVendors.OrderBy(v => v.Title).ToList(), Formatting.None,
                 new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
