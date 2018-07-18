@@ -11,6 +11,7 @@ using ReplayFXSchedule.Web.Shared;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
+    [Authorize]
     public class ReplayVendorsController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
