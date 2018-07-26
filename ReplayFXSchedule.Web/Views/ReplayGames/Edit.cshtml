@@ -87,7 +87,12 @@
                 <select class="form-control" typeof="text" name="gametype" id="gametype">
                     @foreach (var gametype in ViewBag.ReplayGameTypes)
                     {
-                        <option value="@gametype.Id" label="@gametype.Name">@gametype.Name</option>
+                        var selected = "";
+                        if (Model.ReplayGameType.Id == gametype.Id)
+                        {
+                            selected = "selected";
+                        }
+                        <option value="@gametype.Id" label="@gametype.Name" @selected>@gametype.Name</option>
                     }
                 </select>
             </div>
