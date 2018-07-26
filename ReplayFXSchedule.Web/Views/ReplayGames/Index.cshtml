@@ -44,9 +44,12 @@
         <th>
             @Html.DisplayNameFor(model => model.ReplayGameLocations)
         </th>
-        <td>
+        <th>
             Actions
-        </td>
+        </th>
+        <th>
+            Show Status
+        </th>
     </tr>
                             @foreach (var item in Model.OrderBy(item => item.GameTitle))
                             {
@@ -57,7 +60,7 @@
                 </div>
             </td>
             <td>
-                <div class="responsiveTD">
+                <div class="responsiveTD" style="overflow: hidden; height: 4em">
                     @Html.DisplayFor(modelItem => item.Overview)
                 </div>
             </td>
@@ -105,8 +108,39 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id })
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
+            <td>
+                <div class="responsiveTD">
+                    @if (item.AtReplay)
+                    {
+                        <p id="btn_@item.Id" onclick="toggleAtReplay(@item.Id)" class="btn btn-primary">Here!</p>
+                    }
+                    else
+                    {
+                        <p id="btn_@item.Id" onclick="toggleAtReplay(@item.Id)" class="btn btn-danger">Not Here!</p>
+                    }
+                </div>
+            </td>
         </tr>
                             }
 
                         </table>
 
+@section Scripts {
+<script>
+    function toggleAtReplay(id, e) {
+        $.get("/replaygames/SwapAtReplayValue/" + id)
+            .then((data) => {
+                $("#btn_" + id).removeClass("btn-primary");
+                $("#btn_" + id).removeClass("btn-danger");
+                if (data.AtReplay) {
+                    $("#btn_" + id).addClass("btn-primary");
+                    $("#btn_" + id).html("Here!");
+                }
+                else {
+                    $("#btn_" + id).addClass("btn-danger");
+                    $("#btn_" + id).html("Not Here!");
+                }
+            });
+    }
+</script>
+}

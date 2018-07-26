@@ -14,12 +14,21 @@ namespace ReplayFXSchedule.Web.Controllers
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
         // GET: Public
-        public ActionResult Index(string category)
+        public ActionResult Index(string category, DateTime? start, DateTime? end)
         {
             string result;
+            if (start == null)
+            {
+                start = DateTime.Parse("7/1/2018");
+            }
+            if (end == null)
+            {
+                end = DateTime.Parse("1/1/2024");
+            }
+
             if (String.IsNullOrEmpty(category))
             {
-                result = JsonConvert.SerializeObject(db.ReplayEvents.OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(e => e.Date >= start && e.Date <= end).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -29,7 +38,7 @@ namespace ReplayFXSchedule.Web.Controllers
             else
             {
                 // select all replay events where the replayeventtype.name = category
-                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(r => r.ReplayEventTypes.Any(e => e.Name == category)).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
+                result = JsonConvert.SerializeObject(db.ReplayEvents.Where(r => r.ReplayEventTypes.Any(e => e.Name == category) && r.Date >= start && r.Date <= end).OrderBy(r => new { r.Date, r.StartTime }).ToList(), Formatting.None,
                         new JsonSerializerSettings
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -43,7 +52,8 @@ namespace ReplayFXSchedule.Web.Controllers
         public ActionResult ScheduleWeb(string date, string category)
         {
             DateTime tempdate = Convert.ToDateTime(date);
-            var resultList = db.ReplayEvents.Where(d => d.Date == tempdate).Where(r => r.ReplayEventTypes.Any(e => e.Name != "vendors"));
+            DateTime tempdate1 = tempdate.AddDays(1);
+            var resultList = db.ReplayEvents.Where(d => (d.Date == tempdate && string.Compare(d.StartTime, "02:00") > -1) || (tempdate1 == d.Date && string.Compare(d.StartTime, "02:00") < 0)).Where(r => r.ReplayEventTypes.Any(e => e.Name != "vendors"));
             if (!string.IsNullOrEmpty(category))
             {
                 resultList = resultList.Where(r => r.ReplayEventTypes.Any(e => e.Name == category));
@@ -72,7 +82,44 @@ namespace ReplayFXSchedule.Web.Controllers
             return Content(result, "application/json");
         }
 
+        public ActionResult Vendors()
+        {
+            var result = JsonConvert.SerializeObject(db.ReplayVendors.OrderBy(v => v.Title).ToList(), Formatting.None,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+
+            return Content(result, "application/json");
+        }
+
         public ActionResult Games(string gametype)
+        {
+            string result;
+            if (String.IsNullOrEmpty(gametype))
+            {
+                result = JsonConvert.SerializeObject(db.ReplayGames.Where(g => g.AtReplay == true).OrderBy(r => new { r.GameTitle }).ToList(), Formatting.None,
+                       new JsonSerializerSettings
+                       {
+                           ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                           ContractResolver = new CamelCasePropertyNamesContractResolver()
+                       });
+            }
+            else
+            {
+                // select all replay games where the replaygametype.name = gametypes
+                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype && e.AtReplay == true).OrderBy(r =>  r.GameTitle ).ToList(), Formatting.None,
+                        new JsonSerializerSettings
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        });
+            }
+            return Content(result, "application/json");
+        }
+
+        public ActionResult AllGames(string gametype)
         {
             string result;
             if (String.IsNullOrEmpty(gametype))
@@ -87,7 +134,7 @@ namespace ReplayFXSchedule.Web.Controllers
             else
             {
                 // select all replay games where the replaygametype.name = gametypes
-                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype).OrderBy(r =>  r.GameTitle ).ToList(), Formatting.None,
+                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype).OrderBy(r => r.GameTitle).ToList(), Formatting.None,
                         new JsonSerializerSettings
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,

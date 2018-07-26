@@ -8,10 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
 using Newtonsoft.Json;
-using Microsoft.Azure;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-
+using ReplayFXSchedule.Web.Shared;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -19,6 +16,7 @@ namespace ReplayFXSchedule.Web.Controllers
     public class ReplayEventsController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
+        private AzureTools azure = new AzureTools();
 
         // GET: ReplayEvents
         public ActionResult Index(string search)
@@ -69,18 +67,9 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] ReplayEvent replayEvent, string categories, HttpPostedFileBase upload)
         {
-            int indexExt = 0;
-            string ext = "";
             if (ModelState.IsValid)
             {
-                if (upload !=null)
-                {
-                    indexExt = upload.FileName.IndexOf(".");
-                    ext = upload.FileName.Substring(indexExt);
-                    string eventimgname = Guid.NewGuid() + ext;
-                    replayEvent.Image = eventimgname;
-                    uploadtoAzure(eventimgname, upload);
-                }
+                replayEvent.Image = azure.GetFileName(upload);
                 db.ReplayEvents.Add(replayEvent);
                 replayEvent.ReplayEventTypes = new List<ReplayEventType>();
                 foreach(var id in categories.Split(','))
@@ -93,35 +82,6 @@ namespace ReplayFXSchedule.Web.Controllers
 
             return View(replayEvent);
         }
-
-        private void uploadtoAzure(string filename, HttpPostedFileBase upload)
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            // Create the blob client.
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            // Retrieve reference to a previously created container.
-            CloudBlobContainer container = blobClient.GetContainerReference("images");
-            // Retrieve reference to a blob named "someimage.jpg".
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
-            // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.
-            blockBlob.UploadFromStream(upload.InputStream);
-        }
-        private void deletefromAzure(string filename)
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            // Create the blob client.
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            // Retrieve reference to a previously created container.
-            CloudBlobContainer container = blobClient.GetContainerReference("images");
-            // Retrieve reference to a blob named "someimage.jpg".
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
-            // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.
-            if (blockBlob.Exists())
-            {
-                blockBlob.Delete();
-            }
-        } 
 
         // GET: ReplayEvents/Edit/5
         public ActionResult Edit(int? id)
@@ -191,14 +151,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 {
                     if (!string.IsNullOrEmpty(image))
                     {
-                        deletefromAzure(image);
+                        azure.deletefromAzure(image);
                         image = null;
                     }
-                    indexExt = upload.FileName.IndexOf(".");
-                    ext = upload.FileName.Substring(indexExt);
-                    string imagename = Guid.NewGuid() + ext;
-                    replayEvent.Image = imagename;
-                    uploadtoAzure(imagename, upload);
+                    replayEvent.Image = azure.GetFileName(upload);
                 }
                 //Modified entity state causes us to not be able to update connected replayeeventtypes
                 ReplayEvent rpe = db.ReplayEvents.Find(replayEvent.Id);
@@ -279,6 +235,10 @@ namespace ReplayFXSchedule.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             ReplayEvent replayEvent = db.ReplayEvents.Find(id);
+            if(replayEvent.Image != null)
+            {
+                azure.deletefromAzure(replayEvent.Image);
+            }
             db.ReplayEvents.Remove(replayEvent);
             db.SaveChanges();
             return RedirectToAction("Index");
