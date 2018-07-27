@@ -99,7 +99,7 @@ namespace ReplayFXSchedule.Web.Controllers
             string result;
             if (String.IsNullOrEmpty(gametype))
             {
-                result = JsonConvert.SerializeObject(db.ReplayGames.Where(g => g.AtReplay == true).OrderBy(r => new { r.GameTitle }).ToList(), Formatting.None,
+                result = JsonConvert.SerializeObject(db.ReplayGames.OrderBy(r => new { r.GameTitle }).ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -109,7 +109,7 @@ namespace ReplayFXSchedule.Web.Controllers
             else
             {
                 // select all replay games where the replaygametype.name = gametypes
-                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype && e.AtReplay == true).OrderBy(r =>  r.GameTitle ).ToList(), Formatting.None,
+                result = JsonConvert.SerializeObject(db.ReplayGames.Where(e => e.ReplayGameType.Name == gametype).OrderBy(r =>  r.GameTitle ).ToList(), Formatting.None,
                         new JsonSerializerSettings
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
