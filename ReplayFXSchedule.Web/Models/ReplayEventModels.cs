@@ -12,6 +12,7 @@ namespace ReplayFXSchedule.Web.Models
     public class ReplayEvent
     {
         public int Id { get; set; }
+        public virtual ReplayConvention Convention { get; set; }
         public string Title { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
@@ -62,6 +63,7 @@ namespace ReplayFXSchedule.Web.Models
         public string Name { get; set; }
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
+        public virtual ReplayConvention Convention { get; set; }
 
         [JsonIgnore]
         public virtual List<ReplayEvent> ReplayEvents { get; set; }
@@ -83,5 +85,6 @@ namespace ReplayFXSchedule.Web.Models
         public DbSet<ReplayGameLocation> ReplayGameLocations { get; set; }
         public DbSet<ReplayGameType> ReplayGameTypes { get; set; }
         public DbSet<ReplayVendor> ReplayVendors { get; set; }
+        public DbSet<ReplayConvention> ReplayConventions { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace ReplayFXSchedule.Web.Models
     public class ReplayGame
     {
         public int Id { get; set; }
+        public virtual ReplayConvention Convention { get; set; }
         [Required]
         [Display(Name = "Game Title")]
         public string GameTitle { get; set; }
@@ -51,6 +52,7 @@ namespace ReplayFXSchedule.Web.Models
         {
             public int Id { get; set; }
             public string Location { get; set; }
+            public virtual ReplayConvention Convention { get; set; }
             [JsonIgnore]
             public virtual List<ReplayGame> ReplayGames { get; set; }
         }
@@ -59,6 +61,7 @@ namespace ReplayFXSchedule.Web.Models
     {
             public int Id { get; set; }
             public string Name { get; set; }
+            public virtual ReplayConvention Convention { get; set; }
             [JsonIgnore]
             public virtual List<ReplayGame> ReplayGames { get; set; }
     }

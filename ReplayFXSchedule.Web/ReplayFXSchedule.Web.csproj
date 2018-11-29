@@ -233,6 +233,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\APIV2Controller.cs" />
     <Compile Include="Controllers\ReplayGameLocationsController.cs" />
     <Compile Include="Controllers\ReplayGameTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -279,10 +280,15 @@
     <Compile Include="Migrations\ReplayFXDbContext\201807040231350_AddVendorUrl.Designer.cs">
       <DependentUpon>201807040231350_AddVendorUrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201811142010516_AddConvention.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201811142010516_AddConvention.Designer.cs">
+      <DependentUpon>201811142010516_AddConvention.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ReplayConventionModels.cs" />
     <Compile Include="Models\ReplayEventModels.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -389,6 +395,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\APIV2\" />
     <Folder Include="Views\Image\" />
     <Folder Include="Views\Public\" />
   </ItemGroup>
@@ -424,6 +431,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201807040231350_AddVendorUrl.resx">
       <DependentUpon>201807040231350_AddVendorUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201811142010516_AddConvention.resx">
+      <DependentUpon>201811142010516_AddConvention.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

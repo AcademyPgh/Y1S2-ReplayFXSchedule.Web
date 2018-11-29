@@ -16,20 +16,21 @@ namespace ReplayFXSchedule.Web
 
             routes.MapRoute(
                 name: "Schedule",
-                url: "schedule/{category}",
-                defaults: new { controller = "Public", action = "Index", category = UrlParameter.Optional }
+                url: "schedule/{convention_id}/{category}",
+                defaults: new { controller = "Public", action = "Index", convention_id = UrlParameter.Optional, category = UrlParameter.Optional }
             );
             routes.MapRoute(
                 name: "Games",
-                url: "games/{gametype}",
-                defaults: new { controller = "Public", action = "Games", gametype = UrlParameter.Optional }
+                url: "games/{convention_id}/{gametype}",
+                defaults: new { controller = "Public", action = "Games", convention_id = UrlParameter.Optional, gametype = UrlParameter.Optional }
                 );
 
             routes.MapRoute(
                 name: "ScheduleWeb",
-                url: "daily/{date}/{category}",
-                defaults: new { controller = "Public", action = "ScheduleWeb", date = "1-1-2017", category = UrlParameter.Optional }
+                url: "daily/{convention_id}/{date}/{category}",
+                defaults: new { controller = "Public", action = "ScheduleWeb", date = "1-1-2017", convention_id = UrlParameter.Optional, category = UrlParameter.Optional }
                 );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
