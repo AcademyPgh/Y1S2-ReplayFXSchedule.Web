@@ -143,8 +143,8 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] ReplayEvent replayEvent, string categories, HttpPostedFileBase upload, string image)
         {
-            int indexExt = 0;
-            string ext = "";
+            //int indexExt = 0;
+            //string ext = "";
             if (ModelState.IsValid)
             {
                 if (upload != null)

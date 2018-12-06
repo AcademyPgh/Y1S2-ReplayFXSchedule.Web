@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
 using Newtonsoft.Json;
 using ReplayFXSchedule.Web.Shared;
+using System.Security.Claims;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -23,10 +24,10 @@ namespace ReplayFXSchedule.Web.Controllers
         //the first parameter is the option that we choose and the second parameter will use the textbox value   
         public ActionResult Index(string search)
         {
-
+            var claimsIdentity = User.Identity as ClaimsIdentity;
             //if a user chooses the radio button option as Game Title   
-                //Index action method will return a view with games based on what a user specifies the value is in the textbox   
-                return View(db.ReplayGames.Where(x => x.GameTitle.Contains(search)|| search == null).ToList());
+            //Index action method will return a view with games based on what a user specifies the value is in the textbox   
+            return View(db.ReplayGames.Where(x => x.GameTitle.Contains(search)|| search == null).ToList());
         }
        
         public ContentResult Json()

@@ -31,6 +31,17 @@ namespace ReplayFXSchedule.Web.Controllers
             return Content(result, "application/json");
         }
 
+        public ActionResult Conferences()
+        {
+            string result = JsonConvert.SerializeObject(db.ReplayConventions.ToList(), Formatting.None,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+            return Content(result, "application/json");
+        }
+
         // api/daily
         public ActionResult ScheduleWeb(int? convention_id, string date, string category)
         {
