@@ -17,11 +17,11 @@ namespace ReplayFXSchedule.Web.Models
         public string State { get; set; }
         public string Zip { get; set; }
 
-        //public virtual List<ReplayVendor> Vendors {get;set;}
-        //public virtual List<ReplayGameType> GameTypes { get; set; }
-        //public virtual List<ReplayGame> Games { get; set; }
-        //public virtual List<ReplayGameLocation> GameLocations { get; set; }
-        //public virtual List<ReplayEventType> EventTypes { get; set; }
-        //public virtual List<ReplayEvent> Events { get; set; }
+        public virtual List<ReplayVendor> Vendors { get; set; }
+        public virtual List<ReplayGameType> GameTypes { get; set; }
+        public virtual List<ReplayGame> Games { get; set; }
+        public virtual List<ReplayGameLocation> GameLocations { get; set; }
+        public virtual List<ReplayEventType> EventTypes { get; set; }
+        public virtual List<ReplayEvent> Events { get; set; }
     }
 }

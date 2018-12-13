@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (User.Identity.IsAuthenticated)
 {
-    <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+    <li class="nav-item">@Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</li>
 }
 else
 {
-    <li>@Html.ActionLink("Login", "Login", "Account")</li>
+    <li  class="nav-item">@Html.ActionLink("Login", "Login", "Account", new { area = "" }, new { @class = "nav-link" })</li>
 }

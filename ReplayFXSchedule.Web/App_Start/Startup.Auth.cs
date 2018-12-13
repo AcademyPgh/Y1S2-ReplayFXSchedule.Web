@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Auth0.Owin;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -10,6 +11,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
+using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Owin;
 using ReplayFXSchedule.Web.Models;
@@ -27,6 +29,8 @@ namespace ReplayFXSchedule.Web
             string auth0ClientSecret = ConfigurationManager.AppSettings["auth0:ClientSecret"];
             string auth0RedirectUri = ConfigurationManager.AppSettings["auth0:RedirectUri"];
             string auth0PostLogoutRedirectUri = ConfigurationManager.AppSettings["auth0:PostLogoutRedirectUri"];
+            string auth0apiIdentifier = ConfigurationManager.AppSettings["auth0:ClientId"];
+            string auth0apiDomain = $"https://{auth0Domain}/";
 
             // Enable Kentor Cookie Saver middleware
             app.UseKentorOwinCookieSaver();
@@ -38,6 +42,20 @@ namespace ReplayFXSchedule.Web
                 AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
                 LoginPath = new PathString("/Account/Login")
             });
+
+            // Configure Auth0 JwtBearer authentication
+            var keyResolver = new OpenIdConnectSigningKeyResolver(auth0apiDomain);
+            app.UseJwtBearerAuthentication(
+                new JwtBearerAuthenticationOptions
+                {
+                    AuthenticationMode = AuthenticationMode.Active,
+                    TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidAudience = auth0apiIdentifier,
+                        ValidIssuer = auth0apiDomain,
+                        IssuerSigningKeyResolver = (token, securityToken, kid, parameters) => keyResolver.GetSigningKey(kid)
+                    }
+                });
 
             // Configure Auth0 authentication
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
@@ -53,7 +71,7 @@ namespace ReplayFXSchedule.Web
                 PostLogoutRedirectUri = auth0PostLogoutRedirectUri,
 
                 ResponseType = OpenIdConnectResponseType.CodeIdTokenToken,
-                Scope = "openid profile",
+                Scope = "openid profile email",
 
                 TokenValidationParameters = new TokenValidationParameters
                 {
@@ -62,20 +80,9 @@ namespace ReplayFXSchedule.Web
 
                 Notifications = new OpenIdConnectAuthenticationNotifications
                 {
-                    SecurityTokenValidated = notification =>
-                    {
-                        notification.AuthenticationTicket.Identity.AddClaim(new Claim("id_token", notification.ProtocolMessage.IdToken));
-                        notification.AuthenticationTicket.Identity.AddClaim(new Claim("access_token", notification.ProtocolMessage.AccessToken));
-
-                        return Task.FromResult(0);
-                    },
                     RedirectToIdentityProvider = notification =>
                     {
-                        if (notification.ProtocolMessage.RequestType == OpenIdConnectRequestType.Authentication)
-                        {
-                            notification.ProtocolMessage.SetParameter("audience", "user");
-                        }
-                        else if (notification.ProtocolMessage.RequestType == OpenIdConnectRequestType.Logout)
+                        if (notification.ProtocolMessage.RequestType == OpenIdConnectRequestType.Logout)
                         {
                             var logoutUri = $"https://{auth0Domain}/v2/logout?client_id={auth0ClientId}";
 
