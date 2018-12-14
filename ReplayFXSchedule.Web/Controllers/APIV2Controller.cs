@@ -34,6 +34,14 @@ namespace ReplayFXSchedule.Web.Controllers
             return "workin";
         }
 
+        [Route("schedule/{convention_id}/{date}")]
+        [HttpGet]
+        public IHttpActionResult GetDaySchedule(int convention_id, DateTime date)
+        {
+            var events = db.ReplayEvents.Where(re => re.Convention.Id == convention_id && re.Date == date).ToList();
+            return Ok(events);
+        }
+
         //public ActionResult Conferences()
         //{
         //    string result = JsonConvert.SerializeObject(db.ReplayConventions.ToList(), Formatting.None,

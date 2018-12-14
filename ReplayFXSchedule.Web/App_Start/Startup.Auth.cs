@@ -29,7 +29,7 @@ namespace ReplayFXSchedule.Web
             string auth0ClientSecret = ConfigurationManager.AppSettings["auth0:ClientSecret"];
             string auth0RedirectUri = ConfigurationManager.AppSettings["auth0:RedirectUri"];
             string auth0PostLogoutRedirectUri = ConfigurationManager.AppSettings["auth0:PostLogoutRedirectUri"];
-            string auth0apiIdentifier = ConfigurationManager.AppSettings["auth0:ClientId"];
+            string auth0apiIdentifier = ConfigurationManager.AppSettings["auth0:ClientId"]; // Auth0 docs are wrong, they want ClientId here not apiIdentifier
             string auth0apiDomain = $"https://{auth0Domain}/";
 
             // Enable Kentor Cookie Saver middleware

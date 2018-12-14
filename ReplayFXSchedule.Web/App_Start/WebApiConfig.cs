@@ -16,35 +16,15 @@ namespace ReplayFXSchedule.Web
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            // Auth0
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
+            // Json Formatting and content types
             config.Formatters.Add(new BrowserJsonFormatter());
-            // Web API routes
 
+            // Web API Route Attributes (instead of routes)
             config.MapHttpAttributeRoutes();
-
-            //config.Routes.MapHttpRoute(
-            //    name: "ScheduleV2",
-            //    routeTemplate: "api/v2/schedule/{convention_id}/{category}",
-            //    defaults: new { controller = "APIV2", action = "Index", convention_id = RouteParameter.Optional, category = RouteParameter.Optional }
-            //);
-            //config.Routes.MapHttpRoute(
-            //    name: "GamesV2",
-            //    routeTemplate: "api/v2/games/{convention_id}/{gametype}",
-            //    defaults: new { controller = "APIV2", action = "Games", convention_id = RouteParameter.Optional, gametype = RouteParameter.Optional }
-            //    );
-
-            //config.Routes.MapHttpRoute(
-            //    name: "ScheduleWebV2",
-            //    routeTemplate: "api/v2/daily/{convention_id}/{date}/{category}",
-            //    defaults: new { controller = "APIV2", action = "ScheduleWeb", date = "1-1-2017", convention_id = RouteParameter.Optional, category = RouteParameter.Optional }
-            //    );
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
         }
     }
 

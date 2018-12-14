@@ -12,6 +12,7 @@ namespace ReplayFXSchedule.Web.Models
     public class ReplayEvent
     {
         public int Id { get; set; }
+        [JsonIgnore]
         public virtual ReplayConvention Convention { get; set; }
         public string Title { get; set; }
         [DataType(DataType.Date)]
@@ -63,8 +64,9 @@ namespace ReplayFXSchedule.Web.Models
         public string Name { get; set; }
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
-        public virtual ReplayConvention Convention { get; set; }
 
+        [JsonIgnore]
+        public virtual ReplayConvention Convention { get; set; }
         [JsonIgnore]
         public virtual List<ReplayEvent> ReplayEvents { get; set; }
     }
