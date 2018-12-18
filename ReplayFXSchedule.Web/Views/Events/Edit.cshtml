@@ -113,7 +113,7 @@
 
             function load_categories() {
             $.ajax({
-                    url: '/public/categories',
+                    url: '/api/v2/categories/@ViewBag.ConId',
                 type: 'GET',
                 success: function (data) {
                     $('#EventTypes').html('');

@@ -20,8 +20,8 @@ namespace ReplayFXSchedule.Web.Models
     public class AppUserPermission
     {
         public int Id { get; set; }
-        public AppUser AppUser { get; set; }
-        public Convention Convention { get; set; }
+        public virtual AppUser AppUser { get; set; }
+        public virtual Convention Convention { get; set; }
         public UserRole UserRole { get; set; }
     }
 

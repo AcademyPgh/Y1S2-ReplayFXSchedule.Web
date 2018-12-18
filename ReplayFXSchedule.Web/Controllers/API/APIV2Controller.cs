@@ -44,14 +44,14 @@ namespace ReplayFXSchedule.Web.Controllers
             return Ok(output);
         }
 
-        [Authorize]
-        [Route("testing")]
-        [HttpGet]
-        public string Testing()
-        {
-            var user_service = new UserService((ClaimsIdentity)User.Identity,db);
-            return "workin";
-        }
+        //[Authorize]
+        //[Route("testing")]
+        //[HttpGet]
+        //public string Testing()
+        //{
+        //    var user_service = new UserService((ClaimsIdentity)User.Identity,db);
+        //    return "workin";
+        //}
 
         [Route("schedule/{convention_id}/{date}")]
         [HttpGet]
@@ -59,6 +59,14 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             var events = db.Events.Where(re => re.Convention.Id == convention_id && re.Date == date).ToList();
             return Ok(events);
+        }
+
+        [Route("categories/{convention_id}")]
+        [HttpGet]
+        public List<EventType> Categories(int convention_id)
+        {
+            var eventTypes = db.Conventions.Find(convention_id).EventTypes.ToList();
+            return eventTypes;
         }
 
         //public ActionResult Conferences()

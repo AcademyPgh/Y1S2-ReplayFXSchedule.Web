@@ -33,7 +33,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
-                @Html.ActionLink("Back to List", "Index", "Events", null, new { @class = "replayButton btn btn-default" })
+                @Html.ActionLink("Back to List", "Index", "EventTypes", new { convention_id = Model.Convention.Id }, new { @class = "replayButton btn btn-default" })
             </div>
         </div>
     </div>

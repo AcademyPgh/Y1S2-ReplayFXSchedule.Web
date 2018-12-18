@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
 using Newtonsoft.Json;
 using ReplayFXSchedule.Web.Shared;
+using System.Security.Claims;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -19,17 +20,26 @@ namespace ReplayFXSchedule.Web.Controllers
         private AzureTools azure = new AzureTools();
 
         // GET: ReplayEvents
-        public ActionResult Index(string search)
+        public ActionResult Index(int convention_id, string search)
         {
-            // Bad way to do this but here it is
-            var currentYear = DateTime.Parse("1/1/2018");
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if(!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if(convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             //  return View(db.ReplayEvents.Where(x => x.Title.StartsWith(search)|| search == null).ToList());
-            return View(db.Events.Where(x => x.Date > currentYear).OrderBy(x => new { x.Date, x.StartTime }).ToList());
+            return View(convention.Events.ToList());
         }
 
-        public ContentResult Json()
+        public ContentResult Json(int convention_id)
         {
-            var result = JsonConvert.SerializeObject(db.Events.ToList(), Formatting.None,
+            var result = JsonConvert.SerializeObject(db.Conventions.Find(convention_id).Events.ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -38,13 +48,19 @@ namespace ReplayFXSchedule.Web.Controllers
             return Content(result, "application/json");
         }
 
-        // GET: ReplayEvents/Details/5
-        public ActionResult Details(int? id)
+        // GET: Events/1/Details/5
+        public ActionResult Details(int convention_id, int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
             Event replayEvent = db.Events.Find(id);
             if (replayEvent == null)
             {
@@ -53,28 +69,49 @@ namespace ReplayFXSchedule.Web.Controllers
             return View(replayEvent);
         }
 
-        // GET: ReplayEvents/Create
-        public ActionResult Create()
+        // GET: Events/1/Create
+        public ActionResult Create(int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
             ViewBag.EventTypeIDs = "";
+            ViewBag.ConId = convention_id;
             return View();
         }
 
-        // POST: ReplayEvents/Create
+        // POST: Events/1/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] Event replayEvent, string categories, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] Event replayEvent, string categories, HttpPostedFileBase upload, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var con = db.Conventions.Find(convention_id);
+            if(con == null)
+            {
+                return View(replayEvent);
+            }
+
             if (ModelState.IsValid)
             {
                 replayEvent.Image = azure.GetFileName(upload);
-                db.Events.Add(replayEvent);
+                con.Events.Add(replayEvent);
                 replayEvent.EventTypes = new List<EventType>();
                 foreach(var id in categories.Split(','))
                 {
-                    replayEvent.EventTypes.Add(db.EventTypes.Find(Convert.ToInt32(id)));
+                    if (int.TryParse(id, out int Id))
+                    {
+                        replayEvent.EventTypes.Add(db.EventTypes.Find(Id));
+                    }
                 }
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -84,18 +121,30 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayEvents/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int convention_id, int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event replayEvent = db.Events.Find(id);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            Event replayEvent = convention.Events.Where(e => e.Id == id).FirstOrDefault();
             if (replayEvent == null)
             {
                 return HttpNotFound();
             }
 
+            ViewBag.ConId = convention_id;
             ViewBag.EventTypeIDs = string.Join(",", replayEvent.EventTypes.Select(r => r.Id));
             return View(replayEvent);
         }
@@ -127,9 +176,21 @@ namespace ReplayFXSchedule.Web.Controllers
             return "success";
         }
 
-        public ActionResult GetTypes(int id)
+        public ActionResult GetTypes(int convention_id, int id)
         {
-            Event rpe = db.Events.Find(id);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            Event rpe = convention.Events.Where(e => e.Id == id).FirstOrDefault();
             List<EventTypeView> eventList = EventView(rpe.EventTypes.ToList());
             
 
@@ -141,10 +202,22 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] Event replayEvent, string categories, HttpPostedFileBase upload, string image)
+        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] Event replayEvent, string categories, HttpPostedFileBase upload, string image, int convention_id)
         {
             //int indexExt = 0;
             //string ext = "";
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             if (ModelState.IsValid)
             {
                 if (upload != null)
@@ -157,7 +230,7 @@ namespace ReplayFXSchedule.Web.Controllers
                     replayEvent.Image = azure.GetFileName(upload);
                 }
                 //Modified entity state causes us to not be able to update connected replayeeventtypes
-                Event rpe = db.Events.Find(replayEvent.Id);
+                Event rpe = convention.Events.Where(e => e.Id == replayEvent.Id).FirstOrDefault();
 
                 rpe.Title = replayEvent.Title;
                 rpe.Date = replayEvent.Date;
@@ -177,7 +250,8 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             return View(replayEvent);
         }
-         private void SaveReplayEventTypes(int id, string[] EventTypeIDs)
+
+        private void SaveReplayEventTypes(int id, string[] EventTypeIDs)
         {
             List<int> ids = new List<int>();
             List<EventType> typesToRemove = new List<EventType>();
@@ -214,14 +288,26 @@ namespace ReplayFXSchedule.Web.Controllers
             }
         }
 
-        // GET: ReplayEvents/Delete/5
-        public ActionResult Delete(int? id)
+        // GET: ReplayEvents/1/Delete/5
+        public ActionResult Delete(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event replayEvent = db.Events.Find(id);
+            Event replayEvent = convention.Events.Where(e => e.Id == id).FirstOrDefault();
             if (replayEvent == null)
             {
                 return HttpNotFound();
@@ -232,9 +318,20 @@ namespace ReplayFXSchedule.Web.Controllers
         // POST: ReplayEvents/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int convention_id, int id)
         {
-            Event replayEvent = db.Events.Find(id);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            Event replayEvent = convention.Events.Where(e => e.Id == id).FirstOrDefault();
             if(replayEvent.Image != null)
             {
                 azure.deletefromAzure(replayEvent.Image);
@@ -253,9 +350,20 @@ namespace ReplayFXSchedule.Web.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult GetAllEventTypes()
+        public ActionResult GetAllEventTypes(int convention_id)
         {
-            return Json(EventView(db.EventTypes.ToList()), JsonRequestBehavior.AllowGet);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return Json(EventView(convention.EventTypes.ToList()), JsonRequestBehavior.AllowGet);
         }
 
         private List<EventTypeView> EventView(List<EventType> baseList)

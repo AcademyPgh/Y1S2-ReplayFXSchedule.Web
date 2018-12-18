@@ -4,6 +4,7 @@ using ReplayFXSchedule.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -76,6 +77,7 @@ namespace ReplayFXSchedule.Web.Controllers
             var result = JsonConvert.SerializeObject(db.EventTypes.ToList(), Formatting.None,
                 new JsonSerializerSettings
                 {
+                    ContractResolver = new NoNavigationResolver(),
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
 
@@ -175,6 +177,23 @@ namespace ReplayFXSchedule.Web.Controllers
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
             return Content(results, "application/json");
+        }
+    }
+
+    public class NoNavigationResolver : DefaultContractResolver
+    {
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            var prop = base.CreateProperty(member, memberSerialization);
+            var propInfo = member as PropertyInfo;
+            if (propInfo != null)
+            {
+                if (propInfo.GetMethod.IsVirtual && !propInfo.GetMethod.IsFinal)
+                {
+                    prop.ShouldSerialize = obj => false;
+                }
+            }
+            return prop;
         }
     }
 }

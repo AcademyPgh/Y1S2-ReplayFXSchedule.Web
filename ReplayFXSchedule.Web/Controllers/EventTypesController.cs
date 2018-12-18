@@ -4,9 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
+using ReplayFXSchedule.Web.Shared;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -16,19 +18,41 @@ namespace ReplayFXSchedule.Web.Controllers
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
         // GET: ReplayEventTypes
-        public ActionResult Index()
+        public ActionResult Index(int convention_id)
         {
-            return View(db.EventTypes.ToList());
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View(convention.EventTypes.ToList());
         }
 
         // GET: ReplayEventTypes/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = db.EventTypes.Find(id);
+            EventType replayEventType = convention.EventTypes.Where(e => e.Id == id).FirstOrDefault();
             if (replayEventType == null)
             {
                 return HttpNotFound();
@@ -37,8 +61,18 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayEventTypes/Create
-        public ActionResult Create()
+        public ActionResult Create(int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             return View();
         }
 
@@ -47,11 +81,22 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,DisplayName")] EventType replayEventType)
+        public ActionResult Create([Bind(Include = "Id,Name,DisplayName")] EventType replayEventType, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             if (ModelState.IsValid)
             {
-                db.EventTypes.Add(replayEventType);
+                convention.EventTypes.Add(replayEventType);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -60,13 +105,23 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayEventTypes/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = db.EventTypes.Find(id);
+            EventType replayEventType = convention.EventTypes.Where(e => e.Id == id).FirstOrDefault();
             if (replayEventType == null)
             {
                 return HttpNotFound();
@@ -79,8 +134,18 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,DisplayName")] EventType replayEventType)
+        public ActionResult Edit([Bind(Include = "Id,Name,DisplayName")] EventType replayEventType, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(replayEventType).State = EntityState.Modified;
@@ -91,13 +156,23 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayEventTypes/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = db.EventTypes.Find(id);
+            EventType replayEventType = convention.EventTypes.Where(e => e.Id == id).FirstOrDefault();
             if (replayEventType == null)
             {
                 return HttpNotFound();
@@ -108,9 +183,20 @@ namespace ReplayFXSchedule.Web.Controllers
         // POST: ReplayEventTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int convention_id, int id)
         {
-            EventType replayEventType = db.EventTypes.Find(id);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            EventType replayEventType = convention.EventTypes.Where(e => e.Id == id).FirstOrDefault();
             db.EventTypes.Remove(replayEventType);
             db.SaveChanges();
             return RedirectToAction("Index");

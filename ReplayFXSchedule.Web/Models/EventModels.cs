@@ -90,5 +90,6 @@ namespace ReplayFXSchedule.Web.Models
         public DbSet<Convention> Conventions { get; set; }
 
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<AppUserPermission> AppUserPermissions { get; set; }
     }
 }
