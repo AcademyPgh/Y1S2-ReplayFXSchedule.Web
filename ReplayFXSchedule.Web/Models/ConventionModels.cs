@@ -5,6 +5,19 @@ using System.Web;
 
 namespace ReplayFXSchedule.Web.Models
 {
+    public class ConventionViewModel
+    {
+        public int Id { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+    }
+
     public class Convention
     {
         public int Id { get; set; }

@@ -1,0 +1,164 @@
+﻿ @model ReplayFXSchedule.Web.Models.Event
+
+@{
+    ViewBag.Title = "Create Event";
+}
+
+<h2>Create Event</h2>
+
+
+@using (Html.BeginForm("Create", "Events", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ExtendedDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExtendedDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ExtendedDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div id="add-image" class="form-control"><input type="file" onchange="previewfile()" id="upload" name="upload" /></div>
+                <img src="" id="img-display" class="photo" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Categories</label>
+            <div class="col-md-10">
+                <div id="EventTypes" class="form-control"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input name="categories" id="categories" type="hidden" />
+                <input type="submit" value="Create" class="btn btn-default" />
+
+                @Html.ActionLink("Back to List", "Index", "Events", null, new { @class = "replayButton btn btn-default" })
+            </div>
+        </div>
+    </div>
+} 
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        categories = [@ViewBag.EventTypeIDs];
+        $('#categories').val(categories.toString());
+
+        function load_categories() {
+            $.ajax({
+                url: '/public/categories',
+                type: 'GET',
+                success: function (data) {
+                    $('#EventTypes').html('');
+                    data.map(function (category) {
+                        $('#EventTypes').append('<li id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</li>');
+                        $('#cat' + category.Id).click(function () { toggle_category(category.Id); });
+                        if (categories.indexOf(category.Id) > -1)
+                        { $('#catspan' + category.Id).addClass('fa fa-check');}
+                    });
+                    //$('#CatList').append('</ul>');
+                }
+            })
+        }
+
+        function toggle_category(id) {
+            // if it is not there
+            // add the hidden input element
+            // add the checkmark to the category
+            if (!$('#catspan' + id).hasClass('fa fa-check')) {
+                categories.push(id);
+                $('#categories').val(categories.toString());
+                $('#catspan' + id).addClass('fa fa-check');
+            }
+            else {
+
+                // if it is there
+                // remove the hidden input element
+                // remove the checkmark on the category
+                var i = categories.indexOf(id);
+                categories.splice(i, 1);
+                $('#categories').val(categories.toString());
+                $('#catspan' + id).removeClass('fa fa-check');
+            }
+        }
+        function previewfile() {
+            //displays a preview version of the image before it is saved to the database
+            var preview = document.querySelector('img');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function initialize()
+        {
+            load_categories();
+        }
+
+        $(initialize);
+    </script>
+}

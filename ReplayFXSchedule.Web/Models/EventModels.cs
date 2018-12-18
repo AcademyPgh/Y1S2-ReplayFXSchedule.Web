@@ -71,7 +71,7 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<Event> Events { get; set; }
     }
 
-    public class ReplayEventTypeView
+    public class EventTypeView
     {
         public int Id { get; set; }
         public string Name { get; set; }
