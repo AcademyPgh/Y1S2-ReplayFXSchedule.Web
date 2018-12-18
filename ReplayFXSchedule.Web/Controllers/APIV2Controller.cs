@@ -21,7 +21,7 @@ namespace ReplayFXSchedule.Web.Controllers
         [HttpGet]
         public IHttpActionResult Index(int? convention_id = null)
         {
-            Convention convention = db.ReplayConventions.Find(convention_id);
+            Convention convention = db.Conventions.Find(convention_id);
             return Ok(convention);
         }
 
@@ -38,7 +38,7 @@ namespace ReplayFXSchedule.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetDaySchedule(int convention_id, DateTime date)
         {
-            var events = db.ReplayEvents.Where(re => re.Convention.Id == convention_id && re.Date == date).ToList();
+            var events = db.Events.Where(re => re.Convention.Id == convention_id && re.Date == date).ToList();
             return Ok(events);
         }
 

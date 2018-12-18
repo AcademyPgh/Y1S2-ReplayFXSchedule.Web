@@ -18,7 +18,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayGameLocations
         public ActionResult Index()
         {
-            return View(db.ReplayGameLocations.ToList());
+            return View(db.GameLocations.ToList());
         }
 
         // GET: ReplayGameLocations/Details/5
@@ -28,7 +28,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            GameLocation replayGameLocation = db.GameLocations.Find(id);
             if (replayGameLocation == null)
             {
                 return HttpNotFound();
@@ -51,7 +51,7 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ReplayGameLocations.Add(replayGameLocation);
+                db.GameLocations.Add(replayGameLocation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            GameLocation replayGameLocation = db.GameLocations.Find(id);
             if (replayGameLocation == null)
             {
                 return HttpNotFound();
@@ -97,7 +97,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            GameLocation replayGameLocation = db.GameLocations.Find(id);
             if (replayGameLocation == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            GameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
-            db.ReplayGameLocations.Remove(replayGameLocation);
+            GameLocation replayGameLocation = db.GameLocations.Find(id);
+            db.GameLocations.Remove(replayGameLocation);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -29,13 +29,13 @@ namespace ReplayFXSchedule.Web.Models
         [Display(Name = "Number of Players")]
         public string Players { get; set; }
         public string Image { get; set; }
-        public bool AtReplay { get; set; }
+        public bool AtConvention { get; set; }
         [Required]
         [Display(Name = "Game Type")]
         public virtual GameType
-           ReplayGameType { get; set; }
+           GameType { get; set; }
         [Display(Name = "Game Locations")]
-        public virtual List<GameLocation> ReplayGameLocations { get; set; }
+        public virtual List<GameLocation> GameLocations { get; set; }
         public string ImageUrl { get
             {
                 if (Image != null)
@@ -58,7 +58,7 @@ namespace ReplayFXSchedule.Web.Models
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]
-        public virtual List<Game> ReplayGames { get; set; }
+        public virtual List<Game> Games { get; set; }
     }
 
     public class GameType
@@ -68,7 +68,7 @@ namespace ReplayFXSchedule.Web.Models
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]
-        public virtual List<Game> ReplayGames { get; set; }
+        public virtual List<Game> Games { get; set; }
     }
 
 }

@@ -27,12 +27,12 @@ namespace ReplayFXSchedule.Web.Controllers
             var user_service = new UserService((ClaimsIdentity)User.Identity, db);
             //if a user chooses the radio button option as Game Title   
             //Index action method will return a view with games based on what a user specifies the value is in the textbox   
-            return View(db.ReplayGames.Where(x => x.GameTitle.Contains(search)|| search == null).ToList());
+            return View(db.Games.Where(x => x.GameTitle.Contains(search)|| search == null).ToList());
         }
        
         public ContentResult Json()
         {
-            var result = JsonConvert.SerializeObject(db.ReplayGames.ToList(), Formatting.None,
+            var result = JsonConvert.SerializeObject(db.Games.ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -47,7 +47,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Game replayGame = db.ReplayGames.Find(id);
+            Game replayGame = db.Games.Find(id);
             if (replayGame == null)
             {
                 return HttpNotFound();
@@ -59,7 +59,7 @@ namespace ReplayFXSchedule.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.ReplayGameLocationIDs = "";
-            ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
+            ViewBag.ReplayGameTypes = db.GameTypes.ToList();
             return View();
         }
 
@@ -71,21 +71,21 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,AtReplay,ReleaseDate,Developer,Genre,Players,Image")] Game replayGame, string gametype, string locations, HttpPostedFileBase upload)
          {
-            replayGame.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
+            replayGame.GameType = (db.GameTypes.Find(Convert.ToInt32(gametype)));
             ModelState.Clear();
             TryValidateModel(replayGame);
             if (ModelState.IsValid)
             {
                 replayGame.Image = azure.GetFileName(upload);
-                db.ReplayGames.Add(replayGame);
+                db.Games.Add(replayGame);
 
 
                 if (locations != "")
                 {
-                    replayGame.ReplayGameLocations = new List<GameLocation>();
+                    replayGame.GameLocations = new List<GameLocation>();
                     foreach (var id in locations.Split(','))
                     {
-                        replayGame.ReplayGameLocations.Add(db.ReplayGameLocations.Find
+                        replayGame.GameLocations.Add(db.GameLocations.Find
                             (Convert.ToInt32(id)));
                     }
                 }
@@ -93,7 +93,7 @@ namespace ReplayFXSchedule.Web.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-            ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
+            ViewBag.ReplayGameTypes = db.GameTypes.ToList();
             return View(replayGame);
         }
 
@@ -104,24 +104,24 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Game replayGame = db.ReplayGames.Find(id);
+            Game replayGame = db.Games.Find(id);
             if (replayGame == null)
             {
                 return HttpNotFound();
             }
         
-           ViewBag.ReplayGameLocationIDs = string.Join(",", replayGame.ReplayGameLocations.Select(r => r.Id));
-            ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
+           ViewBag.ReplayGameLocationIDs = string.Join(",", replayGame.GameLocations.Select(r => r.Id));
+            ViewBag.ReplayGameTypes = db.GameTypes.ToList();
 
             return View(replayGame);
         }
 
         private string AddGameLocation(int id, int gameLocationId)
         {
-            Game rpg = db.ReplayGames.Find(id);
-            GameLocation rpgl = db.ReplayGameLocations.Find(gameLocationId);
+            Game rpg = db.Games.Find(id);
+            GameLocation rpgl = db.GameLocations.Find(gameLocationId);
 
-            rpg.ReplayGameLocations.Add(rpgl);
+            rpg.GameLocations.Add(rpgl);
             db.SaveChanges();
 
             return "success";
@@ -129,16 +129,16 @@ namespace ReplayFXSchedule.Web.Controllers
 
         private string RemoveGameLocation(int id, int gameLocationId)
         {
-            Game rpg = db.ReplayGames.Find(id);
+            Game rpg = db.Games.Find(id);
             GameLocation locationtoremove = new GameLocation();
-            foreach (var item in rpg.ReplayGameLocations)
+            foreach (var item in rpg.GameLocations)
             {
                 if (item.Id == gameLocationId)
                 {
                     locationtoremove = item;
                 }
             }
-            rpg.ReplayGameLocations.Remove(locationtoremove);
+            rpg.GameLocations.Remove(locationtoremove);
             db.SaveChanges();
             return "success";
         }
@@ -146,8 +146,8 @@ namespace ReplayFXSchedule.Web.Controllers
 
         public ActionResult GetGameLocations(int id)
         {
-            Game rpg = db.ReplayGames.Find(id);
-            List<GameLocation> gameList = ReplayGameView(rpg.ReplayGameLocations.ToList());
+            Game rpg = db.Games.Find(id);
+            List<GameLocation> gameList = ReplayGameView(rpg.GameLocations.ToList());
       
             return Json(gameList, JsonRequestBehavior.AllowGet);
         }
@@ -160,7 +160,7 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,AtReplay,ReleaseDate,Developer,Genre,Players,Image,ReplayGameType.Id")] Game replayGame, string gametype, string locations, HttpPostedFileBase upload, string image)
         {
-            replayGame.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
+            replayGame.GameType = (db.GameTypes.Find(Convert.ToInt32(gametype)));
             ModelState.Clear();
             TryValidateModel(replayGame);
             if (ModelState.IsValid)
@@ -174,7 +174,7 @@ namespace ReplayFXSchedule.Web.Controllers
                     }
                     replayGame.Image = azure.GetFileName(upload);
                 }
-                Game rpg = db.ReplayGames.Find(replayGame.Id);
+                Game rpg = db.Games.Find(replayGame.Id);
                 rpg.GameTitle = replayGame.GameTitle;
                 rpg.Overview = replayGame.Overview;
                 rpg.ReleaseDate = replayGame.ReleaseDate;
@@ -182,8 +182,8 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpg.Genre = replayGame.Genre;
                 rpg.Players = replayGame.Players;
                 rpg.Image = replayGame.Image;
-                rpg.AtReplay = replayGame.AtReplay;
-                rpg.ReplayGameType = (db.ReplayGameTypes.Find(Convert.ToInt32(gametype)));
+                rpg.AtConvention = replayGame.AtConvention;
+                rpg.GameType = (db.GameTypes.Find(Convert.ToInt32(gametype)));
 
                 SaveReplayGameLocations(replayGame.Id, locations.Split(','));
 
@@ -193,14 +193,14 @@ namespace ReplayFXSchedule.Web.Controllers
                 return RedirectToAction("Index");
             }
             //ViewBag.ReplayGameLocationIDs = string.Join(",", replayGame.ReplayGameLocations.Select(r => r.Id));
-            ViewBag.ReplayGameTypes = db.ReplayGameTypes.ToList();
+            ViewBag.ReplayGameTypes = db.GameTypes.ToList();
             return View(replayGame);
         }
 
         public ActionResult SwapAtReplayValue(int id)
         {
-            var game = db.ReplayGames.Where(g => g.Id == id).Include(g => g.ReplayGameType).FirstOrDefault(); ;
-            game.AtReplay = !game.AtReplay;
+            var game = db.Games.Where(g => g.Id == id).Include(g => g.GameType).FirstOrDefault(); ;
+            game.AtConvention = !game.AtConvention;
             db.SaveChanges();
             var result = JsonConvert.SerializeObject(game, Formatting.None,
                 new JsonSerializerSettings
@@ -224,8 +224,8 @@ namespace ReplayFXSchedule.Web.Controllers
                     }
                 }
 
-                var replayGame = db.ReplayGames.Find(id);
-                foreach (var gameLocation in replayGame.ReplayGameLocations)
+                var replayGame = db.Games.Find(id);
+                foreach (var gameLocation in replayGame.GameLocations)
                 {
                     if (ids.Contains(gameLocation.Id))
                     {
@@ -240,11 +240,11 @@ namespace ReplayFXSchedule.Web.Controllers
                 }
                 foreach (var location in locationsToRemove)
                 {
-                    replayGame.ReplayGameLocations.Remove(location);
+                    replayGame.GameLocations.Remove(location);
                 }
                 foreach (var i in ids)
                 {
-                    replayGame.ReplayGameLocations.Add(db.ReplayGameLocations.Find(i));
+                    replayGame.GameLocations.Add(db.GameLocations.Find(i));
                 }
             }
         }
@@ -255,7 +255,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Game replayGame = db.ReplayGames.Find(id);
+            Game replayGame = db.Games.Find(id);
             if (replayGame == null)
             {
                 return HttpNotFound();
@@ -268,10 +268,10 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Game replayGame = db.ReplayGames.Find(id);
+            Game replayGame = db.Games.Find(id);
             if (replayGame.Image != null)
             { azure.deletefromAzure(replayGame.Image); }
-            db.ReplayGames.Remove(replayGame);
+            db.Games.Remove(replayGame);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -287,7 +287,7 @@ namespace ReplayFXSchedule.Web.Controllers
 
         public ActionResult GetAllGameLocations()
         {
-            return Json(ReplayGameView(db.ReplayGameLocations.ToList()), JsonRequestBehavior.AllowGet);
+            return Json(ReplayGameView(db.GameLocations.ToList()), JsonRequestBehavior.AllowGet);
         }
 
              private List<GameLocation> ReplayGameView(List<GameLocation> baseList)

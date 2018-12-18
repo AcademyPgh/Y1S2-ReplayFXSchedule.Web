@@ -17,7 +17,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayGameType
         public ActionResult Index()
         {
-            return View(db.ReplayGameTypes.ToList());
+            return View(db.GameTypes.ToList());
         }
 
         // GET: ReplayGameType/Details/5
@@ -28,7 +28,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpStatusCodeResult
                     (HttpStatusCode.BadRequest);
             }
-            GameType replayGameType = db.ReplayGameTypes.Find(id);
+            GameType replayGameType = db.GameTypes.Find(id);
             if (replayGameType == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ReplayGameTypes.Add(replayGameType);
+                db.GameTypes.Add(replayGameType);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameType replayGameType = db.ReplayGameTypes.Find(id);
+            GameType replayGameType = db.GameTypes.Find(id);
             if (replayGameType == null)
             {
                 return HttpNotFound();
@@ -94,7 +94,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameType replayGameType = db.ReplayGameTypes.Find(id);
+            GameType replayGameType = db.GameTypes.Find(id);
             if (replayGameType == null)
             {
                 return HttpNotFound();
@@ -107,8 +107,8 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            GameType replayGameType = db.ReplayGameTypes.Find(id);
-            db.ReplayGameTypes.Remove(replayGameType);
+            GameType replayGameType = db.GameTypes.Find(id);
+            db.GameTypes.Remove(replayGameType);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

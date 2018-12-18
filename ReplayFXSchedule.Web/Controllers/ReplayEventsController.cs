@@ -24,12 +24,12 @@ namespace ReplayFXSchedule.Web.Controllers
             // Bad way to do this but here it is
             var currentYear = DateTime.Parse("1/1/2018");
             //  return View(db.ReplayEvents.Where(x => x.Title.StartsWith(search)|| search == null).ToList());
-            return View(db.ReplayEvents.Where(x => x.Date > currentYear).OrderBy(x => new { x.Date, x.StartTime }).ToList());
+            return View(db.Events.Where(x => x.Date > currentYear).OrderBy(x => new { x.Date, x.StartTime }).ToList());
         }
 
         public ContentResult Json()
         {
-            var result = JsonConvert.SerializeObject(db.ReplayEvents.ToList(), Formatting.None,
+            var result = JsonConvert.SerializeObject(db.Events.ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -45,7 +45,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event replayEvent = db.ReplayEvents.Find(id);
+            Event replayEvent = db.Events.Find(id);
             if (replayEvent == null)
             {
                 return HttpNotFound();
@@ -70,11 +70,11 @@ namespace ReplayFXSchedule.Web.Controllers
             if (ModelState.IsValid)
             {
                 replayEvent.Image = azure.GetFileName(upload);
-                db.ReplayEvents.Add(replayEvent);
-                replayEvent.ReplayEventTypes = new List<EventType>();
+                db.Events.Add(replayEvent);
+                replayEvent.EventTypes = new List<EventType>();
                 foreach(var id in categories.Split(','))
                 {
-                    replayEvent.ReplayEventTypes.Add(db.ReplayEventTypes.Find(Convert.ToInt32(id)));
+                    replayEvent.EventTypes.Add(db.EventTypes.Find(Convert.ToInt32(id)));
                 }
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -90,22 +90,22 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event replayEvent = db.ReplayEvents.Find(id);
+            Event replayEvent = db.Events.Find(id);
             if (replayEvent == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.ReplayEventTypeIDs = string.Join(",", replayEvent.ReplayEventTypes.Select(r => r.Id));
+            ViewBag.ReplayEventTypeIDs = string.Join(",", replayEvent.EventTypes.Select(r => r.Id));
             return View(replayEvent);
         }
 
         private string AddType(int id, int typeId)
         {
-            Event rpe = db.ReplayEvents.Find(id);
-            EventType rpet = db.ReplayEventTypes.Find(typeId);
+            Event rpe = db.Events.Find(id);
+            EventType rpet = db.EventTypes.Find(typeId);
 
-            rpe.ReplayEventTypes.Add(rpet);
+            rpe.EventTypes.Add(rpet);
             db.SaveChanges();
 
             return "success";
@@ -113,24 +113,24 @@ namespace ReplayFXSchedule.Web.Controllers
 
         private string RemoveType(int id, int typeId)
         {
-            Event rpe = db.ReplayEvents.Find(id);
+            Event rpe = db.Events.Find(id);
             EventType typetoremove = new EventType();
-            foreach (var item in rpe.ReplayEventTypes)
+            foreach (var item in rpe.EventTypes)
             {
                 if (item.Id == typeId)
                 {
                     typetoremove = item;
                 }
             }
-            rpe.ReplayEventTypes.Remove(typetoremove);
+            rpe.EventTypes.Remove(typetoremove);
             db.SaveChanges();
             return "success";
         }
 
         public ActionResult GetTypes(int id)
         {
-            Event rpe = db.ReplayEvents.Find(id);
-            List<ReplayEventTypeView> eventList = ReplayEventView(rpe.ReplayEventTypes.ToList());
+            Event rpe = db.Events.Find(id);
+            List<ReplayEventTypeView> eventList = ReplayEventView(rpe.EventTypes.ToList());
             
 
             return Json(eventList, JsonRequestBehavior.AllowGet);
@@ -157,7 +157,7 @@ namespace ReplayFXSchedule.Web.Controllers
                     replayEvent.Image = azure.GetFileName(upload);
                 }
                 //Modified entity state causes us to not be able to update connected replayeeventtypes
-                Event rpe = db.ReplayEvents.Find(replayEvent.Id);
+                Event rpe = db.Events.Find(replayEvent.Id);
 
                 rpe.Title = replayEvent.Title;
                 rpe.Date = replayEvent.Date;
@@ -190,8 +190,8 @@ namespace ReplayFXSchedule.Web.Controllers
                 }
             }
 
-            var replayEvent = db.ReplayEvents.Find(id);
-            foreach (var eventType in replayEvent.ReplayEventTypes)
+            var replayEvent = db.Events.Find(id);
+            foreach (var eventType in replayEvent.EventTypes)
             {
                 if (ids.Contains(eventType.Id))
                 {
@@ -206,11 +206,11 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             foreach (var type in typesToRemove)
             {
-                replayEvent.ReplayEventTypes.Remove(type);
+                replayEvent.EventTypes.Remove(type);
             }
             foreach (var i in ids)
             {
-                replayEvent.ReplayEventTypes.Add(db.ReplayEventTypes.Find(i));
+                replayEvent.EventTypes.Add(db.EventTypes.Find(i));
             }
         }
 
@@ -221,7 +221,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event replayEvent = db.ReplayEvents.Find(id);
+            Event replayEvent = db.Events.Find(id);
             if (replayEvent == null)
             {
                 return HttpNotFound();
@@ -234,12 +234,12 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Event replayEvent = db.ReplayEvents.Find(id);
+            Event replayEvent = db.Events.Find(id);
             if(replayEvent.Image != null)
             {
                 azure.deletefromAzure(replayEvent.Image);
             }
-            db.ReplayEvents.Remove(replayEvent);
+            db.Events.Remove(replayEvent);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -255,7 +255,7 @@ namespace ReplayFXSchedule.Web.Controllers
 
         public ActionResult GetAllEventTypes()
         {
-            return Json(ReplayEventView(db.ReplayEventTypes.ToList()), JsonRequestBehavior.AllowGet);
+            return Json(ReplayEventView(db.EventTypes.ToList()), JsonRequestBehavior.AllowGet);
         }
 
         private List<ReplayEventTypeView> ReplayEventView(List<EventType> baseList)

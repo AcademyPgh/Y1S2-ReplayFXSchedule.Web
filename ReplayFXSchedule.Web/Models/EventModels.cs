@@ -32,7 +32,7 @@ namespace ReplayFXSchedule.Web.Models
         public string Image { get; set; }
 
         [Display(Name = "Event Type")]
-        public virtual List<EventType> ReplayEventTypes { get; set; }
+        public virtual List<EventType> EventTypes { get; set; }
         public string StartTime12
         {
             get { return DateTime.Parse(StartTime).ToString("hh\\:mm tt"); }
@@ -68,7 +68,7 @@ namespace ReplayFXSchedule.Web.Models
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]
-        public virtual List<Event> ReplayEvents { get; set; }
+        public virtual List<Event> Events { get; set; }
     }
 
     public class ReplayEventTypeView
@@ -80,14 +80,14 @@ namespace ReplayFXSchedule.Web.Models
 
     public class ReplayFXDbContext : DbContext
     {
-        public DbSet<Event> ReplayEvents { get; set; }
-        public DbSet<EventType> ReplayEventTypes { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventType> EventTypes { get; set; }
 
-        public DbSet<Game> ReplayGames { get; set; }
-        public DbSet<GameLocation> ReplayGameLocations { get; set; }
-        public DbSet<GameType> ReplayGameTypes { get; set; }
-        public DbSet<Vendor> ReplayVendors { get; set; }
-        public DbSet<Convention> ReplayConventions { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<GameLocation> GameLocations { get; set; }
+        public DbSet<GameType> GameTypes { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<Convention> Conventions { get; set; }
 
         public DbSet<AppUser> AppUsers { get; set; }
     }

@@ -18,7 +18,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayEventTypes
         public ActionResult Index()
         {
-            return View(db.ReplayEventTypes.ToList());
+            return View(db.EventTypes.ToList());
         }
 
         // GET: ReplayEventTypes/Details/5
@@ -28,7 +28,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = db.ReplayEventTypes.Find(id);
+            EventType replayEventType = db.EventTypes.Find(id);
             if (replayEventType == null)
             {
                 return HttpNotFound();
@@ -51,7 +51,7 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ReplayEventTypes.Add(replayEventType);
+                db.EventTypes.Add(replayEventType);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = db.ReplayEventTypes.Find(id);
+            EventType replayEventType = db.EventTypes.Find(id);
             if (replayEventType == null)
             {
                 return HttpNotFound();
@@ -97,7 +97,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = db.ReplayEventTypes.Find(id);
+            EventType replayEventType = db.EventTypes.Find(id);
             if (replayEventType == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            EventType replayEventType = db.ReplayEventTypes.Find(id);
-            db.ReplayEventTypes.Remove(replayEventType);
+            EventType replayEventType = db.EventTypes.Find(id);
+            db.EventTypes.Remove(replayEventType);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -20,7 +20,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayVendors
         public ActionResult Index()
         {
-            return View(db.ReplayVendors.ToList());
+            return View(db.Vendors.ToList());
         }
 
         // GET: ReplayVendors/Details/5
@@ -30,7 +30,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = db.ReplayVendors.Find(id);
+            Vendor replayVendor = db.Vendors.Find(id);
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -54,7 +54,7 @@ namespace ReplayFXSchedule.Web.Controllers
             if (ModelState.IsValid)
             {
                 replayVendor.Image = azure.GetFileName(upload);
-                db.ReplayVendors.Add(replayVendor);
+                db.Vendors.Add(replayVendor);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -69,7 +69,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = db.ReplayVendors.Find(id);
+            Vendor replayVendor = db.Vendors.Find(id);
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -109,7 +109,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = db.ReplayVendors.Find(id);
+            Vendor replayVendor = db.Vendors.Find(id);
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -122,10 +122,10 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Vendor replayVendor = db.ReplayVendors.Find(id);
+            Vendor replayVendor = db.Vendors.Find(id);
             if (replayVendor.Image != null)
             { azure.deletefromAzure(replayVendor.Image); }
-            db.ReplayVendors.Remove(replayVendor);
+            db.Vendors.Remove(replayVendor);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
