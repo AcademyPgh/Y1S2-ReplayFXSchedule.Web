@@ -9,11 +9,11 @@ using System.Configuration;
 
 namespace ReplayFXSchedule.Web.Models
 {
-    public class ReplayEvent
+    public class Event
     {
         public int Id { get; set; }
         [JsonIgnore]
-        public virtual ReplayConvention Convention { get; set; }
+        public virtual Convention Convention { get; set; }
         public string Title { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
@@ -32,7 +32,7 @@ namespace ReplayFXSchedule.Web.Models
         public string Image { get; set; }
 
         [Display(Name = "Event Type")]
-        public virtual List<ReplayEventType> ReplayEventTypes { get; set; }
+        public virtual List<EventType> ReplayEventTypes { get; set; }
         public string StartTime12
         {
             get { return DateTime.Parse(StartTime).ToString("hh\\:mm tt"); }
@@ -58,7 +58,7 @@ namespace ReplayFXSchedule.Web.Models
         }
     }
 
-    public class ReplayEventType
+    public class EventType
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -66,9 +66,9 @@ namespace ReplayFXSchedule.Web.Models
         public string DisplayName { get; set; }
 
         [JsonIgnore]
-        public virtual ReplayConvention Convention { get; set; }
+        public virtual Convention Convention { get; set; }
         [JsonIgnore]
-        public virtual List<ReplayEvent> ReplayEvents { get; set; }
+        public virtual List<Event> ReplayEvents { get; set; }
     }
 
     public class ReplayEventTypeView
@@ -80,14 +80,14 @@ namespace ReplayFXSchedule.Web.Models
 
     public class ReplayFXDbContext : DbContext
     {
-        public DbSet<ReplayEvent> ReplayEvents { get; set; }
-        public DbSet<ReplayEventType> ReplayEventTypes { get; set; }
+        public DbSet<Event> ReplayEvents { get; set; }
+        public DbSet<EventType> ReplayEventTypes { get; set; }
 
-        public DbSet<ReplayGame> ReplayGames { get; set; }
-        public DbSet<ReplayGameLocation> ReplayGameLocations { get; set; }
-        public DbSet<ReplayGameType> ReplayGameTypes { get; set; }
-        public DbSet<ReplayVendor> ReplayVendors { get; set; }
-        public DbSet<ReplayConvention> ReplayConventions { get; set; }
+        public DbSet<Game> ReplayGames { get; set; }
+        public DbSet<GameLocation> ReplayGameLocations { get; set; }
+        public DbSet<GameType> ReplayGameTypes { get; set; }
+        public DbSet<Vendor> ReplayVendors { get; set; }
+        public DbSet<Convention> ReplayConventions { get; set; }
 
         public DbSet<AppUser> AppUsers { get; set; }
     }

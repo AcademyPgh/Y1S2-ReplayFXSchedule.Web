@@ -21,7 +21,7 @@ namespace ReplayFXSchedule.Web.Models
     {
         public int Id { get; set; }
         public AppUser AppUser { get; set; }
-        public ReplayConvention Convention { get; set; }
+        public Convention Convention { get; set; }
         public UserRole UserRole { get; set; }
     }
 

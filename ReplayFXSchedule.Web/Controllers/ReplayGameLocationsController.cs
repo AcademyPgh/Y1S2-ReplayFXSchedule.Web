@@ -28,7 +28,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayGameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            GameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
             if (replayGameLocation == null)
             {
                 return HttpNotFound();
@@ -47,7 +47,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Location")] ReplayGameLocation replayGameLocation)
+        public ActionResult Create([Bind(Include = "Id,Location")] GameLocation replayGameLocation)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayGameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            GameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
             if (replayGameLocation == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Location")] ReplayGameLocation replayGameLocation)
+        public ActionResult Edit([Bind(Include = "Id,Location")] GameLocation replayGameLocation)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayGameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            GameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
             if (replayGameLocation == null)
             {
                 return HttpNotFound();
@@ -110,7 +110,7 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ReplayGameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
+            GameLocation replayGameLocation = db.ReplayGameLocations.Find(id);
             db.ReplayGameLocations.Remove(replayGameLocation);
             db.SaveChanges();
             return RedirectToAction("Index");

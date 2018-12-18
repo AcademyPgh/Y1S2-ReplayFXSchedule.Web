@@ -10,12 +10,12 @@ using System.Configuration;
 
 namespace ReplayFXSchedule.Web.Models
 {
-    public class ReplayGame
+    public class Game
     {
         public int Id { get; set; }
 
         [JsonIgnore]
-        public virtual ReplayConvention Convention { get; set; }
+        public virtual Convention Convention { get; set; }
         [Required]
         [Display(Name = "Game Title")]
         public string GameTitle { get; set; }
@@ -32,10 +32,10 @@ namespace ReplayFXSchedule.Web.Models
         public bool AtReplay { get; set; }
         [Required]
         [Display(Name = "Game Type")]
-        public virtual ReplayGameType
+        public virtual GameType
            ReplayGameType { get; set; }
         [Display(Name = "Game Locations")]
-        public virtual List<ReplayGameLocation> ReplayGameLocations { get; set; }
+        public virtual List<GameLocation> ReplayGameLocations { get; set; }
         public string ImageUrl { get
             {
                 if (Image != null)
@@ -51,24 +51,24 @@ namespace ReplayFXSchedule.Web.Models
 
     }
 
-    public class ReplayGameLocation
+    public class GameLocation
     {
         public int Id { get; set; }
         public string Location { get; set; }
         [JsonIgnore]
-        public virtual ReplayConvention Convention { get; set; }
+        public virtual Convention Convention { get; set; }
         [JsonIgnore]
-        public virtual List<ReplayGame> ReplayGames { get; set; }
+        public virtual List<Game> ReplayGames { get; set; }
     }
 
-    public class ReplayGameType
+    public class GameType
     {
         public int Id { get; set; }
         public string Name { get; set; }
         [JsonIgnore]
-        public virtual ReplayConvention Convention { get; set; }
+        public virtual Convention Convention { get; set; }
         [JsonIgnore]
-        public virtual List<ReplayGame> ReplayGames { get; set; }
+        public virtual List<Game> ReplayGames { get; set; }
     }
 
 }

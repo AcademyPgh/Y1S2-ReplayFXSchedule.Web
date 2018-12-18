@@ -28,7 +28,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayGameType replayGameType = db.ReplayGameTypes.Find(id);
+            GameType replayGameType = db.ReplayGameTypes.Find(id);
             if (replayGameType == null)
             {
                 return HttpNotFound();
@@ -47,7 +47,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] ReplayGameType replayGameType)
+        public ActionResult Create([Bind(Include = "Id,Name")] GameType replayGameType)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayGameType replayGameType = db.ReplayGameTypes.Find(id);
+            GameType replayGameType = db.ReplayGameTypes.Find(id);
             if (replayGameType == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] ReplayGameType replayGameType)
+        public ActionResult Edit([Bind(Include = "Id,Name")] GameType replayGameType)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayGameType replayGameType = db.ReplayGameTypes.Find(id);
+            GameType replayGameType = db.ReplayGameTypes.Find(id);
             if (replayGameType == null)
             {
                 return HttpNotFound();
@@ -110,7 +110,7 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ReplayGameType replayGameType = db.ReplayGameTypes.Find(id);
+            GameType replayGameType = db.ReplayGameTypes.Find(id);
             db.ReplayGameTypes.Remove(replayGameType);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -21,7 +21,7 @@ namespace ReplayFXSchedule.Web.Controllers
         [HttpGet]
         public IHttpActionResult Index(int? convention_id = null)
         {
-            ReplayConvention convention = db.ReplayConventions.Find(convention_id);
+            Convention convention = db.ReplayConventions.Find(convention_id);
             return Ok(convention);
         }
 

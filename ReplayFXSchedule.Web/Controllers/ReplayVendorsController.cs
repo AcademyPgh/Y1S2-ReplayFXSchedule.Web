@@ -30,7 +30,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayVendor replayVendor = db.ReplayVendors.Find(id);
+            Vendor replayVendor = db.ReplayVendors.Find(id);
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -49,7 +49,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] ReplayVendor replayVendor, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayVendor replayVendor = db.ReplayVendors.Find(id);
+            Vendor replayVendor = db.ReplayVendors.Find(id);
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -82,7 +82,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] ReplayVendor replayVendor, HttpPostedFileBase upload, string image)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, string image)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +109,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ReplayVendor replayVendor = db.ReplayVendors.Find(id);
+            Vendor replayVendor = db.ReplayVendors.Find(id);
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -122,7 +122,7 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ReplayVendor replayVendor = db.ReplayVendors.Find(id);
+            Vendor replayVendor = db.ReplayVendors.Find(id);
             if (replayVendor.Image != null)
             { azure.deletefromAzure(replayVendor.Image); }
             db.ReplayVendors.Remove(replayVendor);

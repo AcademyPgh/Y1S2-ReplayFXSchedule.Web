@@ -8,12 +8,12 @@ using System.Web;
 
 namespace ReplayFXSchedule.Web.Models
 {
-    public class ReplayVendor
+    public class Vendor
     {
         [Key]
         public int Id { get; set; }
         [JsonIgnore]
-        public virtual ReplayConvention Convention { get; set; }
+        public virtual Convention Convention { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         [Display(Name = "Extended Description")]
