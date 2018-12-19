@@ -242,7 +242,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\APIV2Controller.cs" />
     <Compile Include="Controllers\GameLocationsController.cs" />
-    <Compile Include="Controllers\GameTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublicController.cs" />
     <Compile Include="Controllers\EventsController.cs" />

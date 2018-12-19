@@ -127,7 +127,7 @@
 @section Scripts {
 <script>
     function toggleAtConvention(id, e) {
-        $.get("/games/SwapAtConventionValue/" + id)
+        $.get("/games/@ViewContext.RouteData.Values["convention_id"]/SwapAtConventionValue/" + id)
             .then((data) => {
                 $("#btn_" + id).removeClass("btn-primary");
                 $("#btn_" + id).removeClass("btn-danger");

@@ -69,6 +69,14 @@ namespace ReplayFXSchedule.Web.Controllers
             return eventTypes;
         }
 
+        [Route("locations/{convention_id}")]
+        [HttpGet]
+        public List<GameLocation> Locations(int convention_id)
+        {
+            var gameLocations = db.Conventions.Find(convention_id).GameLocations.ToList();
+            return gameLocations;
+        }
+
         //public ActionResult Conferences()
         //{
         //    string result = JsonConvert.SerializeObject(db.ReplayConventions.ToList(), Formatting.None,

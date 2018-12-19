@@ -22,17 +22,38 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: ReplayGames
 
         //the first parameter is the option that we choose and the second parameter will use the textbox value   
-        public ActionResult Index(string search)
+        public ActionResult Index(int convention_id, string search)
         {
-            var user_service = new UserService((ClaimsIdentity)User.Identity, db);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             //if a user chooses the radio button option as Game Title   
             //Index action method will return a view with games based on what a user specifies the value is in the textbox   
-            return View(db.Games.Where(x => x.GameTitle.Contains(search)|| search == null).ToList());
+            return View(convention.Games.Where(x => search == null || x.GameTitle.ToLower().Contains(search.ToLower())).ToList());
         }
        
-        public ContentResult Json()
+        public ContentResult Json(int convention_id)
         {
-            var result = JsonConvert.SerializeObject(db.Games.ToList(), Formatting.None,
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return Content("failure");
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return Content("failure");
+            }
+            var result = JsonConvert.SerializeObject(convention.Games.ToList(), Formatting.None,
                        new JsonSerializerSettings
                        {
                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -41,8 +62,19 @@ namespace ReplayFXSchedule.Web.Controllers
             return Content(result, "application/json");
         }
         // GET: ReplayGames/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -56,10 +88,21 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayGames/Create
-        public ActionResult Create()
+        public ActionResult Create(int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             ViewBag.GameLocationIDs = "";
-            ViewBag.GameTypes = db.GameTypes.ToList();
+            ViewBag.GameTypes = convention.GameTypes.ToList();
             return View();
         }
 
@@ -69,15 +112,29 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,AtReplay,ReleaseDate,Developer,Genre,Players,Image")] Game replayGame, string gametype, string locations, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "Id,GameTitle,Overview,AtConvention,ReleaseDate,Developer,Genre,Players,Image")] Game replayGame, string gametype, string locations, HttpPostedFileBase upload, int convention_id)
          {
-            replayGame.GameType = (db.GameTypes.Find(Convert.ToInt32(gametype)));
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            if (int.TryParse(gametype, out int gametypeId))
+            {
+                replayGame.GameType = convention.GameTypes.Where(gt => gt.Id == gametypeId).FirstOrDefault();
+            }
             ModelState.Clear();
             TryValidateModel(replayGame);
             if (ModelState.IsValid)
             {
                 replayGame.Image = azure.GetFileName(upload);
-                db.Games.Add(replayGame);
+                convention.Games.Add(replayGame);
 
 
                 if (locations != "")
@@ -85,33 +142,47 @@ namespace ReplayFXSchedule.Web.Controllers
                     replayGame.GameLocations = new List<GameLocation>();
                     foreach (var id in locations.Split(','))
                     {
-                        replayGame.GameLocations.Add(db.GameLocations.Find
-                            (Convert.ToInt32(id)));
+                        if (int.TryParse(id, out int Id))
+                        {
+                            replayGame.GameLocations.Add(convention.GameLocations.Where
+                                (gl => gl.Id == Id).FirstOrDefault());
+                        }
                     }
                 }
               
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-            ViewBag.GameTypes = db.GameTypes.ToList();
+            ViewBag.GameTypes = convention.GameTypes.ToList();
             return View(replayGame);
         }
 
         // GET: ReplayGames/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Game replayGame = db.Games.Find(id);
+            Game replayGame = convention.Games.Where(g => g.Id == id).FirstOrDefault();
             if (replayGame == null)
             {
                 return HttpNotFound();
             }
         
             ViewBag.GameLocationIDs = string.Join(",", replayGame.GameLocations.Select(r => r.Id));
-            ViewBag.GameTypes = db.GameTypes.ToList();
+            ViewBag.GameTypes = convention.GameTypes.ToList();
 
             return View(replayGame);
         }
@@ -158,9 +229,23 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,AtReplay,ReleaseDate,Developer,Genre,Players,Image,ReplayGameType.Id")] Game replayGame, string gametype, string locations, HttpPostedFileBase upload, string image)
+        public ActionResult Edit([Bind(Include = "Id,GameTitle,Overview,AtConvention,ReleaseDate,Developer,Genre,Players,Image,ReplayGameType.Id")] Game replayGame, string gametype, string locations, HttpPostedFileBase upload, string image, int convention_id)
         {
-            replayGame.GameType = (db.GameTypes.Find(Convert.ToInt32(gametype)));
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            if (int.TryParse(gametype, out int gametypeId))
+            {
+                replayGame.GameType = convention.GameTypes.Where(gt => gt.Id == gametypeId).FirstOrDefault();
+            }
             ModelState.Clear();
             TryValidateModel(replayGame);
             if (ModelState.IsValid)
@@ -174,7 +259,7 @@ namespace ReplayFXSchedule.Web.Controllers
                     }
                     replayGame.Image = azure.GetFileName(upload);
                 }
-                Game rpg = db.Games.Find(replayGame.Id);
+                Game rpg = convention.Games.Where(g => g.Id == replayGame.Id).FirstOrDefault();
                 rpg.GameTitle = replayGame.GameTitle;
                 rpg.Overview = replayGame.Overview;
                 rpg.ReleaseDate = replayGame.ReleaseDate;
@@ -183,7 +268,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpg.Players = replayGame.Players;
                 rpg.Image = replayGame.Image;
                 rpg.AtConvention = replayGame.AtConvention;
-                rpg.GameType = (db.GameTypes.Find(Convert.ToInt32(gametype)));
+                rpg.GameType = convention.GameTypes.Where(gt => gt.Id == Convert.ToInt32(gametype)).FirstOrDefault();
 
                 SaveReplayGameLocations(replayGame.Id, locations.Split(','));
 
@@ -193,7 +278,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 return RedirectToAction("Index");
             }
             //ViewBag.ReplayGameLocationIDs = string.Join(",", replayGame.ReplayGameLocations.Select(r => r.Id));
-            ViewBag.GameTypes = db.GameTypes.ToList();
+            ViewBag.GameTypes = convention.GameTypes.ToList();
             return View(replayGame);
         }
 
@@ -249,13 +334,24 @@ namespace ReplayFXSchedule.Web.Controllers
             }
         }
         // GET: ReplayGames/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Game replayGame = db.Games.Find(id);
+            Game replayGame = convention.Games.Where(g => g.Id == id).FirstOrDefault();
             if (replayGame == null)
             {
                 return HttpNotFound();
@@ -266,9 +362,20 @@ namespace ReplayFXSchedule.Web.Controllers
         // POST: ReplayGames/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int convention_id, int id)
         {
-            Game replayGame = db.Games.Find(id);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            Game replayGame = convention.Games.Where(g => g.Id == id).FirstOrDefault();
             if (replayGame.Image != null)
             { azure.deletefromAzure(replayGame.Image); }
             db.Games.Remove(replayGame);
@@ -290,7 +397,7 @@ namespace ReplayFXSchedule.Web.Controllers
             return Json(ReplayGameView(db.GameLocations.ToList()), JsonRequestBehavior.AllowGet);
         }
 
-             private List<GameLocation> ReplayGameView(List<GameLocation> baseList)
+        private List<GameLocation> ReplayGameView(List<GameLocation> baseList)
         {
             List<GameLocation> exitList = new List<GameLocation>();
 

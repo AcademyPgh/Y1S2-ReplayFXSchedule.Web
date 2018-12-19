@@ -31,17 +31,17 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li>@Html.ActionLink("Events", "Index", "Events", new { area = "" }, new { @class = "nav-link" })</li>
-                <li>@Html.ActionLink("Games", "Index", "Games", new { area = "" }, new { @class = "nav-link" })</li>
-                <li>@Html.ActionLink("Vendors", "Index", "Vendors", new { area = "" }, new { @class = "nav-link" })</li>
+                <li>@Html.ActionLink("Events", "Index", "Events", new { convention_id = ViewContext.RouteData.Values["convention_id"] }, new { @class = "nav-link" })</li>
+                <li>@Html.ActionLink("Games", "Index", "Games", new { convention_id = ViewContext.RouteData.Values["convention_id"] }, new { @class = "nav-link" })</li>
+                <li>@Html.ActionLink("Vendors", "Index", "Vendors", new { convention_id = ViewContext.RouteData.Values["convention_id"] }, new { @class = "nav-link" })</li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin Setup
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @Html.ActionLink("Setup Categories", "Index", "EventTypes", new { area = "" }, new { @class = "dropdown-item" })
-                        @Html.ActionLink("Setup Game Types", "Index", "GameTypes", new { area = "" }, new { @class = "dropdown-item" })
-                        @Html.ActionLink("Setup Game Locations", "Index", "GameLocations", new { area = "" }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Setup Categories", "Index", "EventTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Setup Game Types", "Index", "GameTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Setup Game Locations", "Index", "GameLocations", new { convention_id = ViewContext.RouteData.Values["convention_id"] }, new { @class = "dropdown-item" })
                     </div>
                 </li>
                 @Html.Partial("_LoginPartial")

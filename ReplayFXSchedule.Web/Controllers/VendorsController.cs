@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
@@ -18,19 +19,41 @@ namespace ReplayFXSchedule.Web.Controllers
         private AzureTools azure = new AzureTools();
 
         // GET: ReplayVendors
-        public ActionResult Index()
+        public ActionResult Index(int convention_id)
         {
-            return View(db.Vendors.ToList());
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return View(convention.Vendors.ToList());
         }
 
         // GET: ReplayVendors/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = db.Vendors.Find(id);
+            Vendor replayVendor = convention.Vendors.Where(v => v.Id == id).FirstOrDefault();
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -39,8 +62,19 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayVendors/Create
-        public ActionResult Create()
+        public ActionResult Create(int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             return View();
         }
 
@@ -49,12 +83,23 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (ModelState.IsValid)
             {
                 replayVendor.Image = azure.GetFileName(upload);
-                db.Vendors.Add(replayVendor);
+                convention.Vendors.Add(replayVendor);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -63,13 +108,24 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayVendors/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = db.Vendors.Find(id);
+            Vendor replayVendor = convention.Vendors.Where(v => v.Id == id).FirstOrDefault();
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -82,8 +138,19 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, string image)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, string image, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (ModelState.IsValid)
             {
                 if (upload != null)
@@ -103,13 +170,24 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayVendors/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = db.Vendors.Find(id);
+            Vendor replayVendor = convention.Vendors.Where(v => v.Id == id).FirstOrDefault();
             if (replayVendor == null)
             {
                 return HttpNotFound();
@@ -120,9 +198,20 @@ namespace ReplayFXSchedule.Web.Controllers
         // POST: ReplayVendors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int convention_id, int id)
         {
-            Vendor replayVendor = db.Vendors.Find(id);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            Vendor replayVendor = convention.Vendors.Where(v => v.Id == id).FirstOrDefault();
             if (replayVendor.Image != null)
             { azure.deletefromAzure(replayVendor.Image); }
             db.Vendors.Remove(replayVendor);

@@ -4,9 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
+using ReplayFXSchedule.Web.Shared;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -16,19 +18,41 @@ namespace ReplayFXSchedule.Web.Controllers
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
         // GET: ReplayGameLocations
-        public ActionResult Index()
+        public ActionResult Index(int convention_id)
         {
-            return View(db.GameLocations.ToList());
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return View(convention.GameLocations.ToList());
         }
 
         // GET: ReplayGameLocations/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameLocation replayGameLocation = db.GameLocations.Find(id);
+            GameLocation replayGameLocation = convention.GameLocations.Where(gl => gl.Id == id).FirstOrDefault();
             if (replayGameLocation == null)
             {
                 return HttpNotFound();
@@ -37,8 +61,19 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayGameLocations/Create
-        public ActionResult Create()
+        public ActionResult Create(int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             return View();
         }
 
@@ -47,11 +82,22 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Location")] GameLocation replayGameLocation)
+        public ActionResult Create([Bind(Include = "Id,Location")] GameLocation replayGameLocation, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (ModelState.IsValid)
             {
-                db.GameLocations.Add(replayGameLocation);
+                convention.GameLocations.Add(replayGameLocation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -60,13 +106,24 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayGameLocations/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameLocation replayGameLocation = db.GameLocations.Find(id);
+            GameLocation replayGameLocation = convention.GameLocations.Where(gl => gl.Id == id).FirstOrDefault();
             if (replayGameLocation == null)
             {
                 return HttpNotFound();
@@ -79,8 +136,19 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Location")] GameLocation replayGameLocation)
+        public ActionResult Edit([Bind(Include = "Id,Location")] GameLocation replayGameLocation, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(replayGameLocation).State = EntityState.Modified;
@@ -91,8 +159,19 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: ReplayGameLocations/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -108,9 +187,20 @@ namespace ReplayFXSchedule.Web.Controllers
         // POST: ReplayGameLocations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int convention_id, int id)
         {
-            GameLocation replayGameLocation = db.GameLocations.Find(id);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            GameLocation replayGameLocation = convention.GameLocations.Where(gl => gl.Id == id).FirstOrDefault();
             db.GameLocations.Remove(replayGameLocation);
             db.SaveChanges();
             return RedirectToAction("Index");

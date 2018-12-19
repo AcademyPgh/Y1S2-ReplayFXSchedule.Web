@@ -130,7 +130,7 @@
 
         function load_locations() {
             $.ajax({
-                url: '/public/locations',
+                url: '/api/v2/locations/@ViewContext.RouteData.Values["convention_id"]',
                 type: 'GET',
                 success: function (data) {
                     $('#GameLocations').html('');
