@@ -1,7 +1,7 @@
 ﻿<!doctype html>
 <html lang="en">
 <head>
-    <title>Event Dashbaord</title>
+    <title>Event Dashboard</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -17,7 +17,7 @@
     <link href="~/content/sitev2.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="sidebar-mini">
+<body class="sidebar-background">
     <div class="wrapper">
         <div class="sidebar" data-color="orange">
             <!--
@@ -27,30 +27,17 @@
             -->
 
             <div class="logo">
-                <a href="/" class="simple-text logo-mini">
-                    OSG
-                </a>
-
                 <a href="/" class="simple-text logo-normal">
-                    Con Assist
+                    OSG Con Assistant
                 </a>
-                <div class="navbar-minimize">
-                    <button id="minimizeSidebar" class="btn btn-simple btn-icon btn-neutral btn-round">
-                        <i class="now-ui-icons text_align-center visible-on-sidebar-regular"></i>
-                        <i class="now-ui-icons design_bullet-list-67 visible-on-sidebar-mini"></i>
-                    </button>
-                </div>
             </div>
 
             <div class="sidebar-wrapper">
                 <div class="user">
-                    <div class="photo">
-                        <i class="now-ui-icons users_single-02"></i>
-                    </div>
                     <div class="info">
                         <a data-toggle="collapse" href="#collapseExample" class="collapsed">
                             <span>
-                                James Amos
+                                @User.Identity.Name
                                 <b class="caret"></b>
                             </span>
                         </a>
@@ -80,25 +67,27 @@
                     </div>
                 </div>
                 <ul class="nav">
-                    <li class="active">
-                        <a href="@Url.Action("Create", "Conventions")">
+                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "Home" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Home")">
                             <i class="now-ui-icons objects_globe"></i>
                             <p>Convention</p>
                         </a>
                     </li>
-                    <li>
+                   @if (ViewContext.RouteData.Values["convention_id"] != null)
+                    {
+                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "Events" ? "active" : "")">
                         <a href="@Url.Action("Index", "Events", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                             <i class="now-ui-icons ui-1_calendar-60"></i>
                             <p>Events</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "Games" ? "active" : "")">
                         <a href="@Url.Action("Index", "Games", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                             <i class="now-ui-icons tech_controller-modern"></i>
                             <p>Games</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "Vendors" ? "active" : "")">
                         <a href="@Url.Action("Index", "Vendors", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                             <i class="now-ui-icons shopping_shop"></i>
                             <p>Vendors</p>
@@ -116,19 +105,19 @@
 
                         <div class="collapse" id="adminActions">
                             <ul class="nav">
-                                <li>
+                                <li class="@((string)ViewContext.RouteData.Values["controller"] == "EventTypes" ? "active" : "")">
                                     <a href="@Url.Action("Index", "EventTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                                         <span class="sidebar-mini-icon">ET</span>
                                         <span class="sidebar-normal">Event Types</span>
                                     </a>
                                 </li>
-                                <li>
+                                <li class="@((string)ViewContext.RouteData.Values["controller"] == "GameTypes" ? "active" : "")">
                                     <a href="@Url.Action("Index", "GameTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                                         <span class="sidebar-mini-icon">GT</span>
                                         <span class="sidebar-normal">Game Types</span>
                                     </a>
                                 </li>
-                                <li>
+                                <li class="@((string)ViewContext.RouteData.Values["controller"] == "GameLocations" ? "active" : "")">
                                     <a href="@Url.Action("Index", "GameLocations", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                                         <span class="sidebar-mini-icon">GL</span>
                                         <span class="sidebar-normal">Game Locations</span>
@@ -137,6 +126,7 @@
                             </ul>
                         </div>
                     </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -227,28 +217,9 @@
 
             <footer class="footer">
                 <div class="container-fluid">
-                    <nav>
-                        <ul>
-                            <li>
-                                <a href="https://www.creative-tim.com">
-                                    Creative Tim
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://presentation.creative-tim.com">
-                                    About Us
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://blog.creative-tim.com">
-                                    Blog
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                     <div class="copyright">
                         &copy;
-                        <script>document.write(new Date().getFullYear())</script>, Designed by <a href="http://www.invisionapp.com" target="_blank">Invision</a>. Coded by <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+                        <script>document.write(new Date().getFullYear())</script>, Created by <a href="http://www.academypgh.com" target="_blank">Academy Pittsburgh</a>.
                     </div>
                 </div>
             </footer>

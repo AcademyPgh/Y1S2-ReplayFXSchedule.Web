@@ -4,128 +4,118 @@
     ViewBag.Title = "Manage Games";
 }
 
-<h2>Manage Games</h2>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Manage Games</h4>
+    </div>
+    <div class="card-body">
 
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default replayButton" })
-</p>
-@using (Html.BeginForm("Index", "Games", FormMethod.Get))
-{
-    //the following are search options  
-    <b> Search Games by Title: </b> @Html.TextBox("search") <input type="submit" name ="submit" value="Search" />
-} 
+        <p>
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default replayButton" })
+        </p>
+        @using (Html.BeginForm("Index", "Games", FormMethod.Get))
+        {
+            //the following are search options  
+            <b> Search Games by Title: </b> @Html.TextBox("search") <input type="submit"  name ="submit"  value="Search" />
+        }
 
-<table class="table replayTable">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.GameTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Overview)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Developer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Genre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Players)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Image)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GameType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GameLocations)
-        </th>
-        <th>
-            Actions
-        </th>
-        <th>
-            Show Status
-        </th>
-    </tr>
-    @foreach (var item in Model.OrderBy(item => item.GameTitle))
-    {
-        <tr>
-            <td>
-                <div class="responsiveTD">
-                    @Html.DisplayFor(modelItem => item.GameTitle)
-                </div>
-            </td>
-            <td>
-                <div class="responsiveTD" style="overflow: hidden; height: 4em">
-                    @Html.DisplayFor(modelItem => item.Overview)
-                </div>
-            </td>
-            <td>
-                <div class="responsiveTD">
-                    @Html.DisplayFor(modelItem => item.ReleaseDate)
-                </div>
-            </td>
-            <td>
-                <div class="responsiveTD">
-                    @Html.DisplayFor(modelItem => item.Developer)
-                </div>
-            </td>
-            <td>
-                <div class="responsiveTD">
-                    @Html.DisplayFor(modelItem => item.Genre)
-                </div>
-            </td>
-            <td>
-                <div class="responsiveTD">
-                    @Html.DisplayFor(modelItem => item.Players)
-                </div>
-            </td>
-            <td>
-                <div class="responsiveTD">
-                    @if (item.ImageUrl != null)
-                    {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
-                </div>
-            </td>
-            <td>
-                <div class="responsiveTD">
-                    @Html.DisplayFor(modelItem => item.GameType.Name)
-                </div>
-            </td>
-            <td>
-                <div class="responsiveTD">
-                    @foreach (var gameLocation in item.GameLocations)
-                    {
-                        <span class="categoryType">@Html.DisplayFor(model => gameLocation.Location) </span><br />
-                    }
-                </div>
-            </td>
+        <table class="table table-shopping">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GameTitle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Overview)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ReleaseDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Developer)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Genre)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Players)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GameType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GameLocations)
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                    <th>
+                        Show Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderBy(item => item.GameTitle))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GameTitle)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Overview)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.ReleaseDate)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Developer)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Genre)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Players)
+                        </td>
+                        <td>
+                                @if (item.ImageUrl != null)
+                                {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.GameType.Name)
+                        </td>
+                        <td>
+                                @foreach (var gameLocation in item.GameLocations)
+                                {
+                                    <span class="categoryType">@Html.DisplayFor(model => gameLocation.Location) </span><br />
+                                }
+                        </td>
 
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-            <td>
-                <div class="responsiveTD">
-                    @if (item.AtConvention)
-                    {
-                        <p id="btn_@item.Id" onclick="toggleAtConvention(@item.Id)" class="btn btn-primary">Here!</p>
-                    }
-                    else
-                    {
-                        <p id="btn_@item.Id" onclick="toggleAtConvention(@item.Id)" class="btn btn-danger">Not Here!</p>
-                    }
-                </div>
-            </td>
-        </tr>
-     }
-</table>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>
+                        <td>
+                                @if (item.AtConvention)
+                                {
+                                    <p id="btn_@item.Id" onclick="toggleAtConvention(@item.Id)" class="btn btn-primary btn-round">Here!</p>
+                                }
+                                else
+                                {
+                                    <p id="btn_@item.Id" onclick="toggleAtConvention(@item.Id)" class="btn btn-danger btn-round">Not Here!</p>
+                                }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-@section Scripts {
-<script>
+        @section Scripts {
+            <script>
     function toggleAtConvention(id, e) {
         $.get("/games/@ViewContext.RouteData.Values["convention_id"]/SwapAtConventionValue/" + id)
             .then((data) => {
@@ -141,5 +131,5 @@
                 }
             });
     }
-</script>
-}
+            </script>
+        }

@@ -1,7 +1,6 @@
 ﻿@model ReplayFXSchedule.Web.Models.GameLocation
 
 <div class="form-horizontal">
-    <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
 
@@ -16,6 +15,7 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="@((string)ViewContext.RouteData.Values["action"] == "Create" ? "Create" : "Save Changes")" class="btn btn-default" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
         </div>
     </div>
 </div>

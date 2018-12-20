@@ -4,119 +4,26 @@
     ViewBag.Title = "Create Games";
 }
 
-<h2>Create Games</h2>
-
-
-@using (Html.BeginForm("Create", "Games", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal active">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.GameTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GameTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.GameTitle, "", new { @class = "text-danger" })
-                <div class="btn btn-default"id="lookup-game">Lookup Game</div>
-            </div>
-        </div>
-               <div id="games-display">
-                   <p>Click on the Correct Game or <span class="btn btn-default" id="clear-games">Clear Games List</span></p>
-                   <ul id="games-by-id" class="list-group"></ul>
-               </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Overview, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Overview, new { htmlAttributes = new { @class = "form-control"} })
-                @Html.ValidationMessageFor(model => model.Overview, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.AtConvention, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AtConvention, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AtConvention, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReleaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReleaseDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ReleaseDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Developer, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Developer, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Developer, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Genre, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Players, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Players, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Players, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div id="add-image" class="form-control"><input type="file" id="upload" onchange="previewfile()" name="upload" /></div>
-                <img src="" id="img-display" class="photo"/>
-            </div>
-        </div> 
-        
-
-        <div class="form-group">
-                    <label class="control-label col-md-2">Game Types</label>
-                      <div class="col-md-10">
-                              <select class="form-control" typeof="text" name="gametype" id="gametype">
-                                       @foreach (var gametype in ViewBag.GameTypes) {
-                   <option value = "@gametype.Id" label = "@gametype.Name"> @gametype.Name </option>
-                                       }
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">Locations</label>
-            <div class="col-md-10"> 
-                <div id="GameLocations" class="form-control"></div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input name="locations" id="locations" type="hidden" />
-                <input type="submit" value="Create" class="btn btn-default" />
-                @Html.ActionLink("Back to List", "Index", "Games", null, new { @class = "replayButton btn btn-default" })
-            </div>
-        </div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Create Game</h4>
     </div>
-   
+    <div class="card-body">
 
+        @using (Html.BeginForm("Create", "Games", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
 
-}
-
-
+            @Html.Partial("_form")
+        }
+    </div>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
-    locations = [@ViewBag.GameLocationIDs];
-    $('#locations').val(locations.toString());
+    <script>
+        locations = [@ViewBag.GameLocationIDs];
+        $('#locations').val(locations.toString());
 
         function load_locations() {
             $.ajax({
@@ -156,46 +63,6 @@
             }
         }
 
-        function previewfile() {
-            //displays a preview version of the image before it is saved to the database
-            var preview = document.querySelector('img');
-            var file = document.querySelector('input[type=file]').files[0];
-            var reader = new FileReader();
-            reader.addEventListener("load", function () {
-                preview.src = reader.result;
-            }, false);
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        }
-        $('#lookup-game').click(function () {
-            var gamerequested = $('#GameTitle').val().toLowerCase();
-            $('#GameTitle').html('');
-            $.ajax({
-                url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
-                type: 'GET',
-                dataType: 'xml',
-                success: function (data) {
-                    $('Game', data).each(function () {
-                        var id = $(this).find('id').text(),
-                         gameTitle = $(this).find('GameTitle').text(),
-                         releaseDate = $(this).find('ReleaseDate').text(),
-                         platform = $(this).find('Platform').text();
-                      //  console.log(id + '-' + gameTitle + '-' + platform);
-                        $('#games-by-id').append('<li class="list-group-item" id="game' + id + '" data-id=' + id + '><span id="catspan' + id + '"></span>' + gameTitle + '</br>' + releaseDate + '  ' + platform  + '</li>');
-                        $('#game' + id).click(function () { fill_form(id); });
-                    })
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        })
-
-        $('#clear-games').click(function() {
-            $('#games-by-id').empty();
-        })
-
         function fill_form(id) {
             $('#games-by-id').html('');
             $.ajax({
@@ -212,14 +79,14 @@
                     var tempReleaseDate = new Date(releaseDate);
                     console.log(tempReleaseDate);
                     var releaseYear = tempReleaseDate.getFullYear();
-                   console.log(releaseYear);
+                    console.log(releaseYear);
                     $('#GameTitle').val(gameTitle);
                     $('#Overview').val(overview);
                     $('#ReleaseDate').val(releaseYear);
                     $('#Developer').val(developer);
                     $('#Genre').val(genre);
                     $('#Players').val(players);
-                   // console.log(gameTitle + '-' + overview + '-' + genre);
+                    // console.log(gameTitle + '-' + overview + '-' + genre);
                 },
                 error: function (error) {
                     console.log(error);
@@ -227,14 +94,48 @@
             })
         }
 
+
         function initialize()
         {
             load_locations();
+
+            $('#clear-games').click(function () {
+                $('#games-by-id').empty();
+            });
+
+            $('#lookup-game').click(function () {
+                var gamerequested = $('#GameTitle').val().toLowerCase();
+                $('#GameTitle').html('');
+                $.ajax({
+                    url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
+                    type: 'GET',
+                    dataType: 'xml',
+                    success: function (data) {
+                        $('Game', data).each(function () {
+                            var id = $(this).find('id').text(),
+                                gameTitle = $(this).find('GameTitle').text(),
+                                releaseDate = $(this).find('ReleaseDate').text(),
+                                platform = $(this).find('Platform').text();
+                            //  console.log(id + '-' + gameTitle + '-' + platform);
+                            $('#games-by-id').append('<li class="list-group-item form-control" id="game' + id + '" data-id=' + id + '><span id="catspan' + id + '"></span>' + gameTitle + '</br>' + releaseDate + '  ' + platform + '</li>');
+                            $('#game' + id).click(function () { fill_form(id); });
+                        })
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            $('#delete-image').click(function () {
+
+                var image = $("#Image").val();
+                console.log("the value of image is: " + image);
+                $('#Image').val('');
+                $('#imageUrl').attr('src', '/content/img/400x400.png');
+            });
         }
 
         $(initialize);
-</script>
+    </script>
 }
-
-
-

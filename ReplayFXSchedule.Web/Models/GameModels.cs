@@ -29,6 +29,7 @@ namespace ReplayFXSchedule.Web.Models
         [Display(Name = "Number of Players")]
         public string Players { get; set; }
         public string Image { get; set; }
+        [Display(Name = "At Convention")]
         public bool AtConvention { get; set; }
         [Required]
         [Display(Name = "Game Type")]
