@@ -4,114 +4,28 @@
     ViewBag.Title = "Edit Event";
 }
 
-<h2>Edit Event</h2>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Edit Event</h4>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("Edit", "Events", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
 
+            @Html.Partial("_EventForm")
+        }
+    </div>
+</div>
 
-@using (Html.BeginForm("Edit", "Events", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ExtendedDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ExtendedDescription, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ExtendedDescription, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-@if (Model.ImageUrl != null)
-{ <img src="@Url.Content(Model.ImageUrl)" class="photo" id="imageUrl" />}
-                <div class="btn btn-default" id="delete-image">Delete Image</div>
-            </div>
-            <div class="col-md-10 col-md-offset-2">
-                <div id="add-image" class="form-control"><input type="file" id="upload" onchange="previewfile()" name="upload" /></div>
-                <img src="" id="img-display" class="photo" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">Categories</label>
-            <div class="col-md-10">
-                <div id="EventTypes" class="form-control"></div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input name="categories" id="categories" type="hidden" />
-                <input type="submit" value="Save" class="btn btn-default" />
-                @Html.ActionLink("Back to List", "Index","ReplayEvents", null, new { @class = "replayButton btn btn-default" })
-            </div>
-        </div>
-        </div>
-}
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-
-    <script>
+            <script>
         categories = [@ViewBag.EventTypeIDs];
         $('#categories').val(categories.toString());
 
-            function load_categories() {
+            function loadCategories() {
             $.ajax({
                     url: '/api/v2/categories/@ViewBag.ConId',
                 type: 'GET',
@@ -119,7 +33,7 @@
                     $('#EventTypes').html('');
                         data.map(function (category) {
                         $('#EventTypes').append('<li id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</li>');
-                        $('#cat' + category.Id).click(function () { toggle_category(category.Id); });
+                        $('#cat' + category.Id).click(function () { toggleCategory(category.Id); });
                             if (categories.indexOf(category.Id) > -1)
                             { $('#catspan' + category.Id).addClass('fa fa-check');}
                         });
@@ -128,7 +42,7 @@
                 })
         }
 
-            function toggle_category(id) {
+            function toggleCategory(id) {
                 // if it is not there
                 // add the hidden input element
                 // add the checkmark to the category
@@ -170,11 +84,52 @@
             }
 
 
-            function initialize()
-        {
-                load_categories();
+        function initialize() {
+            loadCategories();
+            loadFormItems();
+        }
+
+        function loadFormItems() {
+            if ($(".datepicker").length != 0) {
+                $('.datepicker').datetimepicker({
+                    format: 'MM/DD/YYYY',
+                    icons: {
+                        time: "now-ui-icons tech_watch-time",
+                        date: "now-ui-icons ui-1_calendar-60",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'now-ui-icons arrows-1_minimal-left',
+                        next: 'now-ui-icons arrows-1_minimal-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    }
+                });
             }
 
+            if ($(".timepicker").length != 0) {
+                $('.timepicker').datetimepicker({
+                    //          format: 'H:mm',    // use this format if you want the 24hours timepicker
+                    format: 'h:mm A', //use this format if you want the 12hours timpiecker with AM/PM toggle
+                    stepping: 15,
+                    icons: {
+                        time: "now-ui-icons tech_watch-time",
+                        date: "now-ui-icons ui-1_calendar-60",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'now-ui-icons arrows-1_minimal-left',
+                        next: 'now-ui-icons arrows-1_minimal-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    }
+                });
+            }
+
+            $('.fileinput').fileinput()
+
+        }
+
         $(initialize);
-</script>
-}
+            </script>
+        }

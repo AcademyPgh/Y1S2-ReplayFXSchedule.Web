@@ -88,6 +88,7 @@ namespace ReplayFXSchedule.Web.Models
         public DbSet<GameType> GameTypes { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Convention> Conventions { get; set; }
+        public DbSet<Sponsor> Sponsors { get; set; }
 
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<AppUserPermission> AppUserPermissions { get; set; }

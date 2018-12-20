@@ -296,12 +296,16 @@
     <Compile Include="Migrations\ReplayFXDbContext\201812180135589_RenameAtReplay.Designer.cs">
       <DependentUpon>201812180135589_RenameAtReplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201812191943361_UpdateConferenceForApp.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201812191943361_UpdateConferenceForApp.Designer.cs">
+      <DependentUpon>201812191943361_UpdateConferenceForApp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\ConventionModels.cs" />
     <Compile Include="Models\EventModels.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Models\ReplayGameModels.cs" />
+    <Compile Include="Models\GameModels.cs" />
     <Compile Include="Models\VendorModels.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -316,13 +320,17 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\400x400.png" />
     <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-100.png" />
     <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-250.png" />
     <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-50.png" />
     <Content Include="Content\img\BuiltByAcademy-250.png" />
     <Content Include="Content\img\BuiltByAcademy-50.png" />
     <Content Include="Content\img\replayfxlogo.png" />
+    <Content Include="Content\css\now-ui-dashboard.css" />
+    <Content Include="Content\css\now-ui-dashboard.min.css" />
     <Content Include="Content\replayFX.js" />
+    <Content Include="Content\sitev2.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -331,6 +339,24 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ClassDiagram1.cd" />
+    <Content Include="Scripts\dashboard\now-ui-dashboard.js" />
+    <Content Include="Scripts\dashboard\now-ui-dashboard.min.js" />
+    <Content Include="Scripts\dashboard\plugins\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\dashboard\plugins\bootstrap-notify.js" />
+    <Content Include="Scripts\dashboard\plugins\bootstrap-selectpicker.js" />
+    <Content Include="Scripts\dashboard\plugins\bootstrap-switch.js" />
+    <Content Include="Scripts\dashboard\plugins\bootstrap-tagsinput.js" />
+    <Content Include="Scripts\dashboard\plugins\chartjs.min.js" />
+    <Content Include="Scripts\dashboard\plugins\fullcalendar.min.js" />
+    <Content Include="Scripts\dashboard\plugins\jasny-bootstrap.min.js" />
+    <Content Include="Scripts\dashboard\plugins\jquery-jvectormap.js" />
+    <Content Include="Scripts\dashboard\plugins\jquery.bootstrap-wizard.js" />
+    <Content Include="Scripts\dashboard\plugins\jquery.dataTables.min.js" />
+    <Content Include="Scripts\dashboard\plugins\jquery.validate.min.js" />
+    <Content Include="Scripts\dashboard\plugins\moment.min.js" />
+    <Content Include="Scripts\dashboard\plugins\nouislider.min.js" />
+    <Content Include="Scripts\dashboard\plugins\perfect-scrollbar.jquery.min.js" />
+    <Content Include="Scripts\dashboard\plugins\sweetalert2.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -349,6 +375,13 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Content\css\now-ui-dashboard.css.map" />
+    <Content Include="Scripts\dashboard\now-ui-dashboard.js.map" />
+    <Content Include="Content\fonts\nucleo-license.md" />
+    <Content Include="Content\fonts\nucleo-outline.eot" />
+    <Content Include="Content\fonts\nucleo-outline.ttf" />
+    <Content Include="Content\fonts\nucleo-outline.woff" />
+    <Content Include="Content\fonts\nucleo-outline.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -445,6 +478,13 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\NoConventionPermissions.cshtml" />
+    <Content Include="Views\Home\ConventionHome.cshtml" />
+    <Content Include="Views\Shared\_Dashboard.cshtml" />
+    <Content Include="Views\Events\_EventForm.cshtml" />
+    <Content Include="Views\EventTypes\_form.cshtml" />
+    <Content Include="Views\GameLocations\_form.cshtml" />
+    <Content Include="Views\GameTypes\_form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -488,6 +528,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201812180135589_RenameAtReplay.resx">
       <DependentUpon>201812180135589_RenameAtReplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201812191943361_UpdateConferenceForApp.resx">
+      <DependentUpon>201812191943361_UpdateConferenceForApp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

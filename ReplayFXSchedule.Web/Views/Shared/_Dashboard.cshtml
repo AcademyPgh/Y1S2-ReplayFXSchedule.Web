@@ -1,0 +1,264 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>Event Dashbaord</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+    @Styles.Render("~/Content/bootstrap")
+    <link href="~/content/css/now-ui-dashboard.css" rel="stylesheet" />
+    <link href="~/content/sitev2.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="sidebar-mini">
+    <div class="wrapper">
+        <div class="sidebar" data-color="orange">
+            <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+            Tip 2: you can also add an image using data-image tag
+            -->
+
+            <div class="logo">
+                <a href="/" class="simple-text logo-mini">
+                    OSG
+                </a>
+
+                <a href="/" class="simple-text logo-normal">
+                    Con Assist
+                </a>
+                <div class="navbar-minimize">
+                    <button id="minimizeSidebar" class="btn btn-simple btn-icon btn-neutral btn-round">
+                        <i class="now-ui-icons text_align-center visible-on-sidebar-regular"></i>
+                        <i class="now-ui-icons design_bullet-list-67 visible-on-sidebar-mini"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-wrapper">
+                <div class="user">
+                    <div class="photo">
+                        <i class="now-ui-icons users_single-02"></i>
+                    </div>
+                    <div class="info">
+                        <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+                            <span>
+                                James Amos
+                                <b class="caret"></b>
+                            </span>
+                        </a>
+                        <div class="clearfix"></div>
+                        <div class="collapse" id="collapseExample">
+                            <ul class="nav">
+                                <li>
+                                    <a href="#">
+                                        <span class="sidebar-mini-icon">MP</span>
+                                        <span class="sidebar-normal">My Profile</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="sidebar-mini-icon">EP</span>
+                                        <span class="sidebar-normal">Edit Profile</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="sidebar-mini-icon">S</span>
+                                        <span class="sidebar-normal">Settings</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav">
+                    <li class="active">
+                        <a href="@Url.Action("Create", "Conventions")">
+                            <i class="now-ui-icons objects_globe"></i>
+                            <p>Convention</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Events", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                            <i class="now-ui-icons ui-1_calendar-60"></i>
+                            <p>Events</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Games", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                            <i class="now-ui-icons tech_controller-modern"></i>
+                            <p>Games</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Vendors", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                            <i class="now-ui-icons shopping_shop"></i>
+                            <p>Vendors</p>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="collapse" href="#adminActions">
+                            <i class="now-ui-icons loader_gear"></i>
+                            <p>
+                                Admin Setup
+                                <b class="caret"></b>
+                            </p>
+                        </a>
+
+                        <div class="collapse" id="adminActions">
+                            <ul class="nav">
+                                <li>
+                                    <a href="@Url.Action("Index", "EventTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                        <span class="sidebar-mini-icon">ET</span>
+                                        <span class="sidebar-normal">Event Types</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "GameTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                        <span class="sidebar-mini-icon">GT</span>
+                                        <span class="sidebar-normal">Game Types</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "GameLocations", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                        <span class="sidebar-mini-icon">GL</span>
+                                        <span class="sidebar-normal">Game Locations</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute">
+                <div class="container-fluid">
+
+
+                    <div class="navbar-wrapper">
+                        <div class="navbar-toggle">
+                            <button type="button" class="navbar-toggler">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </button>
+                        </div>
+                        <a class="navbar-brand" href="#pablo">Dashboard</a>
+                    </div>
+
+
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+
+
+
+                        <form>
+                            <div class="input-group no-border">
+                                <input type="text" value="" class="form-control" placeholder="Search...">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#pablo">
+                                    <i class="now-ui-icons media-2_sound-wave"></i>
+                                    <p>
+                                        <span class="d-lg-none d-md-block">Stats</span>
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="now-ui-icons location_world"></i>
+                                    <p>
+                                        <span class="d-lg-none d-md-block">Some Actions</span>
+                                    </p>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#pablo">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                    <p>
+                                        <span class="d-lg-none d-md-block">Account</span>
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+
+
+                    </div>
+                </div>
+            </nav>
+
+            <div class="panel-header panel-header-sm">
+            </div>
+
+            <div class="content">
+                @RenderBody()
+            </div>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="https://www.creative-tim.com">
+                                    Creative Tim
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://presentation.creative-tim.com">
+                                    About Us
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://blog.creative-tim.com">
+                                    Blog
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright">
+                        &copy;
+                        <script>document.write(new Date().getFullYear())</script>, Designed by <a href="http://www.invisionapp.com" target="_blank">Invision</a>. Coded by <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/dashboard_plugins")
+@Scripts.Render("~/bundles/dashboard")
+@RenderSection("scripts", required: false)
+</html>

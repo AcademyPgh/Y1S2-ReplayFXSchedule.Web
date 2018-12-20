@@ -65,6 +65,7 @@ namespace ReplayFXSchedule.Web.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string HeaderImage { get; set; } // 640x170
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]

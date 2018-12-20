@@ -4,23 +4,29 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Game Location</h4>
+    </div>
+    <div class="card-body">
 
-<div>
-    <h4>Game Location</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
+        <div>
+            <h4>Game Location</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Location)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Location)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Location)
+                </dd>
 
-    </dl>
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
