@@ -4,9 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
+using ReplayFXSchedule.Web.Shared;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -32,7 +34,27 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Conventions = db.Conventions.ToList();
+            ViewBag.UserRoles = Enum.GetValues(typeof(UserRole)).Cast<UserRole>().ToList();
             return View(appUser);
+        }
+
+        public ActionResult AddPermissions(int id, int convention_id, UserRole role)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            if (user.isSuperAdmin)
+            {
+                var permUser = db.AppUsers.Find(id);
+                var con = db.Conventions.Find(convention_id);
+                if (db.AppUserPermissions.Where(a => a.UserRole == role && a.AppUser.Id == id && a.Convention.Id == convention_id).ToList().Count == 0)
+                {
+                    var perm = new AppUserPermission() { AppUser = permUser, Convention = con, UserRole = role };
+                    db.AppUserPermissions.Add(perm);
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Details", new { id });
         }
 
         // GET: Users/Create
