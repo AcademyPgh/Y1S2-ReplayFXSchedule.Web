@@ -13,10 +13,36 @@
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
     </div>
+    <div class="row">
+        @Html.LabelFor(model => model.HeaderImage, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10">
+            <div class="form-group">
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <div class="fileinput-new thumbnail" style="width: 250px; height: 66px;">
+                        @if (Model != null && Model.HeaderImageUrl != null)
+                        {
+                            <img src="@Url.Content(Model.HeaderImageUrl)" class="photo" id="imageUrl" alt="..." />
+                        }
+                        else
+                        {
+                            <img src="~/content/img/640x170.png" class="photo" id="imageUrl" alt="...">
+                        }
+                    </div>
+                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 250px; max-height: 66px;"></div>
+                    <div>
+                        <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="headerImageFile"></span>
+                        <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Original</a>
+                        <div class="btn btn-default fileinput-new" id="delete-image">Remove Image</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="@((string)ViewContext.RouteData.Values["action"] == "Create" ? "Create" : "Save Changes")" class="btn btn-default" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
         </div>
     </div>
 </div>

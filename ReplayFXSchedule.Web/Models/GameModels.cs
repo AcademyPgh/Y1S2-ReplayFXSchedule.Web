@@ -41,7 +41,7 @@ namespace ReplayFXSchedule.Web.Models
             {
                 if (Image != null)
                 {
-                    return ConfigurationManager.AppSettings["ImagePrefix"] + Image;
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + ConfigurationManager.AppSettings["AzureFolder"] + @"/" + Image;
                 }
                 else
                 {
@@ -67,6 +67,20 @@ namespace ReplayFXSchedule.Web.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string HeaderImage { get; set; } // 640x170
+        public string HeaderImageUrl
+        {
+            get
+            {
+                if (HeaderImage != null)
+                {
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + ConfigurationManager.AppSettings["AzureFolder"] + @"/" + HeaderImage;
+                }
+                else
+                {
+                    return HeaderImage;
+                }
+            }
+        }
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]

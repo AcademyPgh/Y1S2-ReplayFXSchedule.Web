@@ -16,6 +16,7 @@ namespace ReplayFXSchedule.Web.Controllers
     public class GameTypesController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
+        private AzureTools azure = new AzureTools();
 
         // GET: ReplayGameTypes
         public ActionResult Index(int convention_id)
@@ -82,7 +83,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name, HeaderImage")] GameType replayGameType, int convention_id)
+        public ActionResult Create([Bind(Include = "Name, HeaderImage")] GameType replayGameType, int convention_id, HttpPostedFileBase headerImageFile)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -97,6 +98,10 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             if (ModelState.IsValid)
             {
+                if (headerImageFile != null)
+                {
+                    replayGameType.HeaderImage = azure.GetFileName(headerImageFile);
+                }
                 convention.GameTypes.Add(replayGameType);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -136,7 +141,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] GameType replayGameType, int convention_id)
+        public ActionResult Edit([Bind(Include = "Id,Name")] GameType replayGameType, int convention_id, HttpPostedFileBase headerImageFile)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -151,7 +156,30 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                db.Entry(replayGameType).State = EntityState.Modified;
+                var gt = db.GameTypes.Where(g => g.Id == replayGameType.Id).FirstOrDefault();
+                var deleted = false;
+                if (gt.HeaderImage != replayGameType.HeaderImage)
+                {
+                    if (!string.IsNullOrEmpty(gt.HeaderImage))
+                    {
+                        azure.deletefromAzure(gt.HeaderImage);
+                        gt.HeaderImage = null;
+                        deleted = true;
+                    }
+                }
+                if (headerImageFile != null)
+                {
+                    if (!deleted & !string.IsNullOrEmpty(gt.HeaderImage))
+                    {
+                        azure.deletefromAzure(gt.HeaderImage);
+                        gt.HeaderImage = null;
+                        deleted = true;
+                    }
+                    replayGameType.HeaderImage = azure.GetFileName(headerImageFile);
+                }
+
+                gt.Name = replayGameType.Name;
+                gt.HeaderImage = replayGameType.HeaderImage;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

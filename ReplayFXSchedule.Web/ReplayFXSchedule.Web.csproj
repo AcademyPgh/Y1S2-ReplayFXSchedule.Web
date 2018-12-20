@@ -249,6 +249,7 @@
     <Compile Include="Controllers\EventTypesController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\GameTypesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VendorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -304,6 +305,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201812200518584_AddConventionFields.cs" />
     <Compile Include="Migrations\ReplayFXDbContext\201812200518584_AddConventionFields.Designer.cs">
       <DependentUpon>201812200518584_AddConventionFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201812200739524_FixSpellingOfConventionInSponsor.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201812200739524_FixSpellingOfConventionInSponsor.Designer.cs">
+      <DependentUpon>201812200739524_FixSpellingOfConventionInSponsor.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\ConventionModels.cs" />
@@ -428,18 +433,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\EventTypes\Create.cshtml" />
@@ -499,6 +492,12 @@
     <Content Include="Views\Conventions\Details.cshtml" />
     <Content Include="Views\Conventions\Edit.cshtml" />
     <Content Include="Views\Conventions\Index.cshtml" />
+    <Content Include="Views\Conventions\_form.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -548,6 +547,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201812200518584_AddConventionFields.resx">
       <DependentUpon>201812200518584_AddConventionFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201812200739524_FixSpellingOfConventionInSponsor.resx">
+      <DependentUpon>201812200739524_FixSpellingOfConventionInSponsor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

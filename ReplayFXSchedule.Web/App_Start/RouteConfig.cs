@@ -15,33 +15,33 @@ namespace ReplayFXSchedule.Web
 
 
             routes.MapRoute(
-                name: "Schedule",
-                url: "schedule/{convention_id}/{category}",
-                defaults: new { controller = "Public", action = "Index", convention_id = UrlParameter.Optional, category = UrlParameter.Optional }
-            );
-            routes.MapRoute(
-                name: "GamesList",
-                url: "gameslist/{convention_id}/{gametype}",
-                defaults: new { controller = "Public", action = "Games", convention_id = UrlParameter.Optional, gametype = UrlParameter.Optional }
-                );
-
-            routes.MapRoute(
                 name: "CreateConvention",
-                url: "conventions/create",
+                url: "Conventions/Create",
                 defaults: new { controller = "Conventions", action = "Create" }
                 );
 
             routes.MapRoute(
-                name: "ScheduleWeb",
-                url: "daily/{convention_id}/{date}/{category}",
-                defaults: new { controller = "Public", action = "ScheduleWeb", date = "1-1-2017", convention_id = UrlParameter.Optional, category = UrlParameter.Optional }
+                name: "Logout",
+                url: "Account/Logout",
+                defaults: new { controller = "Account", action = "Logout" }
+                );
+
+            routes.MapRoute(
+                name: "Login",
+                url: "Account/Login",
+                defaults: new { controller = "Account", action = "Login" }
+                );
+
+            routes.MapRoute(
+                name: "Users",
+                url: "Users/{action}/{id}",
+                defaults: new { controller = "Users", action = "Index", id = UrlParameter.Optional}
                 );
 
             routes.MapRoute(
                 name: "ConventionDefault",
                 url: "{controller}/{convention_id}/{action}/{id}",
-                defaults: new { controller = "Conventions", action = "Index", id = UrlParameter.Optional },
-                constraints: new { productId = @"\d+" }
+                defaults: new { controller = "Conventions", action = "Index", id = UrlParameter.Optional }
                 );
 
             routes.MapRoute(

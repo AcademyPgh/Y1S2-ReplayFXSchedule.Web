@@ -16,6 +16,7 @@ namespace ReplayFXSchedule.Web.Controllers
     public class ConventionsController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
+        private AzureTools azure = new AzureTools();
 
         [AllowAnonymous]
         public ActionResult Home()
@@ -59,11 +60,27 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url")] Convention convention)
+        public ActionResult Create([Bind(Include = "StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            if (!user.isSuperAdmin)
+            {
+                return new HttpNotFoundResult();
+            }
             if (ModelState.IsValid)
             {
+                if (headerImageFile != null)
+                {
+                    convention.HeaderImage = azure.GetFileName(headerImageFile);
+                }
+                if (mapImageFile != null)
+                {
+                    convention.MapImage = azure.GetFileName(mapImageFile);
+                }
+
                 db.Conventions.Add(convention);
+                db.AppUserPermissions.Add(new AppUserPermission { AppUser = user, UserRole = UserRole.Admin, Convention = convention });
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -91,11 +108,68 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url")] Convention convention)
+        public ActionResult Edit([Bind(Include = "Id,StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(convention).State = EntityState.Modified;
+                var con = db.Conventions.Where(g => g.Id == convention.Id).FirstOrDefault();
+                var deleted = false;
+                if (con.HeaderImage != convention.HeaderImage)
+                {
+                    if (!string.IsNullOrEmpty(con.HeaderImage))
+                    {
+                        azure.deletefromAzure(con.HeaderImage);
+                        con.HeaderImage = null;
+                        deleted = true;
+                    }
+                }
+                if (headerImageFile != null)
+                {
+                    if (!deleted & !string.IsNullOrEmpty(con.HeaderImage))
+                    {
+                        azure.deletefromAzure(con.HeaderImage);
+                        con.HeaderImage = null;
+                        deleted = true;
+                    }
+                    convention.HeaderImage = azure.GetFileName(headerImageFile);
+                }
+
+                deleted = false;
+                if (con.MapImage != convention.MapImage)
+                {
+                    if (!string.IsNullOrEmpty(con.MapImage))
+                    {
+                        azure.deletefromAzure(con.MapImage);
+                        con.MapImage = null;
+                        deleted = true;
+                    }
+                }
+                if (mapImageFile != null)
+                {
+                    if (!deleted & !string.IsNullOrEmpty(con.MapImage))
+                    {
+                        azure.deletefromAzure(con.MapImage);
+                        con.MapImage = null;
+                        deleted = true;
+                    }
+                    convention.MapImage = azure.GetFileName(mapImageFile);
+                }
+
+                con.Name = convention.Name;
+                con.StartDate = convention.StartDate;
+                con.EndDate = convention.EndDate;
+                con.EnableInApp = convention.EnableInApp;
+                con.Address = convention.Address;
+                con.Address2 = convention.Address2;
+                con.City = convention.City;
+                con.State = convention.State;
+                con.Zip = convention.Zip;
+                con.TicketUrl = convention.TicketUrl;
+                con.Url = convention.Url;
+                con.Hashtag = convention.Hashtag;
+                con.HeaderImage = convention.HeaderImage;
+                con.MapImage = convention.MapImage;
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -123,9 +197,19 @@ namespace ReplayFXSchedule.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Convention convention = db.Conventions.Find(id);
+            if (!string.IsNullOrEmpty(convention.HeaderImage))
+            {
+                azure.deletefromAzure(convention.HeaderImage);
+            }
+            if (!string.IsNullOrEmpty(convention.MapImage))
+            {
+                azure.deletefromAzure(convention.MapImage);
+            }
+            db.AppUserPermissions.RemoveRange(convention.AppUserPermissions);
+
             db.Conventions.Remove(convention);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return Redirect("/");
         }
 
         protected override void Dispose(bool disposing)

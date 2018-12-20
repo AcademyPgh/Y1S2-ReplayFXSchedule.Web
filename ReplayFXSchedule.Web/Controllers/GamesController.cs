@@ -251,16 +251,28 @@ namespace ReplayFXSchedule.Web.Controllers
             TryValidateModel(replayGame);
             if (ModelState.IsValid)
             {
-                if (upload != null)
+
+                Game rpg = convention.Games.Where(g => g.Id == replayGame.Id).FirstOrDefault();
+                var deleted = false;
+                if (rpg.Image != image)
                 { 
-                    if (!string.IsNullOrEmpty(image))
+                    if (!string.IsNullOrEmpty(rpg.Image))
                     {
-                        azure.deletefromAzure(image);
-                        image = null;
+                        azure.deletefromAzure(rpg.Image);
+                        rpg.Image = null;
+                        deleted = true;
+                    }
+                }
+                if (upload != null)
+                {
+                    if (!deleted & !string.IsNullOrEmpty(rpg.Image))
+                    {
+                        azure.deletefromAzure(rpg.Image);
+                        rpg.Image = null;
+                        deleted = true;
                     }
                     replayGame.Image = azure.GetFileName(upload);
                 }
-                Game rpg = convention.Games.Where(g => g.Id == replayGame.Id).FirstOrDefault();
                 rpg.GameTitle = replayGame.GameTitle;
                 rpg.Overview = replayGame.Overview;
                 rpg.ReleaseDate = replayGame.ReleaseDate;

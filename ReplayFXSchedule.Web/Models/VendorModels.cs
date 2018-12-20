@@ -28,7 +28,7 @@ namespace ReplayFXSchedule.Web.Models
             {
                 if (Image != null)
                 {
-                    return ConfigurationManager.AppSettings["ImagePrefix"] + Image;
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + ConfigurationManager.AppSettings["AzureFolder"] + @"/" + Image;
                 }
                 else
                 {

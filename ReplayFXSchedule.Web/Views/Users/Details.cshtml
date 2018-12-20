@@ -1,0 +1,63 @@
+﻿@model ReplayFXSchedule.Web.Models.AppUser
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">@Html.DisplayFor(model => model.Name)</h4>
+            </div>
+            <div class="card-body">
+                <div>
+                    <h4>@Html.DisplayFor(model => model.Email)</h4>
+                    <h4>@Html.DisplayFor(model => model.DisplayName)</h4>
+
+                    <div class="info info-horizontal">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon icon-info icon-circle">
+                                    <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 text-md-right">
+                                <ul class="list-unstyled">
+                                    @foreach (var perm in Model.AppUserPermissions)
+                                    {
+                                        <li>@perm.Convention.Name - @perm.UserRole</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Add Permissions</h3>
+            </div>
+            <div class="card-body">
+                <label class="col-form-label">Convention</label>
+                <select class="form-control">
+                    <option>Thing one!</option>
+                </select>
+                <label class="col-form-label">Permission Type</label>
+                <select class="form-control">
+                    <option>Admin</option>
+                    <option>Editor</option>
+                </select>
+                <span class="btn btn-default">Add Permission</span>
+            </div>
+        </div>
+    </div>
+</div>

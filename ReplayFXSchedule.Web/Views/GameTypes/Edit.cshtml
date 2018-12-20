@@ -10,19 +10,24 @@
     </div>
     <div class="card-body">
 
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Edit", "GameTypes", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
             @Html.Partial("_form")
         }
-
-        <div>
-            @Html.ActionLink("Back to List", "Index")
-        </div>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $('#delete-image').click(function () {
+            var image = $("#HeaderImage").val();
+            console.log("the value of image is: " + image);
+            $('#HeaderImage').val('');
+            $('#imageUrl').attr('src', '/content/img/640x170.png');
+        })
+    </script>
 }

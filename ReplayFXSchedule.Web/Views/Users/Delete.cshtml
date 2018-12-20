@@ -1,0 +1,70 @@
+﻿@model ReplayFXSchedule.Web.Models.AppUser
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Delete User</h4>
+    </div>
+    <div class="card-body">
+        <h3>Are you sure you want to delete this?</h3>
+        <div>
+            <h4>AppUser</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DisplayName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DisplayName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Auth0)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Auth0)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.isSuperAdmin)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.isSuperAdmin)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-default" /> |
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            }
+        </div>
+    </div>
+</div>
