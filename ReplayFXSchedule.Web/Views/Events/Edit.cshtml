@@ -21,44 +21,46 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        categories = [@ViewBag.EventTypeIDs];
-        $('#categories').val(categories.toString());
-        const checked_class = 'now-ui-icons ui-1_check';
+        var list = [@ViewBag.EventTypeIDs];
+        const listElement = $('#categories');
+        listElement.val(list.toString());
+        const checkedClass = 'now-ui-icons ui-1_check';
+        const displayListElement = $('#EventTypes');
 
         function loadCategories() {
             $.ajax({
                 url: '/api/v2/categories/@ViewBag.ConId',
                 type: 'GET',
                 success: function (data) {
-                    $('#EventTypes').html('');
+                    displayListElement.html('');
                     data.map(function (category) {
-                        $('#EventTypes').append('<div class="align-middle" id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</div>');
-                        $('#cat' + category.Id).click(function () { toggleCategory(category.Id); });
-                        if (categories.indexOf(category.Id) > -1) {
-                            $('#catspan' + category.Id).addClass(checked_class);
+                        displayListElement.append('<div class="align-middle" id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</div>');
+                        $('#cat' + category.Id).click(function () { toggleItem(category.Id); });
+                        if (list.indexOf(category.Id) > -1) {
+                            $('#catspan' + category.Id).addClass(checkedClass);
                         }
                     });
                 }
             })
         }
 
-        function toggleCategory(id) {
+        function toggleItem(id) {
             // if it is not there
-            // add it to the categories list input
+            // add it to the list input
             // add the checkmark to the category
-            if (!$('#catspan' + id).hasClass(checked_class)) {
-                categories.push(id);
-                $('#categories').val(categories.toString());
-                $('#catspan' + id).addClass(checked_class);
+            if (!$('#catspan' + id).hasClass(checkedClass)) {
+                list.push(id);
+                listElement.val(list.toString());
+                $('#catspan' + id).addClass(checkedClass);
             }
             // if it is there
-            // remove it from the categories list input
+            // remove it from the list input
             // remove the checkmark on the category
             else {
-                var i = categories.indexOf(id);
-                categories.splice(i, 1);
-                $('#categories').val(categories.toString());
-                $('#catspan' + id).removeClass(checked_class);
+                var i = list.indexOf(id);
+                list.splice(i, 1);
+                listElement.val(list.toString());
+                $('#catspan' + id).removeClass(checkedClass);
             }
         }
 

@@ -12,9 +12,9 @@
 
         @using (Html.BeginForm("Edit", "Games", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-        @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
-        @Html.Partial("_form")
+            @Html.Partial("_form")
         }
     </div>
 </div>
@@ -22,44 +22,46 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        locations = [@ViewBag.GameLocationIDs];
-        $('#locations').val(locations.toString());
+        var list = [@ViewBag.GameLocationIDs];
+        const listElement = $('#locations');
+        const displayListElement = $('#GameLocations');
+        listElement.val(list.toString());
+        const checkedClass = 'now-ui-icons ui-1_check';
 
-        function load_locations() {
+        function loadLocations() {
             $.ajax({
                 url: '/api/v2/locations/@ViewContext.RouteData.Values["convention_id"]',
                 type: 'GET',
                 success: function (data) {
-                    $('#GameLocations').html('');
+                    displayListElement.html('');
                     data.map(function (location) {
-                        $('#GameLocations').append('<li id="cat' + location.Id + '" data-id=' + location.Id + '><span id="catspan' + location.Id + '"></span>' + location.Location + '</li>');
-                        $('#cat' + location.Id).click(function () { toggle_location(location.Id); });
-                        if (locations.indexOf(location.Id) > -1)
-                        { $('#catspan' + location.Id).addClass('fa fa-check');}
+                        displayListElement.append('<div class="align-middle" id="cat' + location.Id + '" data-id=' + location.Id + '><span id="catspan' + location.Id + '"></span>' + location.Location + '</div>');
+                        $('#cat' + location.Id).click(function () { toggleItem(location.Id); });
+                        if (list.indexOf(location.Id) > -1) {
+                            $('#catspan' + location.Id).addClass(checkedClass);
+                        }
                     });
-                    //$('#CatList').append('</ul>');
                 }
             })
         }
 
-        function toggle_location(id) {
+        function toggleItem(id) {
             // if it is not there
-            // add the hidden input element
+            // add it to the list input
             // add the checkmark to the category
-            if (!$('#catspan' + id).hasClass('fa fa-check')) {
-                locations.push(id);
-                $('#locations').val(locations.toString());
-                $('#catspan' + id).addClass('fa fa-check');
+            if (!$('#catspan' + id).hasClass(checkedClass)) {
+                list.push(id);
+                listElement.val(list.toString());
+                $('#catspan' + id).addClass(checkedClass);
             }
+            // if it is there
+            // remove it from the list input
+            // remove the checkmark on the category
             else {
-
-                // if it is there
-                // remove the hidden input element
-                // remove the checkmark on the category
-                var i = locations.indexOf(id);
-                locations.splice(i, 1);
-                $('#locations').val(locations.toString());
-                $('#catspan' + id).removeClass('fa fa-check');
+                var i = list.indexOf(id);
+                list.splice(i, 1);
+                listElement.val(list.toString());
+                $('#catspan' + id).removeClass(checkedClass);
             }
         }
 
@@ -97,7 +99,7 @@
 
         function initialize()
         {
-            load_locations();
+            loadLocations();
 
             $('#clear-games').click(function () {
                 $('#games-by-id').empty();

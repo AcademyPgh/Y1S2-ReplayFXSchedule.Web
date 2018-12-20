@@ -8,12 +8,16 @@
     applies to event types and game types
 */
 
-#EventTypes div {
+#EventTypes div, #GameLocations div {
     display: flex;
     padding-bottom: 0.3em;
 }
 
-#EventTypes div span {
+#EventTypes div:hover, #GameLocations div:hover {
+    cursor: pointer;
+}
+
+#EventTypes div span, #GameLocations div span {
     font-size: 15px;
     width: 1.2em;
     height: 1.2em;
