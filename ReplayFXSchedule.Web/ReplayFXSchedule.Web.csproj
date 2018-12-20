@@ -241,6 +241,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\APIV2Controller.cs" />
+    <Compile Include="Controllers\ConventionsController.cs" />
     <Compile Include="Controllers\GameLocationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublicController.cs" />
@@ -299,6 +300,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201812191943361_UpdateConferenceForApp.cs" />
     <Compile Include="Migrations\ReplayFXDbContext\201812191943361_UpdateConferenceForApp.Designer.cs">
       <DependentUpon>201812191943361_UpdateConferenceForApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201812200518584_AddConventionFields.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201812200518584_AddConventionFields.Designer.cs">
+      <DependentUpon>201812200518584_AddConventionFields.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\ConventionModels.cs" />
@@ -489,6 +494,11 @@
     <Content Include="Views\GameTypes\_form.cshtml" />
     <Content Include="Views\Games\_form.cshtml" />
     <Content Include="Views\Vendors\_form.cshtml" />
+    <Content Include="Views\Conventions\Create.cshtml" />
+    <Content Include="Views\Conventions\Delete.cshtml" />
+    <Content Include="Views\Conventions\Details.cshtml" />
+    <Content Include="Views\Conventions\Edit.cshtml" />
+    <Content Include="Views\Conventions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -535,6 +545,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201812191943361_UpdateConferenceForApp.resx">
       <DependentUpon>201812191943361_UpdateConferenceForApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201812200518584_AddConventionFields.resx">
+      <DependentUpon>201812200518584_AddConventionFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

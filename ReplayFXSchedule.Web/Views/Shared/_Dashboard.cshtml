@@ -45,21 +45,9 @@
                         <div class="collapse" id="collapseExample">
                             <ul class="nav">
                                 <li>
-                                    <a href="#">
-                                        <span class="sidebar-mini-icon">MP</span>
-                                        <span class="sidebar-normal">My Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="sidebar-mini-icon">EP</span>
-                                        <span class="sidebar-normal">Edit Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="sidebar-mini-icon">S</span>
-                                        <span class="sidebar-normal">Settings</span>
+                                    <a href="@Url.Action("Logout", "Account")">
+                                        <span class="sidebar-mini-icon">L</span>
+                                        <span class="sidebar-normal">Logout</span>
                                     </a>
                                 </li>
                             </ul>
@@ -67,8 +55,8 @@
                     </div>
                 </div>
                 <ul class="nav">
-                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "Home" ? "active" : "")">
-                        <a href="@Url.Action("Index", "Home")">
+                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "Conventions" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Conventions")">
                             <i class="now-ui-icons objects_globe"></i>
                             <p>Convention</p>
                         </a>

@@ -35,6 +35,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
+            ViewBag.Search = search;
             //if a user chooses the radio button option as Game Title   
             //Index action method will return a view with games based on what a user specifies the value is in the textbox   
             return View(convention.Games.Where(x => search == null || x.GameTitle.ToLower().Contains(search.ToLower())).ToList());

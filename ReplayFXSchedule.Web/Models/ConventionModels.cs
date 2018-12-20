@@ -19,6 +19,8 @@ namespace ReplayFXSchedule.Web.Models
 
         public string HeaderImage { get; set; } // 640x340
         public string Hashtag { get; set; }
+        public string TicketUrl { get; set; }
+        public string Url { get; set; }
     }
 
     public class Sponsor
@@ -45,6 +47,9 @@ namespace ReplayFXSchedule.Web.Models
         public string HeaderImage { get; set; } // 640x340
         public string Hashtag { get; set; }
         public string MapImage { get; set; }
+        public bool EnableInApp { get; set; }
+        public string TicketUrl { get; set; }
+        public string Url { get; set; }
 
         public virtual List<Vendor> Vendors { get; set; }
         public virtual List<GameType> GameTypes { get; set; }

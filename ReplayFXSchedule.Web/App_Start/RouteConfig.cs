@@ -26,6 +26,12 @@ namespace ReplayFXSchedule.Web
                 );
 
             routes.MapRoute(
+                name: "CreateConvention",
+                url: "conventions/create",
+                defaults: new { controller = "Conventions", action = "Create" }
+                );
+
+            routes.MapRoute(
                 name: "ScheduleWeb",
                 url: "daily/{convention_id}/{date}/{category}",
                 defaults: new { controller = "Public", action = "ScheduleWeb", date = "1-1-2017", convention_id = UrlParameter.Optional, category = UrlParameter.Optional }
@@ -34,13 +40,14 @@ namespace ReplayFXSchedule.Web
             routes.MapRoute(
                 name: "ConventionDefault",
                 url: "{controller}/{convention_id}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Conventions", action = "Index", id = UrlParameter.Optional },
+                constraints: new { productId = @"\d+" }
                 );
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Conventions", action = "Index", id = UrlParameter.Optional }
             );
 
 

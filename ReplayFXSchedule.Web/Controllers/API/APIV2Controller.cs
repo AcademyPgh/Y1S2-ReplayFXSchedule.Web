@@ -39,7 +39,11 @@ namespace ReplayFXSchedule.Web.Controllers
                     Address2 = c.Address2,
                     City = c.City,
                     State = c.State,
-                    Zip = c.Zip
+                    Zip = c.Zip,
+                    Url = c.Url,
+                    TicketUrl = c.TicketUrl,
+                    HeaderImage = c.HeaderImage,
+                    Hashtag = c.Hashtag
                 }).ToList();
             return Ok(output);
         }

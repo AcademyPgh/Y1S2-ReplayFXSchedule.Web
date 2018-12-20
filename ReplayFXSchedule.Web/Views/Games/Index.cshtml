@@ -15,8 +15,19 @@
         </p>
         @using (Html.BeginForm("Index", "Games", FormMethod.Get))
         {
-            //the following are search options  
-            <b> Search Games by Title: </b> @Html.TextBox("search") <input type="submit"  name ="submit"  value="Search" />
+        <div class="row justify-content-end">
+            <div class="col-md-4">
+                <div class="input-group no-border">
+                    <input type="text" name="search" id="search" value="@ViewBag.Search" class="form-control" placeholder="Search...">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="search_submit">
+                            <i class="now-ui-icons ui-1_zoom-bold"></i>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         }
 
         <table class="table table-shopping">
@@ -65,32 +76,32 @@
                             @Html.DisplayFor(modelItem => item.GameTitle)
                         </td>
                         <td>
-                                @Html.DisplayFor(modelItem => item.Overview)
+                            @Html.DisplayFor(modelItem => item.Overview)
                         </td>
                         <td>
-                                @Html.DisplayFor(modelItem => item.ReleaseDate)
+                            @Html.DisplayFor(modelItem => item.ReleaseDate)
                         </td>
                         <td>
-                                @Html.DisplayFor(modelItem => item.Developer)
+                            @Html.DisplayFor(modelItem => item.Developer)
                         </td>
                         <td>
-                                @Html.DisplayFor(modelItem => item.Genre)
+                            @Html.DisplayFor(modelItem => item.Genre)
                         </td>
                         <td>
-                                @Html.DisplayFor(modelItem => item.Players)
+                            @Html.DisplayFor(modelItem => item.Players)
                         </td>
                         <td>
-                                @if (item.ImageUrl != null)
-                                {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
+                            @if (item.ImageUrl != null)
+                            {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
                         </td>
                         <td>
-                                @Html.DisplayFor(modelItem => item.GameType.Name)
+                            @Html.DisplayFor(modelItem => item.GameType.Name)
                         </td>
                         <td>
-                                @foreach (var gameLocation in item.GameLocations)
-                                {
-                                    <span class="categoryType">@Html.DisplayFor(model => gameLocation.Location) </span><br />
-                                }
+                            @foreach (var gameLocation in item.GameLocations)
+                            {
+                                <span class="categoryType">@Html.DisplayFor(model => gameLocation.Location) </span><br />
+                            }
                         </td>
 
                         <td>
@@ -98,14 +109,14 @@
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                         </td>
                         <td>
-                                @if (item.AtConvention)
-                                {
-                                    <p id="btn_@item.Id" onclick="toggleAtConvention(@item.Id)" class="btn btn-primary btn-round">Here!</p>
-                                }
-                                else
-                                {
-                                    <p id="btn_@item.Id" onclick="toggleAtConvention(@item.Id)" class="btn btn-danger btn-round">Not Here!</p>
-                                }
+                            @if (item.AtConvention)
+                            {
+                                <p id="btn_@item.Id" onclick="toggleAtConvention(@item.Id)" class="btn btn-primary btn-round">Here!</p>
+                            }
+                            else
+                            {
+                                <p id="btn_@item.Id" onclick="toggleAtConvention(@item.Id)" class="btn btn-danger btn-round">Not Here!</p>
+                            }
                         </td>
                     </tr>
                 }
@@ -114,10 +125,10 @@
     </div>
 </div>
 
-        @section Scripts {
-            <script>
-    function toggleAtConvention(id, e) {
-        $.get("/games/@ViewContext.RouteData.Values["convention_id"]/SwapAtConventionValue/" + id)
+@section Scripts {
+    <script>
+        function toggleAtConvention(id, e) {
+            $.get("/games/@ViewContext.RouteData.Values["convention_id"]/SwapAtConventionValue/" + id)
             .then((data) => {
                 $("#btn_" + id).removeClass("btn-primary");
                 $("#btn_" + id).removeClass("btn-danger");
@@ -130,6 +141,10 @@
                     $("#btn_" + id).html("Not Here!");
                 }
             });
-    }
-            </script>
         }
+
+        $("#search_submit").click(() => {
+            $("form").submit();
+        });
+    </script>
+}
