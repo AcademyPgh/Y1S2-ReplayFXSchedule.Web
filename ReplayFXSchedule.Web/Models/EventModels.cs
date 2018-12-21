@@ -35,12 +35,24 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<EventType> EventTypes { get; set; }
         public string StartTime12
         {
-            get { return DateTime.Parse(StartTime).ToString("hh\\:mm tt"); }
+            get {
+                if (DateTime.TryParse(StartTime, out DateTime output))
+                {
+                    return output.ToString("hh\\:mm tt");
+                }
+                return null;
+            }
         }
 
         public string EndTime12
         {
-            get { return DateTime.Parse(EndTime).ToString("hh\\:mm tt"); }
+            get {
+                if (DateTime.TryParse(EndTime, out DateTime output))
+                {
+                    return output.ToString("hh\\:mm tt");
+                }
+                return null;
+            }
         }
         public string ImageUrl
         {
