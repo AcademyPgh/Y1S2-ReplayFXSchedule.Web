@@ -35,10 +35,10 @@
                 success: function (data) {
                     displayListElement.html('');
                     data.map(function (location) {
-                        displayListElement.append('<div class="align-middle" id="cat' + location.Id + '" data-id=' + location.Id + '><span id="catspan' + location.Id + '"></span>' + location.Location + '</div>');
-                        $('#cat' + location.Id).click(function () { toggleItem(location.Id); });
-                        if (list.indexOf(location.Id) > -1) {
-                            $('#catspan' + location.Id).addClass(checkedClass);
+                        displayListElement.append('<div class="align-middle" id="cat' + location.id + '" data-id=' + location.id + '><span id="catspan' + location.id + '"></span>' + location.location + '</div>');
+                        $('#cat' + location.id).click(function () { toggleItem(location.id); });
+                        if (list.indexOf(location.id) > -1) {
+                            $('#catspan' + location.id).addClass(checkedClass);
                         }
                     });
                 }

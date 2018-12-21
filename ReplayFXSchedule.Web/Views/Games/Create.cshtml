@@ -22,44 +22,46 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        locations = [@ViewBag.GameLocationIDs];
-        $('#locations').val(locations.toString());
+        var list = [@ViewBag.GameLocationIDs];
+        const listElement = $('#locations');
+        const displayListElement = $('#GameLocations');
+        listElement.val(list.toString());
+        const checkedClass = 'now-ui-icons ui-1_check';
 
-        function load_locations() {
+        function loadLocations() {
             $.ajax({
                 url: '/api/v2/locations/@ViewContext.RouteData.Values["convention_id"]',
                 type: 'GET',
                 success: function (data) {
-                    $('#GameLocations').html('');
+                    displayListElement.html('');
                     data.map(function (location) {
-                        $('#GameLocations').append('<li id="cat' + location.Id + '" data-id=' + location.Id + '><span id="catspan' + location.Id + '"></span>' + location.Location + '</li>');
-                        $('#cat' + location.Id).click(function () { toggle_location(location.Id); });
-                        if (locations.indexOf(location.Id) > -1)
-                        { $('#catspan' + location.Id).addClass('fa fa-check');}
+                        displayListElement.append('<div class="align-middle" id="cat' + location.id + '" data-id=' + location.id + '><span id="catspan' + location.id + '"></span>' + location.location + '</div>');
+                        $('#cat' + location.id).click(function () { toggleItem(location.id); });
+                        if (list.indexOf(location.id) > -1) {
+                            $('#catspan' + location.id).addClass(checkedClass);
+                        }
                     });
-                    //$('#CatList').append('</ul>');
                 }
             })
         }
 
-        function toggle_location(id) {
+        function toggleItem(id) {
             // if it is not there
-            // add the hidden input element
+            // add it to the list input
             // add the checkmark to the category
-            if (!$('#catspan' + id).hasClass('fa fa-check')) {
-                locations.push(id);
-                $('#locations').val(locations.toString());
-                $('#catspan' + id).addClass('fa fa-check');
+            if (!$('#catspan' + id).hasClass(checkedClass)) {
+                list.push(id);
+                listElement.val(list.toString());
+                $('#catspan' + id).addClass(checkedClass);
             }
+            // if it is there
+            // remove it from the list input
+            // remove the checkmark on the category
             else {
-
-                // if it is there
-                // remove the hidden input element
-                // remove the checkmark on the category
-                var i = locations.indexOf(id);
-                locations.splice(i, 1);
-                $('#locations').val(locations.toString());
-                $('#catspan' + id).removeClass('fa fa-check');
+                var i = list.indexOf(id);
+                list.splice(i, 1);
+                listElement.val(list.toString());
+                $('#catspan' + id).removeClass(checkedClass);
             }
         }
 
@@ -97,7 +99,7 @@
 
         function initialize()
         {
-            load_locations();
+            loadLocations();
 
             $('#clear-games').click(function () {
                 $('#games-by-id').empty();
@@ -107,19 +109,15 @@
                 var gamerequested = $('#GameTitle').val().toLowerCase();
                 $('#GameTitle').html('');
                 $.ajax({
-                    url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
+                    url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Games/ByGameName?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312&name=' + gamerequested,
+                    dataType: 'json',
                     type: 'GET',
-                    dataType: 'xml',
-                    success: function (data) {
-                        $('Game', data).each(function () {
-                            var id = $(this).find('id').text(),
-                                gameTitle = $(this).find('GameTitle').text(),
-                                releaseDate = $(this).find('ReleaseDate').text(),
-                                platform = $(this).find('Platform').text();
-                            //  console.log(id + '-' + gameTitle + '-' + platform);
-                            $('#games-by-id').append('<li class="list-group-item form-control" id="game' + id + '" data-id=' + id + '><span id="catspan' + id + '"></span>' + gameTitle + '</br>' + releaseDate + '  ' + platform + '</li>');
-                            $('#game' + id).click(function () { fill_form(id); });
-                        })
+                    success: function (request) {
+                        console.log(request);
+                        request.data.games.forEach((row) => {
+                            $('#games-by-id').append('<li class="list-group-item form-control" id="game' + row.id + '" data-id=' + row.id + '><span id="catspan' + row.id + '"></span>' + row.game_title + '</br>' + row.release_date + '  ' + row.platform + '</li>');
+                            $('#game' + row.id).click(function () { fill_form(row.id); });
+                        });
                     },
                     error: function (error) {
                         console.log(error);

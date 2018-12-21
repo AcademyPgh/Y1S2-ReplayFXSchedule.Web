@@ -24,56 +24,46 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-        categories = [@ViewBag.EventTypeIDs];
-        $('#categories').val(categories.toString());
+        var list = [@ViewBag.EventTypeIDs];
+        const listElement = $('#categories');
+        listElement.val(list.toString());
+        const checkedClass = 'now-ui-icons ui-1_check';
+        const displayListElement = $('#EventTypes');
 
         function loadCategories() {
             $.ajax({
                 url: '/api/v2/categories/@ViewBag.ConId',
                 type: 'GET',
                 success: function (data) {
-                    $('#EventTypes').html('');
+                    displayListElement.html('');
                     data.map(function (category) {
-                        $('#EventTypes').append('<li id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</li>');
-                        $('#cat' + category.Id).click(function () { toggleCategory(category.Id); });
-                        if (categories.indexOf(category.Id) > -1)
-                        { $('#catspan' + category.Id).addClass('fa fa-check');}
+                        displayListElement.append('<div class="align-middle" id="cat' + category.id + '" data-id=' + category.id + '><span id="catspan' + category.id + '"></span>' + category.name + '</div>');
+                        $('#cat' + category.id).click(function () { toggleItem(category.id); });
+                        if (list.indexOf(category.id) > -1) {
+                            $('#catspan' + category.id).addClass(checkedClass);
+                        }
                     });
-                    //$('#CatList').append('</ul>');
                 }
             })
         }
 
-        function toggleCategory(id) {
+        function toggleItem(id) {
             // if it is not there
-            // add the hidden input element
+            // add it to the list input
             // add the checkmark to the category
-            if (!$('#catspan' + id).hasClass('fa fa-check')) {
-                categories.push(id);
-                $('#categories').val(categories.toString());
-                $('#catspan' + id).addClass('fa fa-check');
+            if (!$('#catspan' + id).hasClass(checkedClass)) {
+                list.push(id);
+                listElement.val(list.toString());
+                $('#catspan' + id).addClass(checkedClass);
             }
+            // if it is there
+            // remove it from the list input
+            // remove the checkmark on the category
             else {
-
-                // if it is there
-                // remove the hidden input element
-                // remove the checkmark on the category
-                var i = categories.indexOf(id);
-                categories.splice(i, 1);
-                $('#categories').val(categories.toString());
-                $('#catspan' + id).removeClass('fa fa-check');
-            }
-        }
-        function previewfile() {
-            //displays a preview version of the image before it is saved to the database
-            var preview = document.querySelector('img');
-            var file = document.querySelector('input[type=file]').files[0];
-            var reader = new FileReader();
-            reader.addEventListener("load", function () {
-                preview.src = reader.result;
-            }, false);
-            if (file) {
-                reader.readAsDataURL(file);
+                var i = list.indexOf(id);
+                list.splice(i, 1);
+                listElement.val(list.toString());
+                $('#catspan' + id).removeClass(checkedClass);
             }
         }
 

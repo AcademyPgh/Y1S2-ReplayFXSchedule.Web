@@ -34,10 +34,10 @@
                 success: function (data) {
                     displayListElement.html('');
                     data.map(function (category) {
-                        displayListElement.append('<div class="align-middle" id="cat' + category.Id + '" data-id=' + category.Id + '><span id="catspan' + category.Id + '"></span>' + category.Name + '</div>');
-                        $('#cat' + category.Id).click(function () { toggleItem(category.Id); });
-                        if (list.indexOf(category.Id) > -1) {
-                            $('#catspan' + category.Id).addClass(checkedClass);
+                        displayListElement.append('<div class="align-middle" id="cat' + category.id + '" data-id=' + category.id + '><span id="catspan' + category.id + '"></span>' + category.name + '</div>');
+                        $('#cat' + category.id).click(function () { toggleItem(category.id); });
+                        if (list.indexOf(category.id) > -1) {
+                            $('#catspan' + category.id).addClass(checkedClass);
                         }
                     });
                 }
