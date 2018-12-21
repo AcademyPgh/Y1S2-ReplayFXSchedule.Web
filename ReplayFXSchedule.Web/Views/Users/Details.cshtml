@@ -27,7 +27,7 @@
                                 <ul class="list-unstyled">
                                     @foreach (var perm in Model.AppUserPermissions)
                                     {
-                                        <li>@perm.Convention.Name - @perm.UserRole</li>
+                                        <li>@perm.Convention.Name - @perm.UserRole - @Html.ActionLink("Remove", "RemovePermissions", new { id = Model.Id, perm_id = perm.Id }, null)</li>
                                     }
                                 </ul>
                             </div>
@@ -65,6 +65,19 @@
                 </select>
                 <input type="submit" class="btn btn-default" value="Add Permission">
                 }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                    User Status
+                </h4>
+            </div>
+            <div class="card-body">
+                @Html.ActionLink(Model.isSuperAdmin ? "Remove SuperAdmin" : "Make SuperAdmin", "ToggleSuperAdmin", new { id = Model.Id }, new { @class= Model.isSuperAdmin ? "btn btn-default" : "btn btn-danger" })
             </div>
         </div>
     </div>

@@ -39,6 +39,19 @@ namespace ReplayFXSchedule.Web.Controllers
             return View(appUser);
         }
 
+        public ActionResult RemovePermissions(int id, int perm_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            if (user.isSuperAdmin)
+            {
+                var perm = db.AppUserPermissions.Find(perm_id);
+                db.AppUserPermissions.Remove(perm);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Details", new { id });
+        }
+
         public ActionResult AddPermissions(int id, int convention_id, UserRole role)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
