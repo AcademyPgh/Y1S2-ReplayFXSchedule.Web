@@ -22,6 +22,13 @@ namespace ReplayFXSchedule.Web
 
             // Json Formatting and content types
             config.Formatters.Add(new BrowserJsonFormatter());
+            var jsonFormatter = config.Formatters.JsonFormatter;
+            jsonFormatter.UseDataContractJsonSerializer = false; // defaults to false, but no harm done
+            jsonFormatter.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+            jsonFormatter.SerializerSettings.Formatting = Formatting.None;
+            jsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
 
             // Web API Route Attributes (instead of routes)
             config.MapHttpAttributeRoutes();
