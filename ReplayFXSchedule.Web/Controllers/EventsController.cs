@@ -220,17 +220,26 @@ namespace ReplayFXSchedule.Web.Controllers
 
             if (ModelState.IsValid)
             {
+                Event rpe = convention.Events.Where(e => e.Id == replayEvent.Id).FirstOrDefault();
+                if (rpe.Image != replayEvent.Image)
+                {
+                    if (!string.IsNullOrEmpty(replayEvent.Image))
+                    {
+                        azure.deletefromAzure(replayEvent.Image);
+                        replayEvent.Image = null;
+                    }
+                }
                 if (upload != null)
                 {
-                    if (!string.IsNullOrEmpty(image))
-                    {
-                        azure.deletefromAzure(image);
-                        image = null;
-                    }
-                    replayEvent.Image = azure.GetFileName(upload);
+                if (!string.IsNullOrEmpty(replayEvent.Image))
+                {
+                    azure.deletefromAzure(replayEvent.Image);
+                    replayEvent.Image = null;
                 }
+                replayEvent.Image = azure.GetFileName(upload);
+                }
+                
                 //Modified entity state causes us to not be able to update connected replayeeventtypes
-                Event rpe = convention.Events.Where(e => e.Id == replayEvent.Id).FirstOrDefault();
 
                 rpe.Title = replayEvent.Title;
                 rpe.Date = replayEvent.Date;

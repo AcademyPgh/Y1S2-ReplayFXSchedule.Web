@@ -69,8 +69,9 @@
                 var image = $("#Image").val();
                 console.log("the value of image is: " + image);
                 $('#Image').val('');
-                $('#imageUrl').removeAttr('src');
-            })
+                $('#imageUrl').attr('src', '/content/img/400x400.png');
+            });
+
             function previewfile() {
                 //displays a preview version of the image before it is saved to the database
                 var preview = document.querySelector('#img-display');
