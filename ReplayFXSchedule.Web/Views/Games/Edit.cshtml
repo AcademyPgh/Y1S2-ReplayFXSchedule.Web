@@ -25,6 +25,9 @@
         var list = [@ViewBag.GameLocationIDs];
         const listElement = $('#locations');
         const displayListElement = $('#GameLocations');
+        var platforms = {};
+        var genres = {};
+        var developers = {};
         listElement.val(list.toString());
         const checkedClass = 'now-ui-icons ui-1_check';
 
@@ -67,28 +70,35 @@
 
         function fill_form(id) {
             $('#games-by-id').html('');
+            //console.log("the game id", id);
+            var url = 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Games/ByGameID?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312&fields=players%2Cpublishers%2Cgenres%2Coverview&id=' + id;
+            //console.log(url);
             $.ajax({
-                url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGame.php?id=' + id,
+                url: url,
                 type: 'GET',
-                dataType: 'xml',
-                success: function (data) {
-                    var gameTitle = $(data).find('GameTitle').text(),
-                        overview = $(data).find('Overview').text(),
-                        releaseDate = $(data).find('ReleaseDate').text(),
-                        developer = $(data).find('Developer').text(),
-                        genre = $(data).find('genre').text(),
-                        players = $(data).find('Players').text();
-                    var tempReleaseDate = new Date(releaseDate);
-                    console.log(tempReleaseDate);
+                dataType: 'json',
+                success: function (res) {
+                    //console.log(res.data);
+                    const game = res.data.games[0];
+                    //console.log(game);
+                    var tempReleaseDate = new Date(game.release_date);
+                    //console.log(tempReleaseDate);
                     var releaseYear = tempReleaseDate.getFullYear();
-                    console.log(releaseYear);
-                    $('#GameTitle').val(gameTitle);
-                    $('#Overview').val(overview);
+                    //console.log(releaseYear);
+                    var developer = "";
+                    var genre = "";
+                    if (game.developers !== null && game.developers !== undefined) {
+                        developer = developers[game.developers[0]].name
+                    }
+                    if (game.genres !== null && game.genres !== undefined) {
+                        genre = genres[game.genres[0]].name
+                    }
+                    $('#GameTitle').val(game.game_title);
+                    $('#Overview').val(game.overview);
                     $('#ReleaseDate').val(releaseYear);
                     $('#Developer').val(developer);
                     $('#Genre').val(genre);
-                    $('#Players').val(players);
-                    // console.log(gameTitle + '-' + overview + '-' + genre);
+                    $('#Players').val(game.players);
                 },
                 error: function (error) {
                     console.log(error);
@@ -97,31 +107,51 @@
         }
 
 
-        function initialize()
-        {
+        function initialize() {
             loadLocations();
 
             $('#clear-games').click(function () {
                 $('#games-by-id').empty();
             });
 
+            $.ajax({
+                url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Platforms?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312',
+                dataType: 'json',
+                type: 'GET',
+                success: function (request) {
+                    platforms = request.data.platforms;
+                }
+            });
+            $.ajax({
+                url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Genres?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312',
+                dataType: 'json',
+                type: 'GET',
+                success: function (request) {
+                    genres = request.data.genres;
+                }
+            });
+            $.ajax({
+                url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Developers?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312',
+                dataType: 'json',
+                type: 'GET',
+                success: function (request) {
+                    developers = request.data.developers;
+                }
+            });
+
             $('#lookup-game').click(function () {
                 var gamerequested = $('#GameTitle').val().toLowerCase();
                 $('#GameTitle').html('');
                 $.ajax({
-                    url: 'https://cors-anywhere.herokuapp.com/http://thegamesdb.net/api/GetGamesList.php?name=' + gamerequested,
+                    url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Games/ByGameName?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312&name=' + gamerequested,
+                    dataType: 'json',
                     type: 'GET',
-                    dataType: 'xml',
-                    success: function (data) {
-                        $('Game', data).each(function () {
-                            var id = $(this).find('id').text(),
-                                gameTitle = $(this).find('GameTitle').text(),
-                                releaseDate = $(this).find('ReleaseDate').text(),
-                                platform = $(this).find('Platform').text();
-                            //  console.log(id + '-' + gameTitle + '-' + platform);
-                            $('#games-by-id').append('<li class="list-group-item form-control" id="game' + id + '" data-id=' + id + '><span id="catspan' + id + '"></span>' + gameTitle + '</br>' + releaseDate + '  ' + platform + '</li>');
-                            $('#game' + id).click(function () { fill_form(id); });
-                        })
+                    success: function (request) {
+                        console.log(request);
+                        request.data.games.forEach((row) => {
+                            $('#games-by-id').append('<li class="list-group-item form-control" id="game' + row.id + '" data-id=' + row.id + '><span id="catspan' + row.id + '"></span>' + row.game_title + '</br>' + row.release_date + '  ' + platforms[row.platform].name + '</li>');
+                            $('#game' + row.id).click(function () { fill_form(row.id); });
+                        });
                     },
                     error: function (error) {
                         console.log(error);

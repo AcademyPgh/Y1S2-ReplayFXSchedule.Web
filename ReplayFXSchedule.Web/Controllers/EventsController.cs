@@ -70,7 +70,7 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         // GET: Events/1/Create
-        public ActionResult Create(int convention_id)
+        public ActionResult Create(int convention_id, int? id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -78,9 +78,14 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
 
+            Event eventToCopy = null;
+            if (id != null)
+            {
+                eventToCopy = db.Events.Find(id);
+            }
             ViewBag.EventTypeIDs = "";
             ViewBag.ConId = convention_id;
-            return View();
+            return View(eventToCopy);
         }
 
         // POST: Events/1/Create
@@ -103,7 +108,10 @@ namespace ReplayFXSchedule.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                replayEvent.Image = azure.GetFileName(upload);
+                if (upload != null)
+                {
+                    replayEvent.Image = azure.GetFileName(upload);
+                }
                 con.Events.Add(replayEvent);
                 replayEvent.EventTypes = new List<EventType>();
                 foreach(var id in categories.Split(','))
@@ -221,7 +229,20 @@ namespace ReplayFXSchedule.Web.Controllers
             if (ModelState.IsValid)
             {
                 Event rpe = convention.Events.Where(e => e.Id == replayEvent.Id).FirstOrDefault();
-                if (rpe.Image != replayEvent.Image)
+
+                var deleteImage = false;
+                if (rpe.Image != replayEvent.Image || upload != null)
+                {
+                    if (!string.IsNullOrEmpty(replayEvent.Image))
+                    {
+                        if(db.Events.Where(e => e.Convention.Id == convention_id && e.Image == replayEvent.Image).ToList().Count == 1)
+                        {
+                            // if we are on the last one
+                            deleteImage = true;
+                        }
+                    }
+                }
+                if (deleteImage)
                 {
                     if (!string.IsNullOrEmpty(replayEvent.Image))
                     {
@@ -231,12 +252,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 }
                 if (upload != null)
                 {
-                if (!string.IsNullOrEmpty(replayEvent.Image))
-                {
-                    azure.deletefromAzure(replayEvent.Image);
-                    replayEvent.Image = null;
-                }
-                replayEvent.Image = azure.GetFileName(upload);
+                    replayEvent.Image = azure.GetFileName(upload);
                 }
                 
                 //Modified entity state causes us to not be able to update connected replayeeventtypes
@@ -340,10 +356,14 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            Event replayEvent = convention.Events.Where(e => e.Id == id).FirstOrDefault();
+            Event replayEvent = convention.Events.Where(e => e.Convention.Id == convention_id && e.Id == id).FirstOrDefault();
             if(replayEvent.Image != null)
             {
-                azure.deletefromAzure(replayEvent.Image);
+                if (db.Events.Where(e => e.Convention.Id == convention_id && e.Image == replayEvent.Image).ToList().Count == 1)
+                {
+                    // if we are on the last one
+                    azure.deletefromAzure(replayEvent.Image);
+                }
             }
             db.Events.Remove(replayEvent);
             db.SaveChanges();
