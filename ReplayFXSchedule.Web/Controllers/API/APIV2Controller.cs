@@ -29,7 +29,7 @@ namespace ReplayFXSchedule.Web.Controllers
         [HttpGet]
         public IHttpActionResult Conventions()
         {
-            var output = db.Conventions.Select(c => new ConventionViewModel()
+            var output = db.Conventions.Where(c => c.EnableInApp == true).Select(c => new ConventionViewModel()
                 {
                     Id = c.Id,
                     StartDate = c.StartDate,
