@@ -30,6 +30,8 @@ namespace ReplayFXSchedule.Web.Models
         public string ExtendedDescription { get; set; }
         public string Location { get; set; }
         public string Image { get; set; }
+        public string PromoImage { get; set; }
+        public bool IsPromo { get; set; }
 
         [Display(Name = "Event Type")]
         public virtual List<EventType> EventTypes { get; set; }
@@ -68,6 +70,20 @@ namespace ReplayFXSchedule.Web.Models
                 }
             }
         }
+        public string PromoImageUrl
+        {
+            get
+            {
+                if (PromoImage != null)
+                {
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + ConfigurationManager.AppSettings["AzureFolder"] + @"/" + PromoImage;
+                }
+                else
+                {
+                    return PromoImage;
+                }
+            }
+        }
     }
 
     public class EventType
@@ -88,6 +104,14 @@ namespace ReplayFXSchedule.Web.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
+    }
+
+    public class Promo
+    {
+        public int Id { get; set; }
+        public string ImageUrl { get; set; }
+        public string Type { get; set; }
+        public DateTime Date { get; set; }
     }
 
     public class ReplayFXDbContext : DbContext

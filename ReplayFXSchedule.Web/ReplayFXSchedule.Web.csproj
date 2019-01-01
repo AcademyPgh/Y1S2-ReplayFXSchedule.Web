@@ -310,6 +310,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201812200739524_FixSpellingOfConventionInSponsor.Designer.cs">
       <DependentUpon>201812200739524_FixSpellingOfConventionInSponsor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201901011953235_AddPromoImages.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201901011953235_AddPromoImages.Designer.cs">
+      <DependentUpon>201901011953235_AddPromoImages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\ConventionModels.cs" />
     <Compile Include="Models\EventModels.cs">
@@ -550,6 +554,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201812200739524_FixSpellingOfConventionInSponsor.resx">
       <DependentUpon>201812200739524_FixSpellingOfConventionInSponsor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201901011953235_AddPromoImages.resx">
+      <DependentUpon>201901011953235_AddPromoImages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -110,6 +110,21 @@
                 });
             }
 
+            $('#delete-image').click(function () {
+
+                var image = $("#Image").val();
+                console.log("the value of image is: " + image);
+                $('#Image').val('');
+                $('#imageUrl').attr('src', '/content/img/400x400.png');
+            });
+            $('#delete-promoimage').click(function () {
+
+                var promoimage = $("#PromoImage").val();
+                console.log("the value of image is: " + promoimage);
+                $('#PromoImage').val('');
+                $('#promoImageUrl').attr('src', '/content/img/640x170.png');
+            });
+
             $('.fileinput').fileinput()
 
         }

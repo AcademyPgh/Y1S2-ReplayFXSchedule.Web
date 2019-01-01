@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Configuration;
 using System.Linq;
 using System.Web;
@@ -32,6 +33,21 @@ namespace ReplayFXSchedule.Web.Models
         public string Name { get; set; }
         public string Url { get; set; }
         public string Image { get; set; } // 200x200ish
+
+        public string ImageUrl
+        {
+            get
+            {
+                if (Image != null)
+                {
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + ConfigurationManager.AppSettings["AzureFolder"] + @"/" + Image;
+                }
+                else
+                {
+                    return Image;
+                }
+            }
+        }
 
         public virtual Convention Convention { get; set; }
     }
@@ -100,6 +116,21 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<EventType> EventTypes { get; set; }
         public virtual List<Event> Events { get; set; }
         public virtual List<Sponsor> Sponsors { get; set; }
+
+        [NotMapped]
+        public virtual List<Promo> Promos { get
+            {
+                var promos = Events.Where(e => e.IsPromo == true).Select(e => new Promo()
+                {
+                    Id = e.Id,
+                    ImageUrl = e.PromoImageUrl,
+                    Date = e.Date,
+                    Type = "event"
+                }).ToList();
+                return promos;
+            }
+        }
+
         [JsonIgnore]
         public virtual List<AppUserPermission> AppUserPermissions { get; set; }
     }

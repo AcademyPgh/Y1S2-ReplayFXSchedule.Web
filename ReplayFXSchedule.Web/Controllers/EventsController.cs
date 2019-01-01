@@ -93,7 +93,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] Event replayEvent, string categories, HttpPostedFileBase upload, int convention_id)
+        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image,IsPromo,PromoImage")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -111,6 +111,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 if (upload != null)
                 {
                     replayEvent.Image = azure.GetFileName(upload);
+                }
+                if (promoUpload != null)
+                {
+                    replayEvent.PromoImage = azure.GetFileName(promoUpload);
                 }
                 con.Events.Add(replayEvent);
                 replayEvent.EventTypes = new List<EventType>();
@@ -210,7 +214,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image")] Event replayEvent, string categories, HttpPostedFileBase upload, string image, int convention_id)
+        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image,IsPromo,PromoImage")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id)
         {
             //int indexExt = 0;
             //string ext = "";
@@ -254,7 +258,32 @@ namespace ReplayFXSchedule.Web.Controllers
                 {
                     replayEvent.Image = azure.GetFileName(upload);
                 }
-                
+
+                deleteImage = false;
+                if (rpe.PromoImage != replayEvent.PromoImage || promoUpload != null)
+                {
+                    if (!string.IsNullOrEmpty(replayEvent.PromoImage))
+                    {
+                        if (db.Events.Where(e => e.Convention.Id == convention_id && e.PromoImage == replayEvent.PromoImage).ToList().Count == 1)
+                        {
+                            // if we are on the last one
+                            deleteImage = true;
+                        }
+                    }
+                }
+                if (deleteImage)
+                {
+                    if (!string.IsNullOrEmpty(replayEvent.PromoImage))
+                    {
+                        azure.deletefromAzure(replayEvent.PromoImage);
+                        replayEvent.PromoImage = null;
+                    }
+                }
+                if (promoUpload != null)
+                {
+                    replayEvent.PromoImage = azure.GetFileName(promoUpload);
+                }
+
                 //Modified entity state causes us to not be able to update connected replayeeventtypes
 
                 rpe.Title = replayEvent.Title;
@@ -265,6 +294,8 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpe.ExtendedDescription = replayEvent.ExtendedDescription;
                 rpe.Location = replayEvent.Location;
                 rpe.Image = replayEvent.Image;
+                rpe.PromoImage = replayEvent.PromoImage;
+                rpe.IsPromo = replayEvent.IsPromo;
 
                 SaveReplayEventTypes(replayEvent.Id, categories.Split(','));
                 db.SaveChanges();
@@ -363,6 +394,14 @@ namespace ReplayFXSchedule.Web.Controllers
                 {
                     // if we are on the last one
                     azure.deletefromAzure(replayEvent.Image);
+                }
+            }
+            if (replayEvent.PromoImage != null)
+            {
+                if (db.Events.Where(e => e.Convention.Id == convention_id && e.PromoImage == replayEvent.PromoImage).ToList().Count == 1)
+                {
+                    // if we are on the last one
+                    azure.deletefromAzure(replayEvent.PromoImage);
                 }
             }
             db.Events.Remove(replayEvent);
