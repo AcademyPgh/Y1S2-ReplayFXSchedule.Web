@@ -22,9 +22,9 @@ namespace ReplayFXSchedule.Web.Controllers
         public IHttpActionResult Index(int? convention_id = null)
         {
             Convention convention = db.Conventions.Find(convention_id);
-            convention.Events = convention.Events.OrderBy(e => new { e.Date, e.StartTime, e.Title }).ToList();
-            convention.Vendors = convention.Vendors.OrderBy(e => new { e.Title }).ToList();
-            convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => new { g.GameTitle }).ToList();
+            convention.Events = convention.Events.OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
+            convention.Vendors = convention.Vendors.OrderBy(e => e.Title ).ToList();
+            convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
             return Ok(convention);
         }
 
