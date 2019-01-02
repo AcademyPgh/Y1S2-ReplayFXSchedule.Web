@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ReplayFXSchedule.Web.Models.Sponsor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Manage Sponsors</h4>
+    </div>
+    <div class="card-body">
+
+        <p>
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Url)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Url)
+                    </td>
+                    <td>
+                        @if (item.ImageUrl != null)
+                        {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
