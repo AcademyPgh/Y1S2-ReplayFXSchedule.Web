@@ -241,6 +241,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\APIV2Controller.cs" />
+    <Compile Include="Controllers\API\UsersV2Controller.cs" />
     <Compile Include="Controllers\ConventionsController.cs" />
     <Compile Include="Controllers\GameLocationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -315,12 +316,22 @@
     <Compile Include="Migrations\ReplayFXDbContext\201901011953235_AddPromoImages.Designer.cs">
       <DependentUpon>201901011953235_AddPromoImages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201901301715021_UpdateUserProfile.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201901301715021_UpdateUserProfile.Designer.cs">
+      <DependentUpon>201901301715021_UpdateUserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201901302000037_AddFeed.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201901302000037_AddFeed.Designer.cs">
+      <DependentUpon>201901302000037_AddFeed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
+    <Compile Include="Models\Context.cs" />
     <Compile Include="Models\ConventionModels.cs" />
     <Compile Include="Models\EventModels.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Models\GameModels.cs" />
+    <Compile Include="Models\SocialModels.cs" />
     <Compile Include="Models\VendorModels.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -335,6 +346,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\1558699.jpg" />
     <Content Include="Content\img\400x400.png" />
     <Content Include="Content\img\640x170.png" />
     <Content Include="Content\img\640x340.png" />
@@ -564,6 +576,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201901011953235_AddPromoImages.resx">
       <DependentUpon>201901011953235_AddPromoImages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201901301715021_UpdateUserProfile.resx">
+      <DependentUpon>201901301715021_UpdateUserProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201901302000037_AddFeed.resx">
+      <DependentUpon>201901302000037_AddFeed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -117,6 +117,9 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<Event> Events { get; set; }
         public virtual List<Sponsor> Sponsors { get; set; }
 
+        [JsonIgnore]
+        public virtual List<Post> Posts { get; set; }
+
         [NotMapped]
         public virtual List<Promo> Promos { get
             {

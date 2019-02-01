@@ -5,6 +5,7 @@ using ReplayFXSchedule.Web.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Http;
@@ -15,6 +16,7 @@ namespace ReplayFXSchedule.Web.Controllers
     public class APIV2Controller : ApiController
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
+        private UserService us;
 
         // GET: Public
         [Route("convention/{convention_id}")]
@@ -84,6 +86,42 @@ namespace ReplayFXSchedule.Web.Controllers
             return gameLocations;
         }
 
+        [Route("convention/{convention_id}/feed")]
+        [HttpGet]
+        public List<Post> Feed(int convention_id)
+        {
+            var feed = db.Posts.Where(p => p.Convention.Id == convention_id && p.Viewable == true).OrderByDescending(p => p.PostedOn).ToList();
+            return feed;
+        }
+
+        
+        [Route("convention/{convention_id}/add")]
+        [HttpPost]
+        public Post AddPost(int convention_id, PostUpload post)
+        {
+            var convention = db.Conventions.Find(convention_id);
+            if(convention == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            if(String.IsNullOrEmpty(post.Text))
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+            //us = new UserService((ClaimsIdentity)User.Identity, db);
+            //var user = us.GetUser();
+            var user = db.AppUsers.Find(4);
+            var dbpost = new Post()
+            {
+                Text = post.Text,
+                PostedOn = DateTime.Now,
+                User = user,
+                Convention = convention
+            };
+            db.Posts.Add(dbpost);
+            db.SaveChanges();
+            return dbpost;
+        }
         //public ActionResult Conferences()
         //{
         //    string result = JsonConvert.SerializeObject(db.ReplayConventions.ToList(), Formatting.None,

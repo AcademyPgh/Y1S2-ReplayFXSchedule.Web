@@ -80,7 +80,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Game replayGame = db.Games.Find(id);
+            Game replayGame = convention.Games.Where(g => g.Id == id).FirstOrDefault();
             if (replayGame == null)
             {
                 return HttpNotFound();
