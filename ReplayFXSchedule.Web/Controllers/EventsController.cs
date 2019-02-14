@@ -34,7 +34,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
             //  return View(db.ReplayEvents.Where(x => x.Title.StartsWith(search)|| search == null).ToList());
-            return View(convention.Events.ToList());
+            return View(convention.Events.OrderBy(x => x.Date).ThenBy(x => x.StartTime).ToList());
         }
 
         public ContentResult Json(int convention_id)
