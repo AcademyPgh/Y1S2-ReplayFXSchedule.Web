@@ -24,6 +24,19 @@ namespace ReplayFXSchedule.Web.Controllers.API
             return us.GetUser();
         }
 
+        [Authorize]
+        [Route("")]
+        [HttpPost]
+        public AppUser GetApp(AppUser appUser)
+        {
+            us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            user.DisplayName = appUser.DisplayName;
+            user.Name = appUser.Name;
+            db.SaveChanges();
+            return user;
+        }
+
         [Route("{id}")]
         public AppUserView Get(int id)
         {

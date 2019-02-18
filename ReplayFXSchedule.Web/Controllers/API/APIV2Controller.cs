@@ -95,9 +95,10 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         
+        [Authorize]
         [Route("convention/{convention_id}/add")]
         [HttpPost]
-        public Post AddPost(int convention_id, PostUpload post)
+        public List<Post> AddPost(int convention_id, PostUpload post)
         {
             var convention = db.Conventions.Find(convention_id);
             if(convention == null)
@@ -108,19 +109,20 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
-            //us = new UserService((ClaimsIdentity)User.Identity, db);
-            //var user = us.GetUser();
-            var user = db.AppUsers.Find(4);
+            us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            // var user = db.AppUsers.Find(4);
             var dbpost = new Post()
             {
                 Text = post.Text,
                 PostedOn = DateTime.Now,
                 User = user,
-                Convention = convention
+                Convention = convention,
+                Viewable = true
             };
             db.Posts.Add(dbpost);
             db.SaveChanges();
-            return dbpost;
+            return Feed(convention_id);
         }
         //public ActionResult Conferences()
         //{
