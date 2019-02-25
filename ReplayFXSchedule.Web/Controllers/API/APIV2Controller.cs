@@ -25,7 +25,7 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             Convention convention = db.Conventions.Find(convention_id);
             convention.Events = convention.Events.OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
-            convention.Vendors = convention.Vendors.OrderBy(e => e.Title ).ToList();
+            convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
             return Ok(convention);
         }
@@ -35,21 +35,21 @@ namespace ReplayFXSchedule.Web.Controllers
         public IHttpActionResult Conventions()
         {
             var output = db.Conventions.OrderBy(c => new { c.StartDate }).Where(c => c.EnableInApp == true).Select(c => new ConventionViewModel()
-                {
-                    Id = c.Id,
-                    StartDate = c.StartDate,
-                    EndDate = c.EndDate,
-                    Name = c.Name,
-                    Address = c.Address,
-                    Address2 = c.Address2,
-                    City = c.City,
-                    State = c.State,
-                    Zip = c.Zip,
-                    Url = c.Url,
-                    TicketUrl = c.TicketUrl,
-                    HeaderImage = c.HeaderImage,
-                    Hashtag = c.Hashtag
-                }).ToList();
+            {
+                Id = c.Id,
+                StartDate = c.StartDate,
+                EndDate = c.EndDate,
+                Name = c.Name,
+                Address = c.Address,
+                Address2 = c.Address2,
+                City = c.City,
+                State = c.State,
+                Zip = c.Zip,
+                Url = c.Url,
+                TicketUrl = c.TicketUrl,
+                HeaderImage = c.HeaderImage,
+                Hashtag = c.Hashtag
+            }).ToList();
             return Ok(output);
         }
 
@@ -94,18 +94,18 @@ namespace ReplayFXSchedule.Web.Controllers
             return feed;
         }
 
-        
+
         [Authorize]
         [Route("convention/{convention_id}/add")]
         [HttpPost]
         public List<Post> AddPost(int convention_id, PostUpload post)
         {
             var convention = db.Conventions.Find(convention_id);
-            if(convention == null)
+            if (convention == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-            if(String.IsNullOrEmpty(post.Text))
+            if (String.IsNullOrEmpty(post.Text))
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
@@ -124,6 +124,25 @@ namespace ReplayFXSchedule.Web.Controllers
             db.SaveChanges();
             return Feed(convention_id);
         }
+
+        [Route("convention/{convention_id}/events/{date_time}")]
+        public List<Event> GetEvents(int convention_id, DateTime date_time)
+        {
+            var convention = db.Conventions.Find(convention_id);
+            if(date_time < convention.StartDate || date_time > convention.EndDate.AddDays(1))
+            {
+                date_time = convention.StartDate;
+            }
+            return convention.Events.Where(e => e.Date == date_time).ToList();
+        }
+
+        [Route("convention/{convention_id}/events/{date_time}/{location?}")]
+        public List<Event> GetEventsByLocation(int convention_id, DateTime date_time, string location)
+        {
+            var convention = db.Conventions.Find(convention_id);
+            return convention.Events.Where(e => !String.IsNullOrEmpty(e.Location) && e.Location.ToLower() == location.ToLower()).ToList();
+        }
+
         //public ActionResult Conferences()
         //{
         //    string result = JsonConvert.SerializeObject(db.ReplayConventions.ToList(), Formatting.None,

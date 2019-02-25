@@ -1,0 +1,22 @@
+﻿<script id="featured-template" type="text/x-handlebars-template">
+    {{#each events}}
+    <div class="carousel-item {{#if @first}} active{{/if}}">
+        <div class="carousel-content">
+            <h1>{{title}}</h1>
+            <h2>{{startTime12}} - {{endTime12}}</h2>
+            <h3>{{location}}</h3>
+            {{#if extendedDescription}}
+            <h3>{{extendedDescription}}</h3>
+            {{else}}
+            <h3>{{description}}</h3>
+            {{/if}}
+        </div>
+    </div>
+    {{/each}}
+</script>
+
+<script id="event-template" type="text/x-handlebars-template">
+    {{#each events}}
+    <li><span>{{startTime}}</span>{{title}}<span>{{location}}</span></li>
+    {{/each}}
+</script>

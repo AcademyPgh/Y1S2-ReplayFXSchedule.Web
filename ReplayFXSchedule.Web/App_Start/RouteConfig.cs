@@ -49,8 +49,6 @@ namespace ReplayFXSchedule.Web
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Conventions", action = "Index", id = UrlParameter.Optional }
             );
-
-
         }
     }
 }

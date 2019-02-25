@@ -1,0 +1,73 @@
+﻿body {
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+}
+
+.background {
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition-duration: 1s;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    transform: scale(1.1);
+    z-index: -3;
+    overflow: hidden;
+}
+
+.screen {
+    width: 1920px;
+    height: 1080px;
+    display: grid;
+    grid-template-columns: [one] 70% [two] auto;
+    grid-template-rows: [top] 70% [bottom] auto;
+    color: white;
+}
+
+.featured {
+    grid-column: one;
+    grid-row: top;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    text-shadow: 4px 4px 4px #222;
+}
+
+.featured h1 {
+    font-size: 3em;
+}
+
+.featured h2 {
+    font-size: 2em;
+}
+
+.marquee {
+    grid-column: two;
+    grid-row: top / 3;
+}
+
+.lower {
+    grid-column: one;
+    grid-row: bottom;
+}
+
+.carousel {
+    width: 100%;
+}
+
+.carousel-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10%;
+}

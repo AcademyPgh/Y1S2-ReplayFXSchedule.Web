@@ -250,6 +250,7 @@
     <Compile Include="Controllers\EventTypesController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\GameTypesController.cs" />
+    <Compile Include="Controllers\ScreensController.cs" />
     <Compile Include="Controllers\SponsorsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VendorsController.cs" />
@@ -358,8 +359,12 @@
     <Content Include="Content\img\replayfxlogo.png" />
     <Content Include="Content\css\now-ui-dashboard.css" />
     <Content Include="Content\css\now-ui-dashboard.min.css" />
+    <Content Include="Content\normalize.css" />
     <Content Include="Content\replayFX.js" />
+    <Content Include="Content\screens.css" />
     <Content Include="Content\sitev2.css" />
+    <Content Include="Content\slick.css" />
+    <Content Include="Content\templates\screentemplates.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -424,6 +429,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -432,6 +441,11 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\screens\handlebars-v4.1.0.js" />
+    <Content Include="Scripts\screens\jquery.marquee.js" />
+    <Content Include="Scripts\screens\jquery.marquee.min.js" />
+    <Content Include="Scripts\screens\slick.js" />
+    <Content Include="Scripts\screens\slick.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -521,6 +535,7 @@
     <Content Include="Views\Sponsors\Edit.cshtml" />
     <Content Include="Views\Sponsors\Index.cshtml" />
     <Content Include="Views\Sponsors\_form.cshtml" />
+    <Content Include="Views\Screens\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

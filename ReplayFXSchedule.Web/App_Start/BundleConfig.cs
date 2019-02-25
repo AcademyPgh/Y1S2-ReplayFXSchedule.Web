@@ -54,6 +54,19 @@ namespace ReplayFXSchedule.Web
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                 "~/Content/bootstrap.css"
                 ));
+
+            bundles.Add(new ScriptBundle("~/bundles/screens").Include(
+                "~/Scripts/screens/jquery.marquee.min.js",
+                "~/Scripts/screens/handlebars-v4.1.0.js",
+                "~/Scripts/screens/slick.min.js",
+                "~/Scripts/moment.js"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/screens").Include(
+                "~/Content/normalize.css",
+                "~/Conetnt/slick.css",
+                "~/Content/screens.css"
+                ));
         }
     }
 }

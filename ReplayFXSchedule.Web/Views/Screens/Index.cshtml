@@ -1,0 +1,103 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/screens")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/screens")
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto" rel="stylesheet">
+</head>
+<body>
+    <div class="background" id="background"></div>
+    <div class="screen">
+        <div class="featured">
+            <div id="carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" id="featured">
+                </div>
+            </div>
+        </div>
+        <div class="marquee">
+            <div>
+                <h1>All Events</h1>
+                <ul id="full_list">
+                </ul>
+            </div>
+        </div>
+        <div class="lower">
+
+        </div>
+    </div>
+
+    @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/templates/screentemplates.html")))
+
+    <script>
+        var featSource = document.getElementById("featured-template").innerHTML;
+        var fullSource = document.getElementById("event-template").innerHTML;
+        var featureTemplate = Handlebars.compile(featSource);
+        var fullTemplate = Handlebars.compile(fullSource)
+        var images = new Array();
+
+        const backgrounds = [
+            "https://wallpapercave.com/wp/wp2551252.jpg",
+            "https://www.pixelstalk.net/wp-content/uploads/2016/06/DJ-Wallpapers-HD.jpg",
+            "https://wallpaperplay.com/walls/full/1/1/0/230235.jpg"
+        ];
+        let currBackground = 0;
+
+        function loadEvents() {
+            $.ajax({
+                url: '/api/v2/convention/@ViewBag.convention_id/events/' + moment().format('MM-DD-YYYY'),
+                method: 'GET'
+            })
+                .then((res) => {
+                    let featured = [];
+                    let full = [];
+                    const currDate = moment().format('YYYY-MM-DD');
+
+                    res.forEach((row) => {
+                        full.push(row);
+                        if (moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
+                            featured.push(row);
+                        }
+                    });
+                    console.log("featured", featured);
+                    console.log("full", full);
+                    $("#featured").html(featureTemplate({ events: featured }));
+                    $("#full_list").html(fullTemplate({ events: full }));
+                })
+        }
+
+        function setBackground() {
+            $("#background").css("background-image", "url(" + backgrounds[currBackground] + ")");
+            currBackground = currBackground + 1;
+            if (currBackground >= backgrounds.length) {
+                currBackground = 0;
+            }
+        }
+
+        function preloadBackgrounds() {
+            for (let i = 0; i < backgrounds.length; i++) {
+                images[i] = new Image()
+                images[i].src = backgrounds[i];
+            }
+        }
+
+        function startup() {
+            setBackground();
+            preloadBackgrounds();
+            setInterval(setBackground, 5000);
+            setInterval(loadEvents, 30000);
+            loadEvents();
+
+
+        }
+
+        $(startup);
+    </script>
+</body>
+</html>
