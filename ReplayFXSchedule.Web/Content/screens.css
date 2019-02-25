@@ -52,7 +52,21 @@ h1 {
 .marquee {
     grid-column: two;
     grid-row: top / 3;
+    font-size: 1.5rem;
 }
+
+.marquee h1 {
+    font-size: 2.5em;
+}
+
+.marquee h2 {
+    font-size: 2em;
+}
+
+.marquee ul {
+    list-style-type: none;
+}
+
 
 .lower {
     grid-column: one;

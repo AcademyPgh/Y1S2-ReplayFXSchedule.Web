@@ -24,7 +24,7 @@
         <div class="marquee">
             <div>
                 <h1>All Events</h1>
-                <ul id="full_list">
+                <ul id="full_list" class="list-unstyled">
                 </ul>
             </div>
         </div>
@@ -68,7 +68,7 @@
                     console.log("featured", featured);
                     console.log("full", full);
                     $("#featured").html(featureTemplate({ events: featured }));
-                    $("#full_list").html(fullTemplate({ events: full }));
+                    updateMarqueeData(fullTemplate({ events: full }));
                 })
         }
 
@@ -87,14 +87,33 @@
             }
         }
 
+        function updateMarqueeData(html) {
+            stopMarquee();
+            $("#full_list").html(html);
+            startMarquee();
+        }
+
+        function startMarquee() {
+            $('.marquee').marquee({
+                duration: 15000,
+                gap: 200,
+                delayBeforeStart: 2000,
+                direction: 'up',
+                duplicated: true
+            })
+        }
+
+        function stopMarquee() {
+            $('.marquee').marquee('destroy');
+        }
+
         function startup() {
             setBackground();
             preloadBackgrounds();
             setInterval(setBackground, 5000);
-            setInterval(loadEvents, 30000);
+            setInterval(loadEvents, 130000);
+            startMarquee();
             loadEvents();
-
-
         }
 
         $(startup);
