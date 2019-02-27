@@ -26,3 +26,8 @@
     padding: 1px;
     border: 1px solid #fd7e14;
 }
+
+.table-text {
+    max-height: 8em;
+    overflow-y: auto;
+}
