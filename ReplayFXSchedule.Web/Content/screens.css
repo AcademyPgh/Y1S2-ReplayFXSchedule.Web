@@ -3,13 +3,9 @@
     overflow: hidden;
 }
 
-h1 {
-    font-family: 'Oswald', sans-serif;
-}
-
 .background {
-    width: 1920px;
-    height: 1080px;
+    width: 100vw;
+    height: 100vh;
     position: absolute;
     background-size: cover;
     background-repeat: no-repeat;
@@ -23,11 +19,11 @@ h1 {
 }
 
 .screen {
-    width: 1920px;
-    height: 1080px;
+    width: 100vw;
+    height: 100vh;
     display: grid;
     grid-template-columns: [one] 70% [two] auto;
-    grid-template-rows: [top] 70% [bottom] auto;
+    grid-template-rows: [top] 75% [bottom] auto;
     color: white;
 }
 
@@ -41,33 +37,78 @@ h1 {
     text-shadow: 4px 4px 4px #222;
 }
 
-.featured h1 {
-    font-size: 3em;
-}
+    .featured-event {
+        font-size: 2.25em;
+        font-family: Lato;
+        font-weight: 800;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+    }
 
-.featured h2 {
-    font-size: 2em;
-}
+    .featured-time {
+        font-size: 1.5em;
+        font-family: Lato;
+        font-weight: 300;
+        margin-bottom: 16px;
+    }
+
+    .featured-location {
+        font-family: Lato;
+        font-size: 1.2em;
+        font-weight: 400;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+    }
+
+    .featured-description {
+        font-family: Raleway;
+        font-size: .85em;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
 
 .marquee {
     grid-column: two;
     grid-row: top / 3;
-    font-size: 1.5rem;
+    
+    background-color: rgba(0,0,0,.9);
+    text-shadow: 4px 4px 4px #222;
 }
 
-.marquee h1 {
-    font-size: 2.5em;
+.marquee-content {
+    margin: 15% 5%;
 }
 
-.marquee h2 {
+.marquee-time {
     font-size: 2em;
+    font-family: Lato;
+    font-weight: 300;
+    margin-bottom: 8px;
 }
 
-.marquee span {
-    font-weight: bold;
-    font-size: .75em;
-    color: #444;
+.marquee-event {
+    font-size: 2.5em;
+    font-family: Lato;
+    font-weight: 800;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    text-transform: uppercase;
 }
+
+.marquee-location {
+    font-family: Raleway;
+    font-size: 1.75em;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.marquee-location-static-text {
+    font-family: Raleway;
+    font-size: .65em;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
 
 
 .lower {
@@ -85,6 +126,5 @@ h1 {
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     padding: 10%;
 }

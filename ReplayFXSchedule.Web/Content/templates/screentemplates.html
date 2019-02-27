@@ -2,14 +2,14 @@
     {{#each events}}
     <div class="carousel-item {{#if @first}} active{{/if}}">
         <div class="carousel-content">
-            <h1>{{title}}</h1>
-            <h2>{{startTime12}} - {{endTime12}}</h2>
-            <h3>{{location}}</h3>
+            <h1 class="featured-event">{{title}}</h1>
+            <h2 class="featured-time">{{startTime12}} - {{endTime12}}</h2>
+            <h3 class="featured-location">LOCATION | {{location}}</h3> 
             {{#if extendedDescription}}
-            <h3>{{extendedDescription}}</h3>
+            <h3 class="featured-description">{{extendedDescription}}</h3>
             {{else}}
-            <h3>{{description}}</h3>
-            {{/if}}
+            <h3 class="featured-description">{{description}}</h3>
+            {{/if}}  
         </div>
     </div>
     {{/each}}
@@ -17,7 +17,11 @@
 
 <script id="event-template" type="text/x-handlebars-template">
     {{#each events}}
-    <h1><span>{{startTime12}}</span> {{title}}</h1>
-    <h2>{{location}}</h2>
+    <div class="marquee-content">
+        <h1 class="marquee-time">{{startTime12}}</h1>
+        <h1 class="marquee-event">{{title}}</h1>
+        <h2 class="marquee-location"><span class="marquee-location-static-text">location</span> {{location}}</h2>
+    </div>
+    
     {{/each}}
 </script>
