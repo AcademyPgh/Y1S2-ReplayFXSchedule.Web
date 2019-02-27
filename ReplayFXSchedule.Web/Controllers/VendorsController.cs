@@ -32,7 +32,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            return View(convention.Vendors.ToList());
+            return View(convention.Vendors.OrderBy(v => v.Title).ToList());
         }
 
         // GET: ReplayVendors/Details/5
