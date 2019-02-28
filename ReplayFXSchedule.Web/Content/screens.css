@@ -23,7 +23,7 @@
     height: 100vh;
     display: grid;
     grid-template-columns: [one] 70% [two] auto;
-    grid-template-rows: [top] 75% [bottom] auto;
+    grid-template-rows: [top] 85% [bottom] auto;
     color: white;
 }
 
@@ -42,6 +42,7 @@
         font-family: Lato;
         font-weight: 900;
         margin-bottom: 16px;
+        margin-top: 0;
         text-transform: uppercase;
     }
 
@@ -60,12 +61,12 @@
         text-transform: uppercase;
     }
 
-    .featured-description {
-        font-family: Raleway;
-        font-size: .85em;
-        font-weight: 300;
-        text-transform: uppercase;
-    }
+.featured-description {
+    font-family: Raleway;
+    font-size: .85em;
+    font-weight: 300;
+    text-transform: uppercase;
+}
 
 .marquee {
     grid-column: two;
@@ -110,19 +111,28 @@
 }
 
 
-
 .lower {
     grid-column: one;
     grid-row: bottom;
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-left: 7%;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 3.5%;
+    
+}
+
+.lower-cta {
+    font-family: Raleway;
+    font-weight: 300;
+    font-size: 1.5em;
+    padding: 10px;
 }
 
 .carousel {
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
 .carousel-content {
@@ -130,5 +140,11 @@
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    padding: 10%;
+    padding: 2.5% 5%;
 }
+
+
+
+
+
+
