@@ -114,6 +114,10 @@
 .lower {
     grid-column: one;
     grid-row: bottom;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 7%;
 }
 
 .carousel {
