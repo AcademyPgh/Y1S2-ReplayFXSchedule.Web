@@ -29,6 +29,7 @@ namespace ReplayFXSchedule.Web.Models
         public string Image { get; set; }
         public string PromoImage { get; set; }
         public bool IsPromo { get; set; }
+        public bool IsPrivate { get; set; }
 
         [Display(Name = "Event Type")]
         public virtual List<EventType> EventTypes { get; set; }
@@ -89,6 +90,8 @@ namespace ReplayFXSchedule.Web.Models
         public string Name { get; set; }
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
+        public bool IsPrivate { get; set; }
+        public bool IsMenu { get; set; }
 
         [JsonIgnore]
         public virtual Convention Convention { get; set; }

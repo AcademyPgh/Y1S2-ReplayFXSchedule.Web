@@ -93,7 +93,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image,IsPromo,PromoImage")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id)
+        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -214,7 +214,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image,IsPromo,PromoImage")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id)
+        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id)
         {
             //int indexExt = 0;
             //string ext = "";
@@ -296,6 +296,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpe.Image = replayEvent.Image;
                 rpe.PromoImage = replayEvent.PromoImage;
                 rpe.IsPromo = replayEvent.IsPromo;
+                rpe.IsPrivate = replayEvent.IsPrivate;
 
                 SaveReplayEventTypes(replayEvent.Id, categories.Split(','));
                 db.SaveChanges();

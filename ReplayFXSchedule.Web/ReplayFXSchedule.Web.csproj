@@ -325,6 +325,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201901302000037_AddFeed.Designer.cs">
       <DependentUpon>201901302000037_AddFeed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201902280219188_PrivateEvents.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201902280219188_PrivateEvents.Designer.cs">
+      <DependentUpon>201902280219188_PrivateEvents.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\ConventionModels.cs" />
@@ -597,6 +601,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201901302000037_AddFeed.resx">
       <DependentUpon>201901302000037_AddFeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201902280219188_PrivateEvents.resx">
+      <DependentUpon>201902280219188_PrivateEvents.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

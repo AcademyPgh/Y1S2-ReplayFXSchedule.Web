@@ -24,7 +24,24 @@ namespace ReplayFXSchedule.Web.Controllers
         public IHttpActionResult Index(int? convention_id = null)
         {
             Convention convention = db.Conventions.Find(convention_id);
-            convention.Events = convention.Events.OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
+            var showPrivate = false;
+            if (User.Identity.IsAuthenticated)
+            {
+                us = new UserService((ClaimsIdentity)User.Identity, db);
+                var user = us.GetUser();
+                if(user.AppUserPermissions.Any(a=> a.Convention.Id == convention_id && a.UserRole != UserRole.User))
+                {
+                    showPrivate = true;
+                }
+            }
+            if(showPrivate)
+            {
+                convention.Events = convention.Events.OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
+            }
+            else
+            {
+                convention.Events = convention.Events.Where(e => e.IsPrivate == false).OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
+            }
             convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
             return Ok(convention);
