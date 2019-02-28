@@ -21,27 +21,10 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: Public
         [Route("convention/{convention_id}")]
         [HttpGet]
-        public IHttpActionResult Index(int? convention_id = null)
+        public IHttpActionResult Index(int convention_id)
         {
             Convention convention = db.Conventions.Find(convention_id);
-            var showPrivate = false;
-            if (User.Identity.IsAuthenticated)
-            {
-                us = new UserService((ClaimsIdentity)User.Identity, db);
-                var user = us.GetUser();
-                if(user.AppUserPermissions.Any(a=> a.Convention.Id == convention_id && a.UserRole != UserRole.User))
-                {
-                    showPrivate = true;
-                }
-            }
-            if(showPrivate)
-            {
-                convention.Events = convention.Events.OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
-            }
-            else
-            {
-                convention.Events = convention.Events.Where(e => e.IsPrivate == false).OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
-            }
+            convention.Events = GetEvents(convention_id);
             convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
             return Ok(convention);
@@ -150,14 +133,39 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 date_time = convention.StartDate;
             }
-            return convention.Events.Where(e => e.Date == date_time).ToList();
+            return GetEvents(convention_id).Where(e => e.Date == date_time).ToList();
         }
 
         [Route("convention/{convention_id}/events/{date_time}/{location?}")]
         public List<Event> GetEventsByLocation(int convention_id, DateTime date_time, string location)
         {
-            var convention = db.Conventions.Find(convention_id);
-            return convention.Events.Where(e => !String.IsNullOrEmpty(e.Location) && e.Location.ToLower() == location.ToLower()).ToList();
+            var events = GetEvents(convention_id);
+            return events.Where(e => !String.IsNullOrEmpty(e.Location) && e.Location.ToLower() == location.ToLower()).ToList();
+        }
+
+        private List<Event> GetEvents(int convention_id)
+        {
+            Convention convention = db.Conventions.Find(convention_id);
+            List<Event> events = new List<Event>();
+            var showPrivate = false;
+            if (User.Identity.IsAuthenticated)
+            {
+                us = new UserService((ClaimsIdentity)User.Identity, db);
+                var user = us.GetUser();
+                if (user.AppUserPermissions.Any(a => a.Convention.Id == convention_id && a.UserRole != UserRole.User))
+                {
+                    showPrivate = true;
+                }
+            }
+            if (showPrivate)
+            {
+                events = convention.Events.OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
+            }
+            else
+            {
+                events = convention.Events.Where(e => e.IsPrivate == false).OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
+            }
+            return events;
         }
 
         //public ActionResult Conferences()
