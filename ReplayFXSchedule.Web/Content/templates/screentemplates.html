@@ -4,7 +4,7 @@
         <div class="carousel-content">
             <h1 class="featured-event">{{title}}</h1>
             <h2 class="featured-time">{{startTime12}} - {{endTime12}}</h2>
-            <h3 class="featured-location">LOCATION | {{location}}</h3> 
+            <h3 class="featured-location">LOCATION <span class="location-separator">|</span> {{location}}</h3> 
             {{#if extendedDescription}}
             <h3 class="featured-description">{{extendedDescription}}</h3>
             {{else}}
@@ -20,7 +20,7 @@
     <div class="marquee-content">
         <h1 class="marquee-time">{{startTime12}}</h1>
         <h1 class="marquee-event">{{title}}</h1>
-        <h2 class="marquee-location"><span class="marquee-location-static-text">location</span> {{location}}</h2>
+        <h2 class="marquee-location"><span><i class="fa fa-map-marker-alt" aria-hidden="true"></i></span> {{location}}</h2>
     </div>
     
     {{/each}}

@@ -71,7 +71,6 @@
 .marquee {
     grid-column: two;
     grid-row: top / 3;
-    
     background-color: rgba(0,0,0,.9);
     text-shadow: 4px 4px 4px #222;
 }
@@ -110,6 +109,11 @@
     text-transform: uppercase;
 }
 
+.location-separator {
+    font-size: larger;
+    font-weight: 300;
+}
+
 
 .lower {
     grid-column: one;
@@ -118,14 +122,14 @@
     justify-content: space-between;
     align-items: center;
     padding-left: 3.5%;
-    
 }
 
 .lower-cta {
     font-family: Raleway;
-    font-weight: 300;
+    font-weight: 500;
     font-size: 1.5em;
-    padding: 10px;
+    padding: 10px 26px 10px 10px;
+    text-shadow: 4px 4px 4px #222;
 }
 
 .carousel {
