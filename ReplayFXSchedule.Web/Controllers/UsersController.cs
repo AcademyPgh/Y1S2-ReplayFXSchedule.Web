@@ -71,6 +71,22 @@ namespace ReplayFXSchedule.Web.Controllers
             return RedirectToAction("Details", new { id });
         }
 
+        public ActionResult ToggleSuperAdmin(int id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            if (user.isSuperAdmin)
+            {
+                var permUser = db.AppUsers.Find(id);
+                if(permUser != null)
+                {
+                    permUser.isSuperAdmin = !permUser.isSuperAdmin;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Details", new { id });
+        }
+
         // GET: Users/Create
         public ActionResult Create()
         {
