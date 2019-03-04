@@ -52,8 +52,8 @@ namespace ReplayFXSchedule.Web.Models
     public enum UserRole
     {
         User,
-        VIP,
         Editor,
-        Admin
+        Admin,
+        VIP
     }
 }
