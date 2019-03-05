@@ -44,9 +44,9 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             var user = us.GetUser();
-            if (user.isSuperAdmin)
+            var perm = db.AppUserPermissions.Find(perm_id);
+            if (user.isSuperAdmin || user.AppUserPermissions.Any(p => p.Convention.Id == perm.Convention.Id && p.UserRole == UserRole.Admin))
             {
-                var perm = db.AppUserPermissions.Find(perm_id);
                 db.AppUserPermissions.Remove(perm);
                 db.SaveChanges();
             }
@@ -57,7 +57,7 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             var user = us.GetUser();
-            if (user.isSuperAdmin)
+            if (user.isSuperAdmin || user.AppUserPermissions.Any(p => p.Convention.Id ==convention_id && p.UserRole == UserRole.Admin))
             {
                 var permUser = db.AppUsers.Find(id);
                 var con = db.Conventions.Find(convention_id);
@@ -102,6 +102,7 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                appUser.isSuperAdmin = false;
                 db.AppUsers.Add(appUser);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -161,9 +162,14 @@ namespace ReplayFXSchedule.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            AppUser appUser = db.AppUsers.Find(id);
-            db.AppUsers.Remove(appUser);
-            db.SaveChanges();
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            if (user.isSuperAdmin)
+            { 
+                AppUser appUser = db.AppUsers.Find(id);
+                db.AppUsers.Remove(appUser);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
