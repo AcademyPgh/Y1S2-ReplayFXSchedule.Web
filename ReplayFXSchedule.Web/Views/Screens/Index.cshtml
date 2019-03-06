@@ -40,11 +40,16 @@
         var featureTemplate = Handlebars.compile(featSource);
         var fullTemplate = Handlebars.compile(fullSource)
         var images = new Array();
+        var numberOfEvents = 0;
 
         const backgrounds = [
-            "https://wallpapercave.com/wp/wp2551252.jpg",
-            "https://www.pixelstalk.net/wp-content/uploads/2016/06/DJ-Wallpapers-HD.jpg",
-            "https://wallpaperplay.com/walls/full/1/1/0/230235.jpg"
+            "/Content/img/temp/dark-1850120_1920.jpg",
+            "/Content/img/temp/dj-1332379_1920.jpg",
+            "/Content/img/temp/dj-1531431_1920.jpg",
+            "/Content/img/temp/dj-2581269_1920.jpg",
+            "/Content/img/temp/light-effects-482089_1920.jpg",
+            "/Content/img/temp/party-2173187_1920.jpg",
+            "/Content/img/temp/people-2568353_1920.jpg"
         ];
         let currBackground = 0;
 
@@ -68,6 +73,7 @@
                     console.log("full", full);
                     $("#featured").html(featureTemplate({ events: featured }));
                     updateMarqueeData(fullTemplate({ events: full }));
+                    numberOfEvents = full.length;
                 })
         }
 
@@ -94,7 +100,7 @@
 
         function startMarquee() {
             $('.marquee').marquee({
-                duration: 15000,
+                duration: 15000 + (2000 * numberOfEvents),
                 gap: 200,
                 delayBeforeStart: 2000,
                 direction: 'up',
@@ -109,8 +115,8 @@
         function startup() {
             setBackground();
             preloadBackgrounds();
-            setInterval(setBackground, 5000);
-            setInterval(loadEvents, 130000);
+            setInterval(setBackground, 180000);
+            setInterval(loadEvents, 600000);
             startMarquee();
             loadEvents();
         }
