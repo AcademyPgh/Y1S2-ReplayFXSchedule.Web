@@ -54,8 +54,10 @@
         let currBackground = 0;
 
         function loadEvents() {
+            const url = '/api/v2/convention/@ViewBag.convention_id/events/' + moment().format('MM-DD-YYYY');
+            console.log(url);
             $.ajax({
-                url: '/api/v2/convention/@ViewBag.convention_id/events/' + moment().format('MM-DD-YYYY'),
+                url: url,
                 method: 'GET'
             })
                 .then((res) => {
@@ -65,7 +67,7 @@
 
                     res.forEach((row) => {
                         full.push(row);
-                        if (moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
+                        if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
                             featured.push(row);
                         }
                     });
