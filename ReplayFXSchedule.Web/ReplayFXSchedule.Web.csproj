@@ -360,9 +360,11 @@
     <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-50.png" />
     <Content Include="Content\img\BuiltByAcademy-250.png" />
     <Content Include="Content\img\BuiltByAcademy-50.png" />
+    <Content Include="Content\img\temp\osgm-logo.png" />
     <Content Include="Content\img\replayfxlogo.png" />
     <Content Include="Content\css\now-ui-dashboard.css" />
     <Content Include="Content\css\now-ui-dashboard.min.css" />
+    <Content Include="Content\img\temp\mgc-logo.png" />
     <Content Include="Content\img\temp\osg1background.jpg" />
     <Content Include="Content\img\temp\osg2background.jpg" />
     <Content Include="Content\img\temp\osg3background.jpg" />
