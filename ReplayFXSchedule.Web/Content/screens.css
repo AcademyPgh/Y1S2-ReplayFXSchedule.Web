@@ -139,6 +139,10 @@
     position: relative;
 }
 
+.carousel-inner {
+    height: 100%;
+}
+
 .carousel-content {
     display: flex;
     flex: 1;
@@ -147,8 +151,17 @@
     padding: 2.5% 5%;
 }
 
+.event-image {
+    max-width: 12vw;
+    max-height: 12vw;
+    box-shadow: 5px 5px 17px rgba(0, 0, 0, .7);
+    float: left;
+    margin: 1rem 2rem 0 0;
+}
 
-
-
-
-
+.carousel-item.active.vertical-center {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

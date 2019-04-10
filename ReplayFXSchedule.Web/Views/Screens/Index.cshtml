@@ -36,7 +36,12 @@
     @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/templates/screentemplates.html")))
 
     <script>
-        var featSource = document.getElementById("featured-template").innerHTML;
+        @{
+            bool location_view = (ViewBag.location_name != null);
+        }
+        const location_view = ('@location_view' === 'True');
+        const featTemplate = location_view ? 'location-template' : 'featured-template';
+        var featSource = document.getElementById(featTemplate).innerHTML;
         var fullSource = document.getElementById("event-template").innerHTML;
         var featureTemplate = Handlebars.compile(featSource);
         var fullTemplate = Handlebars.compile(fullSource)
@@ -57,7 +62,10 @@
         let currBackground = 0;
 
         function loadEvents() {
-            const url = '/api/v2/convention/@ViewBag.convention_id/events/' + moment().format('MM-DD-YYYY');
+            var url = '/api/v2/convention/@ViewBag.convention_id/events/' + moment().format('MM-DD-YYYY');
+            if (location_view) {
+                url = url + '/@ViewBag.location_name';
+            }
             console.log(url);
             $.ajax({
                 url: url,
@@ -76,7 +84,17 @@
                     });
                     console.log("featured", featured);
                     console.log("full", full);
-                    $("#featured").html(featureTemplate({ events: featured }));
+                    if (location_view) {
+                        if (featured[0]) {
+                            $("#featured").html(featureTemplate(featured[0]));
+                        } else {
+                            const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                            const noMoreTemplate = Handlebars.compile(noMoreSource);
+                            $("#featured").html(noMoreTemplate({ location: '@ViewBag.location_name' }));
+                        }
+                    } else {
+                        $("#featured").html(featureTemplate({ events: featured }));
+                    }
                     updateMarqueeData(fullTemplate({ events: full }));
                     numberOfEvents = full.length;
                 })
