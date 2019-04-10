@@ -178,6 +178,26 @@ namespace ReplayFXSchedule.Web.Controllers
             return convention.EventTypes.Where(e => e.IsPrivate == false || e.IsPrivate == showPrivate).ToList();
         }
 
+        [Route("convention/{convention_id}/email")]
+        [HttpPost]
+        public IHttpActionResult SubmitEmail(int convention_id, PostUpload post)
+        {
+            var con = db.Conventions.Find(convention_id);
+            if(con == null)
+            {
+                return BadRequest();
+            }
+            var email = new UserEmail()
+            {
+                Convention = con,
+                Email = post.Text,
+                DateSubmitted = DateTime.Now
+            };
+            db.UserEmails.Add(email);
+            db.SaveChanges();
+            return Ok();
+        }
+
         //public ActionResult Conferences()
         //{
         //    string result = JsonConvert.SerializeObject(db.ReplayConventions.ToList(), Formatting.None,

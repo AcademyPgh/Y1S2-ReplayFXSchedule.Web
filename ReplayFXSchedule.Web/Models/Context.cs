@@ -22,5 +22,7 @@ namespace ReplayFXSchedule.Web.Models
 
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<AppUserPermission> AppUserPermissions { get; set; }
+
+        public DbSet<UserEmail> UserEmails { get; set; }
     }
 }
