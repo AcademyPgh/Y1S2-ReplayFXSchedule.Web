@@ -17,6 +17,11 @@ namespace ReplayFXSchedule.Web.Controllers
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
+        public ActionResult Emails()
+        {
+            return View(db.UserEmails.ToList());
+        }
+
         // GET: Users
         public ActionResult Index()
         {
