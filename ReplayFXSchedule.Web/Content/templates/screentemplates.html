@@ -15,6 +15,37 @@
     {{/each}}
 </script>
 
+<script id="location-template" type="text/x-handlebars-template">
+    <div class="carousel-item active">
+        <div class="carousel-content">
+            <h1 class="featured-location">{{location}}</h1>
+            <h2 class="featured-event">{{title}}</h2>
+            <div class="event-info">
+                {{#if imageUrl}}
+                <img src="{{imageUrl}}" class="event-image" alt="image for this event" />
+                {{/if}}
+                <div>
+                    <h3 class="featured-time">{{startTime12}} - {{endTime12}}</h3>
+                    {{#if extendedDescription}}
+                    <h3 class="featured-description">{{extendedDescription}}</h3>
+                    {{else}}
+                    <h3 class="featured-description">{{description}}</h3>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="no-more-template" type="text/x-handlebars-template">
+    <div class="carousel-item active vertical-center">
+        <div class="carousel-content">
+            <h1 class="featured-location">{{location}}</h1>
+            <h2 class="featured-event">No more events today</h2>
+        </div>
+    </div>
+</script>
+
 <script id="event-template" type="text/x-handlebars-template">
     {{#each events}}
     <div class="marquee-content">

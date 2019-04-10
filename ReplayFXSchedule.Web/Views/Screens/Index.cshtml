@@ -27,15 +27,21 @@
             </div>
         </div>
         <div class="lower">
-            <img style="max-height: 60%; max-width: 60%" src="https://www.mobilebeatlasvegas.com/wp-content/uploads/2018/05/MBLV23-logo-trans-2-1.png" />
-            <div class="lower-cta">Download the MobileBeat app at: bit.ly/mblvapp</div>
+            <img style="max-width: 14vw" src="~/Content/img/temp/osgm-logo.png" />
+            <img style="max-width: 12vw" src="~/Content/img/temp/mgc-logo.png" />
+            <div class="lower-cta">Download the Con App at: bit.ly/osgconapp</div>
         </div>
     </div>
 
     @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/templates/screentemplates.html")))
 
     <script>
-        var featSource = document.getElementById("featured-template").innerHTML;
+        @{
+            bool location_view = (ViewBag.location_name != null);
+        }
+        const location_view = ('@location_view' === 'True');
+        const featTemplate = location_view ? 'location-template' : 'featured-template';
+        var featSource = document.getElementById(featTemplate).innerHTML;
         var fullSource = document.getElementById("event-template").innerHTML;
         var featureTemplate = Handlebars.compile(featSource);
         var fullTemplate = Handlebars.compile(fullSource)
@@ -43,18 +49,23 @@
         var numberOfEvents = 0;
 
         const backgrounds = [
-            "/Content/img/temp/dark-1850120_1920.jpg",
-            "/Content/img/temp/dj-1332379_1920.jpg",
-            "/Content/img/temp/dj-1531431_1920.jpg",
-            "/Content/img/temp/dj-2581269_1920.jpg",
-            "/Content/img/temp/light-effects-482089_1920.jpg",
-            "/Content/img/temp/party-2173187_1920.jpg",
-            "/Content/img/temp/people-2568353_1920.jpg"
+            "/Content/img/temp/osg1background.jpg",
+            "/Content/img/temp/osg2background.jpg",
+            "/Content/img/temp/osg3background.jpg",
+            "/Content/img/temp/osg4background.jpg",
+            "/Content/img/temp/osg5background.jpg",
+            "/Content/img/temp/osg6background.jpg",
+            "/Content/img/temp/osg7background.jpg",
+            "/Content/img/temp/osg8background.jpg",
+            "/Content/img/temp/osg9background.jpg"
         ];
         let currBackground = 0;
 
         function loadEvents() {
-            const url = '/api/v2/convention/@ViewBag.convention_id/events/' + moment().format('MM-DD-YYYY');
+            var url = '/api/v2/convention/@ViewBag.convention_id/events/' + moment().format('MM-DD-YYYY');
+            if (location_view) {
+                url = url + '/@ViewBag.location_name';
+            }
             console.log(url);
             $.ajax({
                 url: url,
@@ -73,7 +84,17 @@
                     });
                     console.log("featured", featured);
                     console.log("full", full);
-                    $("#featured").html(featureTemplate({ events: featured }));
+                    if (location_view) {
+                        if (featured[0]) {
+                            $("#featured").html(featureTemplate(featured[0]));
+                        } else {
+                            const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                            const noMoreTemplate = Handlebars.compile(noMoreSource);
+                            $("#featured").html(noMoreTemplate({ location: '@ViewBag.location_name' }));
+                        }
+                    } else {
+                        $("#featured").html(featureTemplate({ events: featured }));
+                    }
                     updateMarqueeData(fullTemplate({ events: full }));
                     numberOfEvents = full.length;
                 })

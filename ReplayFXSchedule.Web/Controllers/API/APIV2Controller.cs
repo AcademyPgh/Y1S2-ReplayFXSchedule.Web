@@ -138,11 +138,15 @@ namespace ReplayFXSchedule.Web.Controllers
             return GetEvents(convention).Where(e => e.Date == date_time).ToList();
         }
 
-        [Route("convention/{convention_id}/events/{date_time}/{location?}")]
+        [Route("convention/{convention_id}/events/{date_time}/{location}")]
         public List<Event> GetEventsByLocation(int convention_id, DateTime date_time, string location)
         {
             var convention = db.Conventions.Find(convention_id);
-            var events = GetEvents(convention);
+            if (date_time < convention.StartDate || date_time > convention.EndDate.AddDays(1))
+            {
+                date_time = convention.StartDate;
+            }
+            var events = GetEvents(convention).Where(e => e.Date == date_time);
             return events.Where(e => !String.IsNullOrEmpty(e.Location) && e.Location.ToLower() == location.ToLower()).ToList();
         }
 
