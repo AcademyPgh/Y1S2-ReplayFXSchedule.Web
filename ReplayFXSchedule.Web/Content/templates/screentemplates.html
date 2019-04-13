@@ -4,12 +4,12 @@
         <div class="carousel-content">
             <h1 class="featured-event">{{title}}</h1>
             <h2 class="featured-time">{{startTime12}} - {{endTime12}}</h2>
-            <h3 class="featured-location">LOCATION <span class="location-separator">|</span> {{location}}</h3> 
+            <h3 class="featured-location">LOCATION <span class="location-separator">|</span> {{location}}</h3>
             {{#if extendedDescription}}
             <h3 class="featured-description">{{extendedDescription}}</h3>
             {{else}}
             <h3 class="featured-description">{{description}}</h3>
-            {{/if}}  
+            {{/if}}
         </div>
     </div>
     {{/each}}
@@ -18,7 +18,7 @@
 <script id="location-template" type="text/x-handlebars-template">
     <div class="carousel-item active">
         <div class="carousel-content">
-            <h1 class="featured-location">{{location}}</h1>
+            <h1 class="featured-location">{{location}} Room Schedule for Today</h1>
             <h2 class="featured-event">{{title}}</h2>
             <div class="event-info">
                 {{#if imageUrl}}

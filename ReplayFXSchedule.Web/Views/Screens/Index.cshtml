@@ -17,6 +17,12 @@
     <div class="background" id="background"></div>
     <div class="screen">
         <div class="featured">
+            @{
+                if (ViewBag.location_name == null)
+                {
+                    <div class="fixed-header">Today's Full Schedule</div>
+                }
+            }
             <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="false" data-interval="10000">
                 <div class="carousel-inner" id="featured">
                 </div>
