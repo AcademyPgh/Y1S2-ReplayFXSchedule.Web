@@ -6,7 +6,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">List Game Locations</h4>
+        <h4 class="card-title">List Locations</h4>
     </div>
     <div class="card-body">
 
@@ -31,7 +31,8 @@
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                            @Html.ActionLink("Schedule Link", "Location", "Screens", new { id = item.Id, convention_id = item.Convention.Id }, null)
                         </td>
                     </tr>
                 }
