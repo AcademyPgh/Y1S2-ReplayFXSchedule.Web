@@ -14,7 +14,7 @@ namespace ReplayFXSchedule.Web.Models
         public string Title { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [Display(Name ="Date")]
+        [Display(Name = "Date")]
         public DateTime Date { get; set; }
         [DataType(DataType.Time)]
         [Display(Name = "Start Time")]
@@ -25,7 +25,20 @@ namespace ReplayFXSchedule.Web.Models
         public string Description { get; set; }
         [Display(Name = "Extended Description")]
         public string ExtendedDescription { get; set; }
-        public string Location { get; set; }
+        public string Location {
+            get
+            {
+                if(EventLocation == null)
+                {
+                    return "No Location";
+                }
+                else
+                {
+                    return EventLocation.Location;
+                }
+            }
+        }
+        public  virtual GameLocation EventLocation { get; set; }
         public string Image { get; set; }
         public string PromoImage { get; set; }
         public bool IsPromo { get; set; }

@@ -79,6 +79,8 @@ namespace ReplayFXSchedule.Web.Models
         [Display(Name = "Ticket Url")]
         public string TicketUrl { get; set; }
         public string Url { get; set; }
+        [Display(Name = "Map Tracking Url")]
+        public string TrackingUrl { get; set; }
 
         public string HeaderImageUrl
         {

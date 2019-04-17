@@ -139,7 +139,7 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         [Route("convention/{convention_id}/events/{date_time}/{location}")]
-        public List<Event> GetEventsByLocation(int convention_id, DateTime date_time, string location)
+        public List<Event> GetEventsByLocation(int convention_id, DateTime date_time, int location)
         {
             var convention = db.Conventions.Find(convention_id);
             if (date_time < convention.StartDate || date_time > convention.EndDate.AddDays(1))
@@ -147,7 +147,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 date_time = convention.StartDate;
             }
             var events = GetEvents(convention).Where(e => e.Date == date_time);
-            return events.Where(e => !String.IsNullOrEmpty(e.Location) && e.Location.ToLower() == location.ToLower()).ToList();
+            return events.Where(e => e.EventLocation != null && e.EventLocation.Id == location).ToList();
         }
 
         private bool isVip(Convention convention)

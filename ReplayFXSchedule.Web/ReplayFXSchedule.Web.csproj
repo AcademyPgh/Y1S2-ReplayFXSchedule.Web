@@ -333,6 +333,18 @@
     <Compile Include="Migrations\ReplayFXDbContext\201904102055376_UserEmail.Designer.cs">
       <DependentUpon>201904102055376_UserEmail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201904171819143_EventLocations.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201904171819143_EventLocations.Designer.cs">
+      <DependentUpon>201904171819143_EventLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201904171920125_RemoveLocationString.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201904171920125_RemoveLocationString.Designer.cs">
+      <DependentUpon>201904171920125_RemoveLocationString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201904172030153_TrackingUrl.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201904172030153_TrackingUrl.Designer.cs">
+      <DependentUpon>201904172030153_TrackingUrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\ConventionModels.cs" />
@@ -624,6 +636,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201904102055376_UserEmail.resx">
       <DependentUpon>201904102055376_UserEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201904171819143_EventLocations.resx">
+      <DependentUpon>201904171819143_EventLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201904171920125_RemoveLocationString.resx">
+      <DependentUpon>201904171920125_RemoveLocationString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201904172030153_TrackingUrl.resx">
+      <DependentUpon>201904172030153_TrackingUrl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

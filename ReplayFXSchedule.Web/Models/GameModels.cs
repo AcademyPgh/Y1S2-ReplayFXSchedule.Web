@@ -56,6 +56,10 @@ namespace ReplayFXSchedule.Web.Models
     {
         public int Id { get; set; }
         public string Location { get; set; }
+        [Display(Name ="Show for Games")]
+        public bool ShowForGames { get; set; }
+        [Display(Name = "Show for Events")]
+        public bool ShowForEvents { get; set; }
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]

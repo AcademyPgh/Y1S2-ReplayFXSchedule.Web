@@ -60,7 +60,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile)
+        public ActionResult Create([Bind(Include = "StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url,TrackingUrl")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             var user = us.GetUser();
@@ -108,7 +108,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile)
+        public ActionResult Edit([Bind(Include = "Id,StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url,TrackingUrl")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile)
         {
             if (ModelState.IsValid)
             {
@@ -169,6 +169,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 con.Hashtag = convention.Hashtag;
                 con.HeaderImage = convention.HeaderImage;
                 con.MapImage = convention.MapImage;
+                con.TrackingUrl = convention.TrackingUrl;
 
                 db.SaveChanges();
                 return RedirectToAction("Index");

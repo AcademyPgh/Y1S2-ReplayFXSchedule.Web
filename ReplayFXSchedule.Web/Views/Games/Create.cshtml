@@ -38,10 +38,12 @@
                 success: function (data) {
                     displayListElement.html('');
                     data.map(function (location) {
-                        displayListElement.append('<div class="align-middle" id="cat' + location.id + '" data-id=' + location.id + '><span id="catspan' + location.id + '"></span>' + location.location + '</div>');
-                        $('#cat' + location.id).click(function () { toggleItem(location.id); });
-                        if (list.indexOf(location.id) > -1) {
-                            $('#catspan' + location.id).addClass(checkedClass);
+                        if (location.showForGames) {
+                            displayListElement.append('<div class="align-middle" id="cat' + location.id + '" data-id=' + location.id + '><span id="catspan' + location.id + '"></span>' + location.location + '</div>');
+                            $('#cat' + location.id).click(function () { toggleItem(location.id); });
+                            if (list.indexOf(location.id) > -1) {
+                                $('#catspan' + location.id).addClass(checkedClass);
+                            }
                         }
                     });
                 }

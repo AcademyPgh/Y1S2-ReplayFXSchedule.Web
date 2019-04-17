@@ -11,6 +11,34 @@
             @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
         </div>
     </div>
+    <div class="row">
+        @Html.LabelFor(model => model.ShowForEvents, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10 form-group">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" data-val="true" name="ShowForEvents" value="true" @(Model != null && Model.ShowForEvents ? "checked" : "")>
+                    &nbsp;
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @Html.LabelFor(model => model.ShowForGames, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10 form-group">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" data-val="true" name="ShowForGames" value="true" @(Model != null && Model.ShowForGames ? "checked" : "")>
+                    &nbsp;
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

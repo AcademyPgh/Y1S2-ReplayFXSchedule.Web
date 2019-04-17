@@ -85,6 +85,17 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             ViewBag.EventTypeIDs = "";
             ViewBag.ConId = convention_id;
+            var dropdownlist = new List<SelectListItem>();
+            foreach(var location in db.Conventions.Find(convention_id).GameLocations.Where(gl => gl.ShowForEvents == true).ToList())
+            {
+                dropdownlist.Add(new SelectListItem
+                {
+                    Text = location.Location,
+                    Value = location.Id.ToString(),
+                    Selected = false
+                });
+            }
+            ViewBag.EventLocations = dropdownlist;
             return View(eventToCopy);
         }
 
@@ -93,7 +104,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id)
+        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id, int EventLocations)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -116,6 +127,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 {
                     replayEvent.PromoImage = azure.GetFileName(promoUpload);
                 }
+                replayEvent.EventLocation = con.GameLocations.Where(gl => gl.Id == EventLocations).FirstOrDefault();
                 con.Events.Add(replayEvent);
                 replayEvent.EventTypes = new List<EventType>();
                 foreach(var id in categories.Split(','))
@@ -158,6 +170,17 @@ namespace ReplayFXSchedule.Web.Controllers
 
             ViewBag.ConId = convention_id;
             ViewBag.EventTypeIDs = string.Join(",", replayEvent.EventTypes.Select(r => r.Id));
+            var dropdownlist = new List<SelectListItem>();
+            foreach (var location in db.Conventions.Find(convention_id).GameLocations.Where(gl => gl.ShowForEvents == true).ToList())
+            {
+                dropdownlist.Add(new SelectListItem
+                {
+                    Text = location.Location,
+                    Value = location.Id.ToString(),
+                    Selected = (replayEvent.EventLocation != null && replayEvent.EventLocation.Id == location.Id)
+                });
+            }
+            ViewBag.EventLocations = dropdownlist;
             return View(replayEvent);
         }
 
@@ -214,7 +237,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Location,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id)
+        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id, int EventLocations)
         {
             //int indexExt = 0;
             //string ext = "";
@@ -292,11 +315,12 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpe.EndTime = replayEvent.EndTime;
                 rpe.Description = replayEvent.Description;
                 rpe.ExtendedDescription = replayEvent.ExtendedDescription;
-                rpe.Location = replayEvent.Location;
+                //rpe.Location = replayEvent.Location;
                 rpe.Image = replayEvent.Image;
                 rpe.PromoImage = replayEvent.PromoImage;
                 rpe.IsPromo = replayEvent.IsPromo;
                 rpe.IsPrivate = replayEvent.IsPrivate;
+                rpe.EventLocation = convention.GameLocations.Where(gl => gl.Id == EventLocations).FirstOrDefault();
 
                 SaveReplayEventTypes(replayEvent.Id, categories.Split(','));
                 db.SaveChanges();

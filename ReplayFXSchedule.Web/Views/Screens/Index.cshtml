@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ReplayFXSchedule.Web.Models.GameLocation
+
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -18,7 +20,7 @@
     <div class="screen">
         <div class="featured">
             @{
-                if (ViewBag.location_name == null)
+                if (@Model == null)
                 {
                     <div class="fixed-header">Today's Full Schedule</div>
                 }
@@ -43,7 +45,12 @@
 
     <script>
         @{
-            bool location_view = (ViewBag.location_name != null);
+            bool location_view = (Model != null);
+            string location_string = "";
+            if(Model != null)
+            {
+                location_string = Model.Location;
+            }
         }
         const location_view = ('@location_view' === 'True');
         const featTemplate = location_view ? 'location-template' : 'featured-template';
@@ -96,7 +103,7 @@
                         } else {
                             const noMoreSource = document.getElementById("no-more-template").innerHTML;
                             const noMoreTemplate = Handlebars.compile(noMoreSource);
-                            $("#featured").html(noMoreTemplate({ location: '@ViewBag.location_name' }));
+                            $("#featured").html(noMoreTemplate({ location: '@location_string' }));
                         }
                     } else {
                         $("#featured").html(featureTemplate({ events: featured }));
