@@ -1,6 +1,7 @@
-﻿@model ReplayFXSchedule.Web.Models.GameLocation
+﻿@model ReplayFXSchedule.Web.Models.Convention
 
 @{
+    ReplayFXSchedule.Web.Models.GameLocation location = ViewBag.location;
     Layout = null;
 }
 <!DOCTYPE html>
@@ -20,7 +21,7 @@
     <div class="screen">
         <div class="featured">
             @{
-                if (@Model == null)
+                if (location == null)
                 {
                     <div class="fixed-header">Today's Full Schedule</div>
                 }
@@ -36,7 +37,7 @@
         </div>
         <div class="lower">
             <img style="max-width: 14vw" src="~/Content/img/temp/osgm-logo.png" />
-            <img style="max-width: 12vw" src="~/Content/img/temp/mgc-logo.png" />
+            <img style="max-width: 12vw" id="sponsor" src="~/Content/img/temp/mgc-logo.png" />
             <div class="lower-cta">Download the Con App at: bit.ly/osgconapp</div>
         </div>
     </div>
@@ -45,11 +46,11 @@
 
     <script>
         @{
-            bool location_view = (Model != null);
+            bool location_view = (location != null);
             string location_string = "";
-            if(Model != null)
+            if(location_view)
             {
-                location_string = Model.Location;
+                location_string = location.Location;
             }
         }
         const location_view = ('@location_view' === 'True');
@@ -60,6 +61,20 @@
         var fullTemplate = Handlebars.compile(fullSource)
         var images = new Array();
         var numberOfEvents = 0;
+
+        @{ 
+            string sponsorImages = "";
+            foreach (var sponsor in Model.Sponsors)
+            {
+                if (sponsor.Image != null)
+                {
+                    sponsorImages += $"'{sponsor.ImageUrl}', ";
+                }
+            }
+        }
+
+        const sponsorImages = [@Html.Raw(sponsorImages)];
+        let currSponsor = 0;
 
         const backgrounds = [
             "/Content/img/temp/osg1background.jpg",
@@ -75,42 +90,52 @@
         let currBackground = 0;
 
         function loadEvents() {
-            var url = '/api/v2/convention/@ViewBag.convention_id/events/' + moment().format('MM-DD-YYYY');
+            var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
             if (location_view) {
-                url = url + '/@ViewBag.location_name';
-            }
-            console.log(url);
-            $.ajax({
-                url: url,
-                method: 'GET'
-            })
-                .then((res) => {
-                    let featured = [];
-                    let full = [];
-                    const currDate = moment().format('YYYY-MM-DD');
+                url = url + '/@location.Id';
+        }
+        console.log(url);
+        $.ajax({
+            url: url,
+            method: 'GET'
+        })
+            .then((res) => {
+                let featured = [];
+                let full = [];
+                const currDate = moment().format('YYYY-MM-DD');
 
-                    res.forEach((row) => {
-                        full.push(row);
-                        if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
-                            featured.push(row);
-                        }
-                    });
-                    console.log("featured", featured);
-                    console.log("full", full);
-                    if (location_view) {
-                        if (featured[0]) {
-                            $("#featured").html(featureTemplate(featured[0]));
-                        } else {
-                            const noMoreSource = document.getElementById("no-more-template").innerHTML;
-                            const noMoreTemplate = Handlebars.compile(noMoreSource);
-                            $("#featured").html(noMoreTemplate({ location: '@location_string' }));
-                        }
-                    } else {
-                        $("#featured").html(featureTemplate({ events: featured }));
+                res.forEach((row) => {
+                    full.push(row);
+                    if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
+                        featured.push(row);
                     }
-                    updateMarqueeData(fullTemplate({ events: full }));
-                    numberOfEvents = full.length;
-                })
+                });
+                console.log("featured", featured);
+                console.log("full", full);
+                if (location_view) {
+                    if (featured[0]) {
+                        $("#featured").html(featureTemplate(featured[0]));
+                    } else {
+                        const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                        const noMoreTemplate = Handlebars.compile(noMoreSource);
+                        $("#featured").html(noMoreTemplate({ location: '@location_string' }));
+                    }
+                } else {
+                    $("#featured").html(featureTemplate({ events: featured }));
+                }
+                updateMarqueeData(fullTemplate({ events: full }));
+                numberOfEvents = full.length;
+            })
+        }
+
+        function setSponsor() {
+            if (sponsorImages.length > 0) {
+                $("#sponsor").attr("src", sponsorImages[currSponsor]);
+                currSponsor = currSponsor + 1;
+                if (currSponsor >= sponsorImages.length) {
+                    currSponsor = 0;
+                }
+            }
         }
 
         function setBackground() {
@@ -152,6 +177,7 @@
             setBackground();
             preloadBackgrounds();
             setInterval(setBackground, 180000);
+            setInterval(setSponsor, 5000);
             setInterval(loadEvents, 600000);
             startMarquee();
             loadEvents();

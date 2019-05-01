@@ -14,17 +14,20 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: Screens/:convention_id
         public ActionResult Index(int convention_id)
         {
-            ViewBag.convention_id = convention_id;
-            return View();
+            return View(db.Conventions.Find(convention_id));
         }
 
         // GET: Screens/:convention_id/Location/:id
         public ActionResult Location(int convention_id, int id)
         {
-            ViewBag.convention_id = convention_id;
-            ViewBag.location_name = id;
-
-            return View("Index", db.GameLocations.Find(id));
+            var con = db.Conventions.Find(convention_id);
+            var location = con.GameLocations.Where(gl => gl.Id == id).FirstOrDefault();
+            if(location == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.location = location;
+            return View("Index", con);
         }
     }
 }
