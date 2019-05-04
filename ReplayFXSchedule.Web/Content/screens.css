@@ -81,7 +81,7 @@
 .marquee {
     grid-column: two;
     grid-row: top / 3;
-    background-color: rgba(0,0,0,.9);
+    background-color: rgba(0,0,0,.5);
     text-shadow: 4px 4px 4px #222;
 }
 

@@ -81,6 +81,8 @@ namespace ReplayFXSchedule.Web.Models
         public string Url { get; set; }
         [Display(Name = "Map Tracking Url")]
         public string TrackingUrl { get; set; }
+        [Display(Name = "App Download Link")]
+        public string AppUrl { get; set; }
 
         public string HeaderImageUrl
         {

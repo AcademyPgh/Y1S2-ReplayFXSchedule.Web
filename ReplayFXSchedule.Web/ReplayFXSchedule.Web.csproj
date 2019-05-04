@@ -345,6 +345,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201904172030153_TrackingUrl.Designer.cs">
       <DependentUpon>201904172030153_TrackingUrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201905042111096_AppUrl.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201905042111096_AppUrl.Designer.cs">
+      <DependentUpon>201905042111096_AppUrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\ConventionModels.cs" />
@@ -377,6 +381,21 @@
     <Content Include="Content\img\Academy-Work-Hard-Pittsburgh-Logo-50.png" />
     <Content Include="Content\img\BuiltByAcademy-250.png" />
     <Content Include="Content\img\BuiltByAcademy-50.png" />
+    <Content Include="Content\img\mmf\800_0394.jpg" />
+    <Content Include="Content\img\mmf\800_0504.jpg" />
+    <Content Include="Content\img\mmf\800_0604.jpg" />
+    <Content Include="Content\img\mmf\800_0666.jpg" />
+    <Content Include="Content\img\mmf\_3005771.jpg" />
+    <Content Include="Content\img\mmf\_3005777.jpg" />
+    <Content Include="Content\img\mmf\_3005828.jpg" />
+    <Content Include="Content\img\mmf\_MG_3773.jpg" />
+    <Content Include="Content\img\mmf\_MG_3967.jpg" />
+    <Content Include="Content\img\mmf\_MG_4006.jpg" />
+    <Content Include="Content\img\mmf\_MG_4044.jpg" />
+    <Content Include="Content\img\mmf\_MG_4078.jpg" />
+    <Content Include="Content\img\mmf\_MG_4548.jpg" />
+    <Content Include="Content\img\mmf\_MG_4587.jpg" />
+    <Content Include="Content\img\mmf\_MG_5462.jpg" />
     <Content Include="Content\img\temp\osgm-logo.png" />
     <Content Include="Content\img\replayfxlogo.png" />
     <Content Include="Content\css\now-ui-dashboard.css" />
@@ -645,6 +664,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201904172030153_TrackingUrl.resx">
       <DependentUpon>201904172030153_TrackingUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201905042111096_AppUrl.resx">
+      <DependentUpon>201905042111096_AppUrl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

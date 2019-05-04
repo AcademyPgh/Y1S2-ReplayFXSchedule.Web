@@ -43,7 +43,7 @@
         <div class="lower">
             <img style="max-width: 14vw" src="~/Content/img/temp/osgm-logo.png" />
             <img style="max-width: 12vw" id="sponsor" src="~/Content/img/temp/mgc-logo.png" />
-            <div class="lower-cta">Download the Con App at: bit.ly/osgconapp</div>
+            <div class="lower-cta">Download the Con App at: @Model.AppUrl</div>
         </div>
     </div>
 
@@ -82,15 +82,21 @@
         let currSponsor = 0;
 
         const backgrounds = [
-            "/Content/img/temp/osg1background.jpg",
-            "/Content/img/temp/osg2background.jpg",
-            "/Content/img/temp/osg3background.jpg",
-            "/Content/img/temp/osg4background.jpg",
-            "/Content/img/temp/osg5background.jpg",
-            "/Content/img/temp/osg6background.jpg",
-            "/Content/img/temp/osg7background.jpg",
-            "/Content/img/temp/osg8background.jpg",
-            "/Content/img/temp/osg9background.jpg"
+            "/Content/img/mmf/_3005771.jpg",
+            "/Content/img/mmf/_3005777.jpg",
+            "/Content/img/mmf/_3005828.jpg",
+            "/Content/img/mmf/_MG_3773.jpg",
+            "/Content/img/mmf/_MG_3967.jpg",
+            "/Content/img/mmf/_MG_4006.jpg",
+            "/Content/img/mmf/_MG_4044.jpg",
+            "/Content/img/mmf/_MG_4078.jpg",
+            "/Content/img/mmf/_MG_4548.jpg",
+            "/Content/img/mmf/_MG_4587.jpg",
+            "/Content/img/mmf/_MG_5462.jpg",
+            "/Content/img/mmf/800_0394.jpg",
+            "/Content/img/mmf/800_0504.jpg",
+            "/Content/img/mmf/800_0604.jpg",
+            "/Content/img/mmf/800_0666.jpg",
         ];
         let currBackground = 0;
 
@@ -181,7 +187,8 @@
         function startup() {
             setBackground();
             preloadBackgrounds();
-            setInterval(setBackground, 180000);
+            //setInterval(setBackground, 180000);
+            setInterval(setBackground, 5000);
             setInterval(setSponsor, 5000);
             setInterval(loadEvents, 600000);
             startMarquee();
