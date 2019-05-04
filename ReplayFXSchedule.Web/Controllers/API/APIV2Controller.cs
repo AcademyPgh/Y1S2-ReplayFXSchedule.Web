@@ -179,7 +179,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 showPrivate = isVip(convention);
             }
-            return convention.EventTypes.Where(e => e.IsPrivate == false || e.IsPrivate == showPrivate).ToList();
+            return convention.EventTypes.Where(e => e.IsPrivate == false || e.IsPrivate == showPrivate).OrderBy(e => e.Name).ToList();
         }
 
         [Route("convention/{convention_id}/email")]
