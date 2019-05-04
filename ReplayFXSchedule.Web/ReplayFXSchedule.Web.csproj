@@ -588,6 +588,7 @@
     <Content Include="Views\Sponsors\_form.cshtml" />
     <Content Include="Views\Screens\Index.cshtml" />
     <Content Include="Views\Users\Emails.cshtml" />
+    <Content Include="Views\Screens\Map.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

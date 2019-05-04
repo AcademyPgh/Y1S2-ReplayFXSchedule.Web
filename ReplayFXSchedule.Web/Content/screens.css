@@ -11,8 +11,8 @@
     background-repeat: no-repeat;
     background-position: center center;
     transition-duration: 1s;
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
     transform: scale(1.1);
     z-index: -3;
     overflow: hidden;

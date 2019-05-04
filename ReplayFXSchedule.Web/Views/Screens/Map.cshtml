@@ -1,0 +1,202 @@
+﻿@model ReplayFXSchedule.Web.Models.Convention
+
+@{
+    ReplayFXSchedule.Web.Models.GameLocation location = ViewBag.location;
+    string locationId = "";
+    if(location != null)
+    {
+        locationId = location.Id.ToString();
+    }
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/screens")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/screens")
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Lato:300,400,900|Raleway:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+<body>
+    <div class="background" id="background"></div>
+    <div class="screen">
+        <div class="featured">
+            @{
+                if (location == null)
+                {
+                    <div class="fixed-header">Today's Full Schedule</div>
+                }
+            }
+            <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="false" data-interval="10000">
+                <div class="carousel-inner" id="featured">
+                </div>
+            </div>
+        </div>
+        <div class="marquee">
+            <div id="full_list">
+            </div>
+        </div>
+        <div class="lower">
+            <img style="max-width: 14vw; max-height: 12vh;" src="~/Content/img/temp/osgm-logo.png" />
+            <img style="max-width: 12vw; max-height: 12vh;" id="sponsor" src="~/Content/img/temp/mgc-logo.png" />
+            <div class="lower-cta">Download the App at: @Model.AppUrl</div>
+        </div>
+    </div>
+
+    @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/templates/screentemplates.html")))
+
+    <script>
+        @{
+            bool location_view = (location != null);
+            string location_string = "";
+            if(location_view)
+            {
+                location_string = location.Location;
+            }
+        }
+        const location_view = ('@location_view' === 'True');
+        const featTemplate = location_view ? 'location-template' : 'featured-template';
+        var featSource = document.getElementById(featTemplate).innerHTML;
+        var fullSource = document.getElementById("event-template").innerHTML;
+        var featureTemplate = Handlebars.compile(featSource);
+        var fullTemplate = Handlebars.compile(fullSource)
+        var images = new Array();
+        var numberOfEvents = 0;
+
+        @{ 
+            string sponsorImages = "";
+            foreach (var sponsor in Model.Sponsors)
+            {
+                if (sponsor.Image != null)
+                {
+                    sponsorImages += $"'{sponsor.ImageUrl}', ";
+                }
+            }
+        }
+
+        const sponsorImages = [@Html.Raw(sponsorImages)];
+        let currSponsor = 0;
+
+        const backgrounds = [
+            "/Content/img/mmf/_3005771.jpg",
+            "/Content/img/mmf/_3005777.jpg",
+            "/Content/img/mmf/_3005828.jpg",
+            "/Content/img/mmf/_MG_3773.jpg",
+            "/Content/img/mmf/_MG_3967.jpg",
+            "/Content/img/mmf/_MG_4006.jpg",
+            "/Content/img/mmf/_MG_4044.jpg",
+            "/Content/img/mmf/_MG_4078.jpg",
+            "/Content/img/mmf/_MG_4548.jpg",
+            "/Content/img/mmf/_MG_4587.jpg",
+            "/Content/img/mmf/_MG_5462.jpg",
+            "/Content/img/mmf/800_0394.jpg",
+            "/Content/img/mmf/800_0504.jpg",
+            "/Content/img/mmf/800_0604.jpg",
+            "/Content/img/mmf/800_0666.jpg",
+        ];
+        let currBackground = 0;
+
+        function loadEvents() {
+            var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
+            if (location_view) {
+                url = url + '/@locationId';
+        }
+        console.log(url);
+        $.ajax({
+            url: url,
+            method: 'GET'
+        })
+            .then((res) => {
+                let featured = [];
+                let full = [];
+                const currDate = moment().format('YYYY-MM-DD');
+
+                res.forEach((row) => {
+                    full.push(row);
+                    if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
+                        featured.push(row);
+                    }
+                });
+                console.log("featured", featured);
+                console.log("full", full);
+                if (location_view) {
+                    if (featured[0]) {
+                        $("#featured").html(featureTemplate(featured[0]));
+                    } else {
+                        const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                        const noMoreTemplate = Handlebars.compile(noMoreSource);
+                        $("#featured").html(noMoreTemplate({ location: '@location_string' }));
+                    }
+                } else {
+                    $("#featured").html(featureTemplate({ events: featured }));
+                }
+                updateMarqueeData(fullTemplate({ events: full }));
+                numberOfEvents = full.length;
+            })
+        }
+
+        function setSponsor() {
+            if (sponsorImages.length > 0) {
+                $("#sponsor").attr("src", sponsorImages[currSponsor]);
+                currSponsor = currSponsor + 1;
+                if (currSponsor >= sponsorImages.length) {
+                    currSponsor = 0;
+                }
+            }
+        }
+
+        function setBackground() {
+            $("#background").css("background-image", "url(" + backgrounds[currBackground] + ")");
+            currBackground = currBackground + 1;
+            if (currBackground >= backgrounds.length) {
+                currBackground = 0;
+            }
+        }
+
+        function preloadBackgrounds() {
+            for (let i = 0; i < backgrounds.length; i++) {
+                images[i] = new Image()
+                images[i].src = backgrounds[i];
+            }
+        }
+
+        function updateMarqueeData(html) {
+            stopMarquee();
+            $("#full_list").html(html);
+            startMarquee();
+        }
+
+        function startMarquee() {
+            $('.marquee').marquee({
+                duration: 10000 + (1250 * numberOfEvents),
+                gap: 200,
+                delayBeforeStart: 2000,
+                direction: 'up',
+                duplicated: true
+            })
+        }
+
+        function stopMarquee() {
+            $('.marquee').marquee('destroy');
+        }
+
+        function startup() {
+            setBackground();
+            preloadBackgrounds();
+            //setInterval(setBackground, 180000);
+            setInterval(setBackground, 5000);
+            setInterval(setSponsor, 5000);
+            setInterval(loadEvents, 600000);
+            startMarquee();
+            loadEvents();
+            setTimeout(() => { location.reload(true) }, 1200000);
+        }
+
+        $(startup);
+    </script>
+</body>
+</html>
