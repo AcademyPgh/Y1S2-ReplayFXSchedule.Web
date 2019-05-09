@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ReplayFXSchedule.Web.Models
 {
@@ -22,6 +23,7 @@ namespace ReplayFXSchedule.Web.Models
         public string EndTime { get; set; }
 
         public string Title { get; set; }
+        [AllowHtml]
         public string Text { get; set; }
         public string Image { get; set; }
         public string ImageUrl { get
