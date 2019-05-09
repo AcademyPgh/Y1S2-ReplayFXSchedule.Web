@@ -87,7 +87,12 @@
                                 <p>Sponsors</p>
                             </a>
                         </li>
-
+                        <li class="@((string)ViewContext.RouteData.Values["controller"] == "DisplayMessages" ? "active" : "")">
+                            <a href="@Url.Action("Index", "DisplayMessages", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                <i class="now-ui-icons media-1_album"></i>
+                                <p>Screen Messages</p>
+                            </a>
+                        </li>
                         <li>
                             <a data-toggle="collapse" href="#adminActions">
                                 <i class="now-ui-icons loader_gear"></i>

@@ -120,6 +120,7 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<EventType> EventTypes { get; set; }
         public virtual List<Event> Events { get; set; }
         public virtual List<Sponsor> Sponsors { get; set; }
+        public virtual List<DisplayMessage> DisplayMessages { get; set; }
 
         [JsonIgnore]
         public virtual List<Post> Posts { get; set; }

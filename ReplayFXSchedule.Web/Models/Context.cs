@@ -24,5 +24,6 @@ namespace ReplayFXSchedule.Web.Models
         public DbSet<AppUserPermission> AppUserPermissions { get; set; }
 
         public DbSet<UserEmail> UserEmails { get; set; }
+        public DbSet<DisplayMessage> DisplayMessages { get; set; }
     }
 }

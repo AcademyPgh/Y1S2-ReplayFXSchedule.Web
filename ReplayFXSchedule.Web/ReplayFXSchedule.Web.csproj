@@ -243,6 +243,7 @@
     <Compile Include="Controllers\API\APIV2Controller.cs" />
     <Compile Include="Controllers\API\UsersV2Controller.cs" />
     <Compile Include="Controllers\ConventionsController.cs" />
+    <Compile Include="Controllers\DisplayMessagesController.cs" />
     <Compile Include="Controllers\GameLocationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublicController.cs" />
@@ -349,9 +350,14 @@
     <Compile Include="Migrations\ReplayFXDbContext\201905042111096_AppUrl.Designer.cs">
       <DependentUpon>201905042111096_AppUrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201905090122168_AddDisplayMessages.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201905090122168_AddDisplayMessages.Designer.cs">
+      <DependentUpon>201905090122168_AddDisplayMessages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\ConventionModels.cs" />
+    <Compile Include="Models\DisplayMessagesModel.cs" />
     <Compile Include="Models\EventModels.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -589,6 +595,12 @@
     <Content Include="Views\Screens\Index.cshtml" />
     <Content Include="Views\Users\Emails.cshtml" />
     <Content Include="Views\Screens\Map.cshtml" />
+    <Content Include="Views\DisplayMessages\Create.cshtml" />
+    <Content Include="Views\DisplayMessages\Delete.cshtml" />
+    <Content Include="Views\DisplayMessages\Details.cshtml" />
+    <Content Include="Views\DisplayMessages\Edit.cshtml" />
+    <Content Include="Views\DisplayMessages\Index.cshtml" />
+    <Content Include="Views\DisplayMessages\_form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -668,6 +680,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201905042111096_AppUrl.resx">
       <DependentUpon>201905042111096_AppUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201905090122168_AddDisplayMessages.resx">
+      <DependentUpon>201905090122168_AddDisplayMessages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
