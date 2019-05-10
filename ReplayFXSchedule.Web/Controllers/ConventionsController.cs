@@ -60,7 +60,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url,TrackingUrl,AppUrl")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile)
+        public ActionResult Create([Bind(Include = "StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url,TrackingUrl,AppUrl,LogoImage")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile, HttpPostedFileBase logoImageFile)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             var user = us.GetUser();
@@ -77,6 +77,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 if (mapImageFile != null)
                 {
                     convention.MapImage = azure.GetFileName(mapImageFile);
+                }
+                if (logoImageFile != null)
+                {
+                    convention.LogoImage = azure.GetFileName(logoImageFile);
                 }
 
                 db.Conventions.Add(convention);
@@ -108,7 +112,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url,TrackingUrl,AppUrl")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile)
+        public ActionResult Edit([Bind(Include = "Id,StartDate,EndDate,Name,Address,Address2,City,State,Zip,HeaderImage,Hashtag,MapImage,EnableInApp,TicketUrl,Url,TrackingUrl,AppUrl,LogoImage")] Convention convention, HttpPostedFileBase headerImageFile, HttpPostedFileBase mapImageFile, HttpPostedFileBase logoImageFile)
         {
             if (ModelState.IsValid)
             {
@@ -155,6 +159,28 @@ namespace ReplayFXSchedule.Web.Controllers
                     convention.MapImage = azure.GetFileName(mapImageFile);
                 }
 
+                deleted = false;
+                if (con.LogoImage != convention.LogoImage)
+                {
+                    if (!string.IsNullOrEmpty(con.LogoImage))
+                    {
+                        azure.deletefromAzure(con.LogoImage);
+                        con.LogoImage = null;
+                        deleted = true;
+                    }
+                }
+                if (logoImageFile != null)
+                {
+                    if (!deleted & !string.IsNullOrEmpty(con.LogoImage))
+                    {
+                        azure.deletefromAzure(con.LogoImage);
+                        con.LogoImage = null;
+                        deleted = true;
+                    }
+                    convention.LogoImage = azure.GetFileName(logoImageFile);
+                }
+
+
                 con.Name = convention.Name;
                 con.StartDate = convention.StartDate;
                 con.EndDate = convention.EndDate;
@@ -171,6 +197,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 con.MapImage = convention.MapImage;
                 con.TrackingUrl = convention.TrackingUrl;
                 con.AppUrl = convention.AppUrl;
+                con.LogoImage = convention.LogoImage;
 
                 db.SaveChanges();
                 return RedirectToAction("Index");

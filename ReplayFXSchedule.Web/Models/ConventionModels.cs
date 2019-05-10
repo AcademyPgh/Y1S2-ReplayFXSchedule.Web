@@ -83,6 +83,9 @@ namespace ReplayFXSchedule.Web.Models
         public string TrackingUrl { get; set; }
         [Display(Name = "App Download Link")]
         public string AppUrl { get; set; }
+        [Display(Name = "Logo")]
+        public string LogoImage { get; set; }
+
 
         public string HeaderImageUrl
         {
@@ -109,6 +112,21 @@ namespace ReplayFXSchedule.Web.Models
                 else
                 {
                     return MapImage;
+                }
+            }
+        }
+
+        public string LogoImageUrl
+        {
+            get
+            {
+                if (LogoImage != null)
+                {
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + ConfigurationManager.AppSettings["AzureFolder"] + @"/" + LogoImage;
+                }
+                else
+                {
+                    return LogoImage;
                 }
             }
         }

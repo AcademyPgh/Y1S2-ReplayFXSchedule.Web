@@ -29,16 +29,23 @@
             console.log("the value of image is: " + image);
             $('#HeaderImage').val('');
             $('#imageUrl').attr('src', '/content/img/640x340.png');
-        })
+        });
 
         $('#delete-mapimage').click(function () {
 
-            var image = $("#MapHeaderImage").val();
+            var image = $("#MapImage").val();
             console.log("the value of image is: " + image);
-            $('#MapHeaderImage').val('');
+            $('#MapImage').val('');
             $('#mapImageUrl').attr('src', '/content/img/400x400.png');
-        })
+        });
 
+        $('#delete-logoimage').click(function () {
+
+            var image = $("#LogoImage").val();
+            console.log("the value of image is: " + image);
+            $('#LogoImage').val('');
+            $('#logoImageUrl').attr('src', '/content/img/400x400.png');
+        });
 
         function initialize()
         {
