@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
@@ -38,7 +39,7 @@ namespace ReplayFXSchedule.Web.Models
                 }
             }
         }
-
+        [JsonIgnore]
         public virtual Convention Convention { get; set; }
         
     }

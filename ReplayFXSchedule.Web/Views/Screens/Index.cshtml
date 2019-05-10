@@ -3,7 +3,7 @@
 @{
     ReplayFXSchedule.Web.Models.GameLocation location = ViewBag.location;
     string locationId = "";
-    if(location != null)
+    if (location != null)
     {
         locationId = location.Id.ToString();
     }
@@ -62,12 +62,16 @@
         const featTemplate = location_view ? 'location-template' : 'featured-template';
         var featSource = document.getElementById(featTemplate).innerHTML;
         var fullSource = document.getElementById("event-template").innerHTML;
+        var messageSource = document.getElementById("message-template").innerHTML;
         var featureTemplate = Handlebars.compile(featSource);
-        var fullTemplate = Handlebars.compile(fullSource)
+        var fullTemplate = Handlebars.compile(fullSource);
+        var messageTemplate = Handlebars.compile(messageSource);
         var images = new Array();
         var numberOfEvents = 0;
+        var featuredArray = [];
+        var messagesArray = [];
 
-        @{ 
+        @{
             string sponsorImages = "";
             foreach (var sponsor in Model.Sponsors)
             {
@@ -99,6 +103,77 @@
             "/Content/img/mmf/800_0666.jpg",
         ];
         let currBackground = 0;
+
+        function loadData() {
+            Promise.all([getMessages, getEvents])
+                .then((values) => {
+                    const messages = values[0];
+                    const events = values[1];
+
+                    var messagesHtml = messages.map((message, index) => {
+                        return messageTemplate({ ...message, is_first: index === 0 });
+                    })
+                    var eventsHtml = events.map(event => {
+                        return featureTemplate(event);
+                    });
+                    console.log(eventsHtml);
+                    const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
+                    console.log(longest);
+                    $("#featured").html('');
+                    for (var i = 0; i < longest; i++) {
+                        $("#featured").append(eventsHtml[i % longest]);
+                        $("#featured").append(messagesHtml[i % longest]);
+
+                        console.log(eventsHtml[i % longest]);
+                    }
+
+                })
+        }
+
+        const getMessages = new Promise((resolve, reject) => {
+            var url = '/api/v2/convention/@Model.Id/messages/' + moment().format('MM-DD-YYYY');
+            console.log(url);
+
+            $.ajax({
+                url: url,
+                method: 'GET'
+            })
+                .then((res) => {
+                    console.log(res);
+                    messagesArray = res;
+                    resolve(res);
+                });
+
+        });
+
+        const getEvents = new Promise((resolve, reject) => {
+            var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
+            if (location_view) {
+                url = url + '/@locationId';
+            }
+            console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET'
+            })
+                .then((res) => {
+                    let featured = [];
+                    let full = [];
+                    const currDate = moment().format('YYYY-MM-DD');
+
+                    res.forEach((row) => {
+                        full.push(row);
+                        if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
+                            featured.push(row);
+                        }
+                    });
+
+                    featuredArray = full;
+                    updateMarqueeData(fullTemplate({ events: full }));
+                    numberOfEvents = full.length;
+                    resolve(featuredArray);
+                });
+        });
 
         function loadEvents() {
             var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
@@ -138,6 +213,22 @@
                 numberOfEvents = full.length;
             })
         }
+
+        function displayMainArea() {
+            if (location_view) {
+                    if (featuredArray[0]) {
+                        $("#featured").html(featureTemplate(featuredArray[0]));
+                    } else {
+                        const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                        const noMoreTemplate = Handlebars.compile(noMoreSource);
+                        $("#featured").html(noMoreTemplate({ location: '@location_string' }));
+                    }
+                } else {
+                    $("#featured").html(featureTemplate({ events: featuredArray }));
+                }
+        }
+
+
 
         function setSponsor() {
             if (sponsorImages.length > 0) {
@@ -192,7 +283,7 @@
             setInterval(setSponsor, 5000);
             setInterval(loadEvents, 600000);
             startMarquee();
-            loadEvents();
+            loadData();
             setTimeout(() => { location.reload(true) }, 1200000);
         }
 

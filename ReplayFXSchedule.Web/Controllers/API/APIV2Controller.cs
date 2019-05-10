@@ -127,6 +127,17 @@ namespace ReplayFXSchedule.Web.Controllers
             return Feed(convention_id);
         }
 
+        [Route("convention/{convention_id}/messages/{date_time}")]
+        public List<DisplayMessage> GetMessagesByDate(int convention_id, DateTime date_time)
+        {
+            var convention = db.Conventions.Find(convention_id);
+            if (date_time < convention.StartDate || date_time > convention.EndDate.AddDays(1))
+            {
+                date_time = convention.StartDate;
+            }
+            return GetMessages(convention).Where(e => e.Date == date_time).ToList();
+        }
+
         [Route("convention/{convention_id}/events/{date_time}")]
         public List<Event> GetEventsByDate(int convention_id, DateTime date_time)
         {
@@ -162,6 +173,11 @@ namespace ReplayFXSchedule.Web.Controllers
                 }
             }
             return false;
+        }
+
+        private List<DisplayMessage> GetMessages(Convention convention)
+        {
+            return convention.DisplayMessages.OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
         }
 
         private List<Event> GetEvents(Convention convention, bool? showPrivate = null)

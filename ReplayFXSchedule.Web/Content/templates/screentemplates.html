@@ -1,6 +1,22 @@
-﻿<script id="featured-template" type="text/x-handlebars-template">
-    {{#each events}}
-    <div class="carousel-item {{#if @first}} active{{/if}}">
+﻿<script id="message-template" type="text/x-handlebars-template">
+    <div class="carousel-item {{#if is_first}} active{{/if}}">
+
+        <div class="carousel-content">
+            <h1 class="featured-event">{{title}}</h1>
+            <div class="event-info">
+                {{#if imageUrl}}
+                <img src="{{imageUrl}}" class="event-image" alt="image for this event" />
+                {{/if}}
+                <div>
+                    <div class="featured-description">{{{text}}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="featured-template" type="text/x-handlebars-template">
+    <div class="carousel-item {{#if is_first}} active{{/if}}">
         <div class="carousel-content">
             <h1 class="featured-event">{{title}}</h1>
             <h2 class="featured-time">{{startTime12}} - {{endTime12}}</h2>
@@ -12,7 +28,6 @@
             {{/if}}
         </div>
     </div>
-    {{/each}}
 </script>
 
 <script id="location-template" type="text/x-handlebars-template">
