@@ -24,6 +24,9 @@
 <body>
     <div class="background" id="background"></div>
     <div class="screen">
+        @*<div class="map">
+            <object data="http://www.track4business.com/RealtimeTracker/index.php?trackandtrace=1&viewuser=11df78dc0694e050e09da8e0b7c128aa&fs=1" type="text/html"></object>
+        </div>*@
         <div class="featured">
             @{
                 if (location == null)
@@ -31,7 +34,7 @@
                     <div class="fixed-header">Info</div>
                 }
             }
-            <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="false" data-interval="10000">
+            <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="false" data-interval="15000">
                 <div class="carousel-inner" id="featured">
                 </div>
             </div>
@@ -46,8 +49,8 @@
             </div>
         </div>
         <div class="lower">
-            <img style="max-width: 14vw; max-height: 12vh;" src="@Model.LogoImageUrl" />
-            <img style="max-width: 12vw; max-height: 12vh;" id="sponsor" src="~/Content/img/temp/mgc-logo.png" />
+            <img style="max-width: 14vw; max-height: 90%;" src="@Model.LogoImageUrl" />
+            <img style="max-width: 16vw; max-height: 90%;" id="sponsor" src="~/Content/img/Academy-Work-Hard-Pittsburgh-Logo-50.png" />
             <div class="lower-cta">Download the Con App at: @Model.AppUrl</div>
         </div>
     </div>
@@ -91,21 +94,33 @@
         let currSponsor = 0;
 
         const backgrounds = [
-            "/Content/img/mmf/_3005771.jpg",
-            "/Content/img/mmf/_3005777.jpg",
-            "/Content/img/mmf/_3005828.jpg",
-            "/Content/img/mmf/_MG_3773.jpg",
-            "/Content/img/mmf/_MG_3967.jpg",
-            "/Content/img/mmf/_MG_4006.jpg",
-            "/Content/img/mmf/_MG_4044.jpg",
-            "/Content/img/mmf/_MG_4078.jpg",
-            "/Content/img/mmf/_MG_4548.jpg",
-            "/Content/img/mmf/_MG_4587.jpg",
-            "/Content/img/mmf/_MG_5462.jpg",
-            "/Content/img/mmf/800_0394.jpg",
-            "/Content/img/mmf/800_0504.jpg",
-            "/Content/img/mmf/800_0604.jpg",
-            "/Content/img/mmf/800_0666.jpg",
+            "/Content/img/mmf/background-100.jpg",
+            "/Content/img/mmf/background-101.jpg",
+            "/Content/img/mmf/background-102.jpg",
+            "/Content/img/mmf/background-103.jpg",
+            "/Content/img/mmf/background-104.jpg",
+            "/Content/img/mmf/background-105.jpg",
+            "/Content/img/mmf/background-106.jpg",
+            "/Content/img/mmf/background-107.jpg",
+            "/Content/img/mmf/background-108.jpg",
+            "/Content/img/mmf/background-109.jpg",
+            "/Content/img/mmf/background-110.jpg",
+            "/Content/img/mmf/background-111.jpg",
+            "/Content/img/mmf/background-112.jpg",
+            "/Content/img/mmf/background-113.jpg",
+            "/Content/img/mmf/background-114.jpg",
+            "/Content/img/mmf/background-115.jpg",
+            "/Content/img/mmf/background-116.jpg",
+            "/Content/img/mmf/background-117.jpg",
+            "/Content/img/mmf/background-118.jpg",
+            "/Content/img/mmf/background-119.jpg",
+            "/Content/img/mmf/background-120.jpg",
+            "/Content/img/mmf/background-121.jpg",
+            "/Content/img/mmf/background-122.jpg",
+            "/Content/img/mmf/background-123.jpg",
+            "/Content/img/mmf/background-124.jpg",
+            "/Content/img/mmf/background-125.jpg",
+            "/Content/img/mmf/background-126.jpg",
         ];
         let currBackground = 0;
 
@@ -283,7 +298,7 @@
             setBackground();
             preloadBackgrounds();
             //setInterval(setBackground, 180000);
-            setInterval(setBackground, 5000);
+            setInterval(setBackground, 60000);
             setInterval(setSponsor, 5000);
             setInterval(loadData, 600000);
             startMarquee();
