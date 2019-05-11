@@ -29,5 +29,12 @@ namespace ReplayFXSchedule.Web.Controllers
             ViewBag.location = location;
             return View("Index", con);
         }
+
+        [AllowAnonymous]
+        public ActionResult List(int convention_id)
+        {
+            var con = db.Conventions.Find(convention_id);
+            return View(con);
+        }
     }
 }

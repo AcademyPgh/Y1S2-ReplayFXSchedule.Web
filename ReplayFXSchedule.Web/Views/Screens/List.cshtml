@@ -1,0 +1,20 @@
+﻿@model ReplayFXSchedule.Web.Models.Convention
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Screens</h4>
+    </div>
+    <div class="card-body">
+
+        <ul>
+            <li>@Html.ActionLink("Main Screen", "Index", new { convention_id = Model.Id })</li>
+            @foreach (var location in Model.GameLocations)
+            {
+                if (location.ShowForEvents)
+                {
+                    <li>@Html.ActionLink(location.Location, "Location", new { convention_id = Model.Id, id = location.Id })</li>
+                }
+            }
+        </ul>
+    </div>
+</div>

@@ -617,6 +617,7 @@
     <Content Include="Views\DisplayMessages\Edit.cshtml" />
     <Content Include="Views\DisplayMessages\Index.cshtml" />
     <Content Include="Views\DisplayMessages\_form.cshtml" />
+    <Content Include="Views\Screens\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
