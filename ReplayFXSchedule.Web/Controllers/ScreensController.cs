@@ -30,7 +30,6 @@ namespace ReplayFXSchedule.Web.Controllers
             return View("Index", con);
         }
 
-        [AllowAnonymous]
         public ActionResult List(int convention_id)
         {
             var con = db.Conventions.Find(convention_id);

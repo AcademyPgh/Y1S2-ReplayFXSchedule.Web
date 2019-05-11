@@ -143,8 +143,8 @@
                     const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
                     $("#featured").html('');
                     for (var i = 0; i < longest; i++) {
-                        $("#featured").append(eventsHtml[i % longest]);
-                        $("#featured").append(messagesHtml[i % longest]);
+                        $("#featured").append(eventsHtml[i % eventsHtml.length]);
+                        $("#featured").append(messagesHtml[i % messagesHtml.length]);
                     }
                     $("#featured").html(messagesHtml);
                     // temp
