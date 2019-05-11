@@ -135,6 +135,7 @@
                     const events = values[1];
 
                     var messagesHtml = messages.map((message, index) => {
+                        console.log(message);
                         return messageTemplate({ ...message, is_first: index === 0 });
                     })
                     var eventsHtml = events.map(event => {
