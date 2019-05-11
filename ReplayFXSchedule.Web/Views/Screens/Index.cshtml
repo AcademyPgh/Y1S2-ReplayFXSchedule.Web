@@ -31,7 +31,11 @@
             @{
                 if (location == null)
                 {
-                    <div class="fixed-header">Info</div>
+                    <div class="fixed-header">Event Info</div>
+                }
+                else
+                {
+                    <div class="fixed-header">This Stage</div>
                 }
             }
             <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="false" data-interval="15000">
@@ -51,7 +55,7 @@
         <div class="lower">
             <img style="max-width: 14vw; max-height: 15vh;" src="@Model.LogoImageUrl" />
             <img style="max-width: 16vw; max-height: 13vh;" id="sponsor" src="~/Content/img/Academy-Work-Hard-Pittsburgh-Logo-50.png" />
-            <div class="lower-cta">Download the Con App at: @Model.AppUrl</div>
+            <div class="lower-cta">Download the App at: @Model.AppUrl</div>
         </div>
     </div>
 
@@ -144,8 +148,17 @@
                     }
 
                     // temp
-                    $("#featured").html(messagesHtml);
-
+                    if (location_view) {
+                        if (eventsHtml.length == 0 && messagesHtml.length == 0) {
+                            const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                            const noMoreTemplate = Handlebars.compile(noMoreSource);
+                            $("#featured").html(noMoreTemplate({ location: '@location_string' }));
+                        }
+                    }
+                    else
+                    {
+                        $("#featured").html(messagesHtml);
+                    }
                 })
         }
 
