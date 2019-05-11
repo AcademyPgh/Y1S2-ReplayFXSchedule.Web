@@ -28,7 +28,7 @@
             @{
                 if (location == null)
                 {
-                    <div class="fixed-header">Today's Full Schedule</div>
+                    <div class="fixed-header">Info</div>
                 }
             }
             <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="false" data-interval="10000">
@@ -36,12 +36,17 @@
                 </div>
             </div>
         </div>
-        <div class="marquee">
-            <div id="full_list">
+        <div class="marquee-container">
+            <div class="marquee-header">
+                <h1>All Events</h1>
+            </div>
+            <div class="marquee">
+                <div id="full_list">
+                </div>
             </div>
         </div>
         <div class="lower">
-            <img style="max-width: 14vw; max-height: 12vh;" src="~/Content/img/temp/osgm-logo.png" />
+            <img style="max-width: 14vw; max-height: 12vh;" src="@Model.LogoImageUrl" />
             <img style="max-width: 12vw; max-height: 12vh;" id="sponsor" src="~/Content/img/temp/mgc-logo.png" />
             <div class="lower-cta">Download the Con App at: @Model.AppUrl</div>
         </div>
@@ -116,16 +121,15 @@
                     var eventsHtml = events.map(event => {
                         return featureTemplate(event);
                     });
-                    console.log(eventsHtml);
                     const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
-                    console.log(longest);
                     $("#featured").html('');
                     for (var i = 0; i < longest; i++) {
                         $("#featured").append(eventsHtml[i % longest]);
                         $("#featured").append(messagesHtml[i % longest]);
-
-                        console.log(eventsHtml[i % longest]);
                     }
+
+                    // temp
+                    $("#featured").html(messagesHtml);
 
                 })
         }
