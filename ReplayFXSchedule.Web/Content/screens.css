@@ -203,9 +203,14 @@
     top: 10vw;
     position: absolute;
     z-index: 1000;
+    transition-duration: 2s;
 }
 
-.map > object {
+.map > iframe {
     width: 100%;
     height: 100%;
+}
+
+.hidden-map {
+    opacity: 0;
 }
