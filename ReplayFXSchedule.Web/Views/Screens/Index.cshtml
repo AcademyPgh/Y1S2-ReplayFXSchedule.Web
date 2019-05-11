@@ -49,8 +49,8 @@
             </div>
         </div>
         <div class="lower">
-            <img style="max-width: 14vw; max-height: 90%;" src="@Model.LogoImageUrl" />
-            <img style="max-width: 16vw; max-height: 90%;" id="sponsor" src="~/Content/img/Academy-Work-Hard-Pittsburgh-Logo-50.png" />
+            <img style="max-width: 14vw; max-height: 15vh;" src="@Model.LogoImageUrl" />
+            <img style="max-width: 16vw; max-height: 13vh;" id="sponsor" src="~/Content/img/Academy-Work-Hard-Pittsburgh-Logo-50.png" />
             <div class="lower-cta">Download the Con App at: @Model.AppUrl</div>
         </div>
     </div>
@@ -282,7 +282,7 @@
 
         function startMarquee() {
             $('.marquee').marquee({
-                duration: 10000 + (1250 * numberOfEvents),
+                duration: 10000 + (2000 * numberOfEvents),
                 gap: 200,
                 delayBeforeStart: 2000,
                 direction: 'up',
