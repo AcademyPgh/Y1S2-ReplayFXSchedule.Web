@@ -3,6 +3,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 
@@ -33,7 +34,7 @@ namespace ReplayFXSchedule.Web.Shared
             // Create the blob client.
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             // Retrieve reference to a previously created container.
-            CloudBlobContainer container = blobClient.GetContainerReference("images");
+            CloudBlobContainer container = blobClient.GetContainerReference(ConfigurationManager.AppSettings["AzureFolder"]);
             // Retrieve reference to a blob named "someimage.jpg".
             CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
             // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.
@@ -46,7 +47,7 @@ namespace ReplayFXSchedule.Web.Shared
             // Create the blob client.
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             // Retrieve reference to a previously created container.
-            CloudBlobContainer container = blobClient.GetContainerReference("images");
+            CloudBlobContainer container = blobClient.GetContainerReference(ConfigurationManager.AppSettings["AzureFolder"]);
             // Retrieve reference to a blob named "someimage.jpg".
             CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
             // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.

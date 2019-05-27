@@ -1,0 +1,137 @@
+﻿ @model ReplayFXSchedule.Web.Models.Event
+
+@{
+    ViewBag.Title = "Create Event";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Create Event</h4>
+    </div>
+    <div class="card-body">
+
+
+       @using (Html.BeginForm("Create", "Events", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Partial("_EventForm")
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var list = [@ViewBag.EventTypeIDs];
+        const listElement = $('#categories');
+        listElement.val(list.toString());
+        const checkedClass = 'now-ui-icons ui-1_check';
+        const displayListElement = $('#EventTypes');
+
+        function loadCategories() {
+            $.ajax({
+                url: '/api/v2/categories/@ViewBag.ConId',
+                type: 'GET',
+                success: function (data) {
+                    displayListElement.html('');
+                    data.map(function (category) {
+                        displayListElement.append('<div class="align-middle" id="cat' + category.id + '" data-id=' + category.id + '><span id="catspan' + category.id + '"></span>' + category.name + '</div>');
+                        $('#cat' + category.id).click(function () { toggleItem(category.id); });
+                        if (list.indexOf(category.id) > -1) {
+                            $('#catspan' + category.id).addClass(checkedClass);
+                        }
+                    });
+                }
+            })
+        }
+
+        function toggleItem(id) {
+            // if it is not there
+            // add it to the list input
+            // add the checkmark to the category
+            if (!$('#catspan' + id).hasClass(checkedClass)) {
+                list.push(id);
+                listElement.val(list.toString());
+                $('#catspan' + id).addClass(checkedClass);
+            }
+            // if it is there
+            // remove it from the list input
+            // remove the checkmark on the category
+            else {
+                var i = list.indexOf(id);
+                list.splice(i, 1);
+                listElement.val(list.toString());
+                $('#catspan' + id).removeClass(checkedClass);
+            }
+        }
+
+        function initialize()
+        {
+            loadCategories();
+            loadFormItems();
+        }
+
+        function loadFormItems()
+        {
+            if ($(".datepicker").length != 0) {
+                $('.datepicker').datetimepicker({
+                    format: 'MM/DD/YYYY',
+                    icons: {
+                        time: "now-ui-icons tech_watch-time",
+                        date: "now-ui-icons ui-1_calendar-60",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'now-ui-icons arrows-1_minimal-left',
+                        next: 'now-ui-icons arrows-1_minimal-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    }
+                });
+            }
+
+            if ($(".timepicker").length != 0) {
+                $('.timepicker').datetimepicker({
+                    format: 'HH:mm A',
+                    stepping: 5,
+                    icons: {
+                        time: "now-ui-icons tech_watch-time",
+                        date: "now-ui-icons ui-1_calendar-60",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'now-ui-icons arrows-1_minimal-left',
+                        next: 'now-ui-icons arrows-1_minimal-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    }
+                });
+            }
+
+            $('#delete-image').click(function () {
+
+                var image = $("#Image").val();
+                console.log("the value of image is: " + image);
+                $('#Image').val('');
+                $('#imageUrl').attr('src', '/content/img/400x400.png');
+            });
+            $('#delete-promoimage').click(function () {
+
+                var promoimage = $("#PromoImage").val();
+                console.log("the value of image is: " + promoimage);
+                $('#PromoImage').val('');
+                $('#promoImageUrl').attr('src', '/content/img/640x170.png');
+            });
+
+            $('.fileinput').fileinput()
+
+        }
+
+        $(initialize);
+                
+    </script>
+
+
+}

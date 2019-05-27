@@ -15,28 +15,40 @@ namespace ReplayFXSchedule.Web
 
 
             routes.MapRoute(
-                name: "Schedule",
-                url: "schedule/{category}",
-                defaults: new { controller = "Public", action = "Index", category = UrlParameter.Optional }
-            );
-            routes.MapRoute(
-                name: "Games",
-                url: "games/{gametype}",
-                defaults: new { controller = "Public", action = "Games", gametype = UrlParameter.Optional }
+                name: "CreateConvention",
+                url: "Conventions/Create",
+                defaults: new { controller = "Conventions", action = "Create" }
                 );
 
             routes.MapRoute(
-                name: "ScheduleWeb",
-                url: "daily/{date}/{category}",
-                defaults: new { controller = "Public", action = "ScheduleWeb", date = "1-1-2017", category = UrlParameter.Optional }
+                name: "Logout",
+                url: "Account/Logout",
+                defaults: new { controller = "Account", action = "Logout" }
                 );
+
+            routes.MapRoute(
+                name: "Login",
+                url: "Account/Login",
+                defaults: new { controller = "Account", action = "Login" }
+                );
+
+            routes.MapRoute(
+                name: "Users",
+                url: "Users/{action}/{id}",
+                defaults: new { controller = "Users", action = "Index", id = UrlParameter.Optional}
+                );
+
+            routes.MapRoute(
+                name: "ConventionDefault",
+                url: "{controller}/{convention_id}/{action}/{id}",
+                defaults: new { controller = "Conventions", action = "Index", id = UrlParameter.Optional }
+                );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Conventions", action = "Index", id = UrlParameter.Optional }
             );
-
-
         }
     }
 }

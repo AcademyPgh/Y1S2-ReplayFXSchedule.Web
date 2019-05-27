@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ReplayFXSchedule.Web.Models.GameLocation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">List Locations</h4>
+    </div>
+    <div class="card-body">
+
+        <p>
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Location)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                            @Html.ActionLink("Schedule Link", "Location", "Screens", new { id = item.Id, convention_id = item.Convention.Id }, null)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

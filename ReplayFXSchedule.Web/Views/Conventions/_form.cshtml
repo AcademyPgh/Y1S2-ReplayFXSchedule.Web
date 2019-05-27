@@ -1,0 +1,224 @@
+﻿@model ReplayFXSchedule.Web.Models.Convention
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="row">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.Address2, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.Zip, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.Hashtag, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Hashtag, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Hashtag, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.EnableInApp, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10 form-group">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" data-val="true" name="EnableInApp" value="true" @(Model != null && Model.EnableInApp ? "checked" : "")>
+                        &nbsp;
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.TicketUrl, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.TicketUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TicketUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.TrackingUrl, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.TrackingUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TrackingUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.AppUrl, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.AppUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AppUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.HeaderImage, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail" style="width: 250px; height: 125px;">
+                            @if (Model != null && Model.HeaderImageUrl != null)
+                            {
+                                <img src="@Url.Content(Model.HeaderImageUrl)" class="photo" id="imageUrl" alt="..." />
+                            }
+                            else
+                            {
+                                <img src="~/content/img/640x340.png" class="photo" id="imageUrl" alt="...">
+                            }
+                        </div>
+                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 250px; max-height: 125px;"></div>
+                        <div>
+                            <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="headerImageFile"></span>
+                            <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Original</a>
+                            <div class="btn btn-default fileinput-new" id="delete-image">Remove Image</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.MapImage, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+                            @if (Model != null && Model.MapImageUrl != null)
+                            {
+                                <img src="@Url.Content(Model.MapImageUrl)" class="photo" id="mapImageUrl" alt="..." />
+                            }
+                            else
+                            {
+                                <img src="~/content/img/400x400.png" class="photo" id="mapImageUrl" alt="...">
+                            }
+                        </div>
+                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"></div>
+                        <div>
+                            <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="mapImageFile"></span>
+                            <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Original</a>
+                            <div class="btn btn-default fileinput-new" id="delete-mapimage">Remove Image</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(model => model.LogoImage, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                <div class="form-group">
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+                            @if (Model != null && Model.LogoImageUrl != null)
+                            {
+                                <img src="@Url.Content(Model.LogoImageUrl)" class="photo" id="logoImageUrl" alt="..." />
+                            }
+                            else
+                            {
+                                <img src="~/content/img/400x400.png" class="photo" id="logoImageUrl" alt="...">
+                            }
+                        </div>
+                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"></div>
+                        <div>
+                            <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="logoImageFile"></span>
+                            <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Original</a>
+                            <div class="btn btn-default fileinput-new" id="delete-logoimage">Remove Image</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.HiddenFor(model => model.HeaderImage)
+                @Html.HiddenFor(model => model.MapImage)
+                @Html.HiddenFor(model => model.LogoImage)
+                <input type="submit" value="Save" class="btn btn-default" />
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>

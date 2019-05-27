@@ -1,0 +1,33 @@
+﻿.index-img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+/*
+    make checkboxes for categories look like checkboxes.
+    applies to event types and game types
+*/
+
+#EventTypes div, #GameLocations div {
+    display: flex;
+    padding-bottom: 0.3em;
+}
+
+#EventTypes div:hover, #GameLocations div:hover {
+    cursor: pointer;
+}
+
+#EventTypes div span, #GameLocations div span {
+    font-size: 15px;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.3em;
+    display: inline-block;
+    padding: 1px;
+    border: 1px solid #fd7e14;
+}
+
+.table-text {
+    max-height: 8em;
+    overflow-y: auto;
+}

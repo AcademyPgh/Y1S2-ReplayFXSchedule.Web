@@ -1,0 +1,96 @@
+﻿@model IEnumerable<ReplayFXSchedule.Web.Models.Event>
+
+@{
+    ViewBag.Title = "Manage Events";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Events</h4>
+    </div>
+    <div class="card-body">
+        <p>
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default replayButton" })
+        </p>
+        <!-- @using (Html.BeginForm("Index", "Events", FormMethod.Get))
+        {
+            //the following are search options  
+            <b> Search Events by Title: </b> @Html.TextBox("search") <input type="submit" name ="submit" value="Search" />
+        }  -->
+
+        <table class="table table-shopping">
+            <thead>
+                <tr>
+                    <th>
+
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StartTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EndTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+                    <th>
+
+                        @Html.DisplayNameFor(model => model.EventTypes)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Location)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @if (item.ImageUrl != null)
+                                {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
+                        </td>
+                        <td>
+                            @foreach (var eventType in item.EventTypes)
+                            {
+                                <span class="categoryType">@Html.DisplayFor(model => eventType.DisplayName) </span><br />
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Copy", "Create", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

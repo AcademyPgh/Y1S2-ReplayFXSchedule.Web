@@ -1,0 +1,12 @@
+﻿@model List<ReplayFXSchedule.Web.Models.UserEmail>
+
+@{
+    ViewBag.Title = "Emails";
+}
+
+<h2>Emails</h2>
+
+@foreach(var mail in Model)
+{
+    <li>@mail.Email</li>
+}

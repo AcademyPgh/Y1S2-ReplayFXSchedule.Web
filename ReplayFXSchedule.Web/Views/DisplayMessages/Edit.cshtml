@@ -1,0 +1,80 @@
+﻿@model ReplayFXSchedule.Web.Models.DisplayMessage
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Create Message</h4>
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm("Edit", "DisplayMessages", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Partial("_form")
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $('#delete-image').click(function () {
+
+            var image = $("#image").val();
+            console.log("the value of image is: " + image);
+            $('#Image').val('');
+            $('#imageUrl').attr('src', '/content/img/400x400.png');
+        })
+
+
+
+        function initialize() {
+            loadFormItems();
+        }
+
+        function loadFormItems() {
+            if ($(".datepicker").length != 0) {
+                $('.datepicker').datetimepicker({
+                    format: 'MM/DD/YYYY',
+                    icons: {
+                        time: "now-ui-icons tech_watch-time",
+                        date: "now-ui-icons ui-1_calendar-60",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'now-ui-icons arrows-1_minimal-left',
+                        next: 'now-ui-icons arrows-1_minimal-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    }
+                });
+            }
+
+            if ($(".timepicker").length != 0) {
+                $('.timepicker').datetimepicker({
+                    format: 'HH:mm A',
+                    stepping: 15,
+                    icons: {
+                        time: "now-ui-icons tech_watch-time",
+                        date: "now-ui-icons ui-1_calendar-60",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'now-ui-icons arrows-1_minimal-left',
+                        next: 'now-ui-icons arrows-1_minimal-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    }
+                });
+            }
+        }
+
+        $(initialize);
+
+    </script>
+}

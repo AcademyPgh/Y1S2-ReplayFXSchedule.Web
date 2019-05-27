@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ReplayFXSchedule.Web.Models.Vendor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Manage Vendors</h4>
+    </div>
+    <div class="card-body">
+        <p>
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+        </p>
+        <table class="table table-shopping">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExtendedDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Location)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            <div class="table-text">@item.Description</div>
+                        </td>
+                        <td>
+                            <div class="table-text">@item.ExtendedDescription</div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location)
+                        </td>
+                        <td>
+                            @if (item.ImageUrl != null)
+                            {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

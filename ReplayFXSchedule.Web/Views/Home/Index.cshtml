@@ -1,8 +1,20 @@
-﻿@{
-    ViewBag.Title = "ReplayFX Event Management";
-}
+﻿@model List<ReplayFXSchedule.Web.Models.Convention>
 
-<div class="homeLogo col-sm-6 col-sm-offset-3">
-    <img class="img-responsive" src="/Content/img/replayfxlogo.png" alt="ReplyFX Logo"/>
-    <h1>Event Management System</h1>
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    ViewBag.Title = "Index";
+}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Edit Them Conventions!</h4>
+    </div>
+    <div class="card-body">
+        @foreach (var convention in Model)
+        {
+        <h4>@Html.ActionLink(convention.Name, "ConventionHome", new { convention_id = convention.Id })</h4>
+        }
+    </div>
 </div>
+
+
+

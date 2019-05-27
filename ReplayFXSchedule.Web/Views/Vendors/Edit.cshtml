@@ -1,0 +1,36 @@
+﻿@model ReplayFXSchedule.Web.Models.Vendor
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Edit Vendor</h4>
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm("Edit", "Vendors", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Partial("_form")
+        }
+
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $('#delete-image').click(function () {
+
+            var image = $("#Image").val();
+            console.log("the value of image is: " + image);
+            $('#Image').val('');
+            $('#imageUrl').attr('src', '/content/img/640x170.png');
+        })
+    </script>
+}

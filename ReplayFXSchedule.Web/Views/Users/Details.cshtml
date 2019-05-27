@@ -1,0 +1,84 @@
+﻿@model ReplayFXSchedule.Web.Models.AppUser
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">@Html.DisplayFor(model => model.Name)</h4>
+            </div>
+            <div class="card-body">
+                    <label>Email</label>
+                    <p>@Html.DisplayFor(model => model.Email)</p>
+                    <label>Display Name</label>
+                    <p>@Html.DisplayFor(model => model.DisplayName)</p>
+
+                    <div class="info info-horizontal">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon icon-info icon-circle">
+                                    <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 text-md-right">
+                                <ul class="list-unstyled">
+                                    @foreach (var perm in Model.AppUserPermissions)
+                                    {
+                                        <li>@perm.Convention.Name - @perm.UserRole - @Html.ActionLink("Remove", "RemovePermissions", new { id = Model.Id, perm_id = perm.Id }, null)</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="card-footer">
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Add Permissions</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("AddPermissions", "Users", new { id = Model.Id }, FormMethod.Post, null))
+                {
+                <label class="col-form-label">Convention</label>
+                <select class="form-control" name="convention_id">
+                    @foreach (ReplayFXSchedule.Web.Models.Convention con in ViewBag.Conventions)
+                    {
+                        <option value="@con.Id">@con.Name</option>
+                    }
+                </select>
+                <label class="col-form-label">Permission Type</label>
+                <select class="form-control" name="role">
+                    @foreach (ReplayFXSchedule.Web.Models.UserRole role in ViewBag.UserRoles)
+                    {
+                        <option value="@role">@role</option>
+                    }
+                </select>
+                <input type="submit" class="btn btn-default" value="Add Permission">
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                    User Status
+                </h4>
+            </div>
+            <div class="card-body">
+                @Html.ActionLink(Model.isSuperAdmin ? "Remove SuperAdmin" : "Make SuperAdmin", "ToggleSuperAdmin", new { id = Model.Id }, new { @class= Model.isSuperAdmin ? "btn btn-default" : "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+</div>

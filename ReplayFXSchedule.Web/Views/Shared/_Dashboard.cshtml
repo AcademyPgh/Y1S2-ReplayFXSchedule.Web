@@ -1,0 +1,209 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>Event Dashboard</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+    @Styles.Render("~/Content/bootstrap")
+    <link href="~/content/css/now-ui-dashboard.css" rel="stylesheet" />
+    <link href="~/content/sitev2.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="sidebar-background">
+    <div class="wrapper">
+        <div class="sidebar" data-color="orange" data-image="/content/img/1558699.jpg">
+            <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+            Tip 2: you can also add an image using data-image tag
+            -->
+
+            <div class="logo">
+                <a href="/" class="simple-text logo-normal">
+                    OSG Con Assistant
+                </a>
+            </div>
+
+            <div class="sidebar-wrapper">
+                <div class="user">
+                    <div class="info">
+                        <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+                            <span>
+                                @User.Identity.Name
+                                <b class="caret"></b>
+                            </span>
+                        </a>
+                        <div class="clearfix"></div>
+                        <div class="collapse" id="collapseExample">
+                            <ul class="nav">
+                                <li>
+                                    <a href="@Url.Action("Logout", "Account")">
+                                        <span class="sidebar-mini-icon">L</span>
+                                        <span class="sidebar-normal">Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav">
+                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "Conventions" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Conventions")">
+                            <i class="now-ui-icons objects_globe"></i>
+                            <p>Convention</p>
+                        </a>
+                    </li>
+                    @if (ViewContext.RouteData.Values["convention_id"] != null)
+                    {
+                        <li class="@((string)ViewContext.RouteData.Values["controller"] == "Events" ? "active" : "")">
+                            <a href="@Url.Action("Index", "Events", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                <i class="now-ui-icons ui-1_calendar-60"></i>
+                                <p>Events</p>
+                            </a>
+                        </li>
+                        <li class="@((string)ViewContext.RouteData.Values["controller"] == "Games" ? "active" : "")">
+                            <a href="@Url.Action("Index", "Games", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                <i class="now-ui-icons tech_controller-modern"></i>
+                                <p>Games</p>
+                            </a>
+                        </li>
+                        <li class="@((string)ViewContext.RouteData.Values["controller"] == "Vendors" ? "active" : "")">
+                            <a href="@Url.Action("Index", "Vendors", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                <i class="now-ui-icons shopping_shop"></i>
+                                <p>Vendors</p>
+                            </a>
+                        </li>
+                        <li class="@((string)ViewContext.RouteData.Values["controller"] == "Sponsors" ? "active" : "")">
+                            <a href="@Url.Action("Index", "Sponsors", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                <i class="now-ui-icons business_money-coins"></i>
+                                <p>Sponsors</p>
+                            </a>
+                        </li>
+                        <li class="@((string)ViewContext.RouteData.Values["controller"] == "DisplayMessages" ? "active" : "")">
+                            <a href="@Url.Action("Index", "DisplayMessages", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                <i class="now-ui-icons media-1_album"></i>
+                                <p>Screen Messages</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="collapse" href="#adminActions">
+                                <i class="now-ui-icons loader_gear"></i>
+                                <p>
+                                    Admin Setup
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+
+                            <div class="collapse" id="adminActions">
+                                <ul class="nav">
+                                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "EventTypes" ? "active" : "")">
+                                        <a href="@Url.Action("Index", "EventTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                            <span class="sidebar-mini-icon">ET</span>
+                                            <span class="sidebar-normal">Event Types</span>
+                                        </a>
+                                    </li>
+                                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "GameTypes" ? "active" : "")">
+                                        <a href="@Url.Action("Index", "GameTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                            <span class="sidebar-mini-icon">GT</span>
+                                            <span class="sidebar-normal">Game Types</span>
+                                        </a>
+                                    </li>
+                                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "GameLocations" ? "active" : "")">
+                                        <a href="@Url.Action("Index", "GameLocations", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                            <span class="sidebar-mini-icon">LOC</span>
+                                            <span class="sidebar-normal">Locations</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute">
+                <div class="container-fluid">
+
+
+                    <div class="navbar-wrapper">
+                        <div class="navbar-toggle">
+                            <button type="button" class="navbar-toggler">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </button>
+                        </div>
+                        <a class="navbar-brand" href="/">Dashboard</a>
+                    </div>
+
+
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+
+
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="now-ui-icons media-2_sound-wave"></i>
+                                    <p>
+                                        <span class="d-lg-none d-md-block">Stats</span>
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Users")">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                    <p>
+                                        <span class="d-lg-none d-md-block">Account</span>
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+
+
+                    </div>
+                </div>
+            </nav>
+
+            <div class="panel-header panel-header-sm">
+            </div>
+
+            <div class="content">
+                @RenderBody()
+            </div>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="copyright">
+                        &copy;
+                        <script>document.write(new Date().getFullYear())</script>, Created by <a href="http://www.academypgh.com" target="_blank">Academy Pittsburgh</a>.
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/dashboard_plugins")
+@Scripts.Render("~/bundles/dashboard")
+@RenderSection("scripts", required: false)
+</html>

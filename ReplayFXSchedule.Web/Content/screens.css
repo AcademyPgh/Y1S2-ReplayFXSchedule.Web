@@ -1,0 +1,216 @@
+﻿body {
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+.background {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition-duration: 1s;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    transform: scale(1.1);
+    z-index: -3;
+    overflow: hidden;
+}
+
+.screen {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: [one] 70% [two] auto;
+    grid-template-rows: [top] 85% [bottom] auto;
+    color: white;
+}
+
+.featured {
+    grid-column: one;
+    grid-row: top;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    text-shadow: 4px 4px 4px #222;
+    flex-direction: column;
+}
+
+    .fixed-header {
+        text-transform: uppercase;
+        font-family: Lato;
+        font-size: 1.2em;
+        font-weight: 400;
+        margin: 2rem 0 0 5%;
+        align-self: flex-start;
+    }
+
+    .featured-event {
+        font-size: 2.25em;
+        font-family: Lato;
+        font-weight: 900;
+        margin-bottom: 16px;
+        margin-top: 0;
+        text-transform: uppercase;
+    }
+
+    .featured-time {
+        font-size: 1.5em;
+        font-family: Lato;
+        font-weight: 300;
+        margin-bottom: 16px;
+    }
+
+    .featured-location {
+        font-family: Lato;
+        font-size: 1.2em;
+        font-weight: 400;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+    }
+
+.featured-description {
+    font-family: Raleway;
+    font-size: .85em;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.marquee-container {
+    grid-column: two;
+    grid-row: top / 3;
+    background: rgba(0,0,0,.5);
+    text-shadow: 4px 4px 4px #222;
+}
+
+    .marquee-header {
+        width: 30vw;
+        padding-left: 4vw;
+        position: absolute;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%,rgba(0,0,0,.8) 90%,rgba(0,0,0,0) 100%);
+        z-index: 500;
+    }
+
+        .marquee-header > h1 {
+            text-transform: uppercase;
+            font-family: Raleway;
+            font-weight: 500;
+            font-size: 3em;
+        }
+
+.marquee {
+    width: 100%;
+    height: 100%;
+}
+
+.marquee-content {
+    margin: 15% 5%;
+}
+
+.marquee-time {
+    font-size: 2em;
+    font-family: Lato;
+    font-weight: 300;
+    margin-bottom: 8px;
+}
+
+.marquee-event {
+    font-size: 2.5em;
+    font-family: Lato;
+    font-weight: 900;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    text-transform: uppercase;
+}
+
+.marquee-location {
+    font-family: Raleway;
+    font-size: 1.75em;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.marquee-location-static-text {
+    font-family: Raleway;
+    font-size: .65em;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.location-separator {
+    font-size: larger;
+    font-weight: 300;
+}
+
+
+.lower {
+    grid-column: one;
+    grid-row: bottom;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 3.5%;
+}
+
+.lower-cta {
+    font-family: Raleway;
+    font-weight: 500;
+    font-size: 1.5em;
+    padding: 10px 26px 10px 10px;
+    text-shadow: 4px 4px 4px #222;
+}
+
+.carousel {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-inner {
+    height: 100%;
+}
+
+.carousel-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2.5% 5%;
+}
+
+.event-image {
+    max-width: 12vw;
+    max-height: 12vw;
+    box-shadow: 5px 5px 17px rgba(0, 0, 0, .7);
+    float: right;
+    margin: 1rem 2rem 0 0;
+}
+
+.carousel-item.active.vertical-center {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.map {
+    width: 80vw;
+    height: 80vh;
+    left: 10vw;
+    top: 10vw;
+    position: absolute;
+    z-index: 1000;
+    transition-duration: 2s;
+}
+
+.map > iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.hidden-map {
+    opacity: 0;
+}

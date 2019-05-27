@@ -1,0 +1,333 @@
+﻿@model ReplayFXSchedule.Web.Models.Convention
+
+@{
+    ReplayFXSchedule.Web.Models.GameLocation location = ViewBag.location;
+    string locationId = "";
+    if (location != null)
+    {
+        locationId = location.Id.ToString();
+    }
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/screens")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/screens")
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Lato:300,400,900|Raleway:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+<body>
+    <div class="background" id="background"></div>
+    <div class="screen">
+        @*<div class="map">
+            <iframe src="http://www.track4business.com/RealtimeTracker/index.php?trackandtrace=1&viewuser=11df78dc0694e050e09da8e0b7c128aa&fs=1" scrolling="no"></iframe>
+        </div>*@
+        <div class="featured">
+            <div class="fixed-header"></div>
+            <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="false" data-interval="15000">
+                <div class="carousel-inner" id="featured">
+                </div>
+            </div>
+        </div>
+        <div class="marquee-container">
+            <div class="marquee-header">
+                @{ 
+                    if (location == null)
+                    {
+                        <h1>All Events</h1>
+                    }
+                    else
+                    {
+                        <h1>This Stage</h1>
+                        }
+                    }
+            </div>
+            <div class="marquee">
+                <div id="full_list">
+                </div>
+            </div>
+        </div>
+        <div class="lower">
+            <img style="max-width: 14vw; max-height: 15vh;" src="@Model.LogoImageUrl" />
+            <img style="max-width: 16vw; max-height: 13vh;" id="sponsor" src="~/Content/img/Academy-Work-Hard-Pittsburgh-Logo-50.png" />
+            <div class="lower-cta">Download the App at: @Model.AppUrl</div>
+        </div>
+    </div>
+
+    @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/templates/screentemplates.html")))
+
+    <script>
+        @{
+            bool location_view = (location != null);
+            string location_string = "";
+            if(location_view)
+            {
+                location_string = location.Location;
+            }
+        }
+        const location_view = ('@location_view' === 'True');
+        const featTemplate = location_view ? 'location-template' : 'featured-template';
+        var featSource = document.getElementById(featTemplate).innerHTML;
+        var fullSource = document.getElementById("event-template").innerHTML;
+        var messageSource = document.getElementById("message-template").innerHTML;
+        var featureTemplate = Handlebars.compile(featSource);
+        var fullTemplate = Handlebars.compile(fullSource);
+        var messageTemplate = Handlebars.compile(messageSource);
+        var images = new Array();
+        var numberOfEvents = 0;
+        var featuredArray = [];
+        var messagesArray = [];
+
+        @{
+            string sponsorImages = "";
+            foreach (var sponsor in Model.Sponsors)
+            {
+                if (sponsor.Image != null)
+                {
+                    sponsorImages += $"'{sponsor.ImageUrl}', ";
+                }
+            }
+        }
+
+        const sponsorImages = [@Html.Raw(sponsorImages)];
+        let currSponsor = 0;
+
+        const backgrounds = [
+            "/Content/img/mmf/background-100.jpg",
+            "/Content/img/mmf/background-101.jpg",
+            "/Content/img/mmf/background-102.jpg",
+            "/Content/img/mmf/background-103.jpg",
+            "/Content/img/mmf/background-104.jpg",
+            "/Content/img/mmf/background-105.jpg",
+            "/Content/img/mmf/background-106.jpg",
+            "/Content/img/mmf/background-107.jpg",
+            "/Content/img/mmf/background-108.jpg",
+            "/Content/img/mmf/background-109.jpg",
+            "/Content/img/mmf/background-110.jpg",
+            "/Content/img/mmf/background-111.jpg",
+            "/Content/img/mmf/background-112.jpg",
+            "/Content/img/mmf/background-113.jpg",
+            "/Content/img/mmf/background-114.jpg",
+            "/Content/img/mmf/background-115.jpg",
+            "/Content/img/mmf/background-116.jpg",
+            "/Content/img/mmf/background-117.jpg",
+            "/Content/img/mmf/background-118.jpg",
+            "/Content/img/mmf/background-119.jpg",
+            "/Content/img/mmf/background-120.jpg",
+            "/Content/img/mmf/background-121.jpg",
+            "/Content/img/mmf/background-122.jpg",
+            "/Content/img/mmf/background-123.jpg",
+            "/Content/img/mmf/background-124.jpg",
+            "/Content/img/mmf/background-125.jpg",
+            "/Content/img/mmf/background-126.jpg",
+        ];
+        let currBackground = 0;
+
+        function loadData() {
+            Promise.all([getMessages, getEvents])
+                .then((values) => {
+                    const messages = values[0];
+                    const events = values[1];
+
+                    var messagesHtml = messages.map((message, index) => {
+                        if (index === 0) {
+                            message.is_first = true;
+                        }
+                        return messageTemplate(message);
+                    })
+                    var eventsHtml = events.map(event => {
+                        return featureTemplate(event);
+                    });
+                    const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
+                    $("#featured").html('');
+                    for (var i = 0; i < longest; i++) {
+                        $("#featured").append(eventsHtml[i % eventsHtml.length]);
+                        $("#featured").append(messagesHtml[i % messagesHtml.length]);
+                    }
+                    $("#featured").html(messagesHtml);
+                    // temp
+                    @*if (location_view) {
+                        if (eventsHtml.length == 0 && messagesHtml.length == 0) {
+                            const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                            const noMoreTemplate = Handlebars.compile(noMoreSource);
+                            $("#featured").html(noMoreTemplate({ location: '@location_string' }));
+                        }
+                    }
+                    else
+                    {
+                        $("#featured").html(messagesHtml);
+                    }*@
+                })
+        }
+
+        const getMessages = new Promise((resolve, reject) => {
+            var url = '/api/v2/convention/@Model.Id/messages/' + moment().format('MM-DD-YYYY');
+            console.log(url);
+
+            $.ajax({
+                url: url,
+                method: 'GET'
+            })
+                .then((res) => {
+                    console.log(res);
+                    messagesArray = res;
+                    resolve(res);
+                });
+
+        });
+
+        const getEvents = new Promise((resolve, reject) => {
+            var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
+            if (location_view) {
+                url = url + '/@locationId';
+            }
+            console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET'
+            })
+                .then((res) => {
+                    let featured = [];
+                    let full = [];
+                    const currDate = moment().format('YYYY-MM-DD');
+
+                    res.forEach((row) => {
+                        full.push(row);
+                        if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
+                            featured.push(row);
+                        }
+                    });
+
+                    featuredArray = full;
+                    updateMarqueeData(fullTemplate({ events: full }));
+                    numberOfEvents = full.length;
+                    resolve(featuredArray);
+                });
+        });
+
+        function loadEvents() {
+            var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
+            if (location_view) {
+                url = url + '/@locationId';
+        }
+        console.log(url);
+        $.ajax({
+            url: url,
+            method: 'GET'
+        })
+            .then((res) => {
+                let featured = [];
+                let full = [];
+                const currDate = moment().format('YYYY-MM-DD');
+
+                res.forEach((row) => {
+                    full.push(row);
+                    if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
+                        featured.push(row);
+                    }
+                });
+                console.log("featured", featured);
+                console.log("full", full);
+                if (location_view) {
+                    if (featured[0]) {
+                        $("#featured").html(featureTemplate(featured[0]));
+                    } else {
+                        const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                        const noMoreTemplate = Handlebars.compile(noMoreSource);
+                        $("#featured").html(noMoreTemplate({ location: '@location_string' }));
+                    }
+                } else {
+                    $("#featured").html(featureTemplate({ events: featured }));
+                }
+                updateMarqueeData(fullTemplate({ events: full }));
+                numberOfEvents = full.length;
+            })
+        }
+
+        function displayMainArea() {
+            if (location_view) {
+                    if (featuredArray[0]) {
+                        $("#featured").html(featureTemplate(featuredArray[0]));
+                    } else {
+                        const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                        const noMoreTemplate = Handlebars.compile(noMoreSource);
+                        $("#featured").html(noMoreTemplate({ location: '@location_string' }));
+                    }
+                } else {
+                    $("#featured").html(featureTemplate({ events: featuredArray }));
+                }
+        }
+
+
+
+        function setSponsor() {
+            if (sponsorImages.length > 0) {
+                $("#sponsor").attr("src", sponsorImages[currSponsor]);
+                currSponsor = currSponsor + 1;
+                if (currSponsor >= sponsorImages.length) {
+                    currSponsor = 0;
+                }
+            }
+        }
+
+        function setBackground() {
+            $("#background").css("background-image", "url(" + backgrounds[currBackground] + ")");
+            currBackground = currBackground + 1;
+            if (currBackground >= backgrounds.length) {
+                currBackground = 0;
+            }
+        }
+
+        function preloadBackgrounds() {
+            for (let i = 0; i < backgrounds.length; i++) {
+                images[i] = new Image()
+                images[i].src = backgrounds[i];
+            }
+        }
+
+        function updateMarqueeData(html) {
+            stopMarquee();
+            $("#full_list").html(html);
+            startMarquee();
+        }
+
+        function startMarquee() {
+            $('.marquee').marquee({
+                duration: 10000 + (2000 * numberOfEvents),
+                gap: 200,
+                delayBeforeStart: 2000,
+                direction: 'up',
+                duplicated: true
+            })
+        }
+
+        function stopMarquee() {
+            $('.marquee').marquee('destroy');
+        }
+
+        function toggleMap() {
+            $('.map').toggleClass("hidden-map");
+        }
+
+        function startup() {
+            setBackground();
+            preloadBackgrounds();
+            //setInterval(setBackground, 180000);
+            setInterval(setBackground, 90000);
+            setInterval(setSponsor, 5000);
+            setInterval(loadData, 600000);
+            setInterval(toggleMap, 24000);
+            startMarquee();
+            loadData();
+            setTimeout(() => { location.reload(true) }, 1200000);
+        }
+
+        $(startup);
+    </script>
+</body>
+</html>

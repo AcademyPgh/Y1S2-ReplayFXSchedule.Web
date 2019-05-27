@@ -8,6 +8,8 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Configuration;
 using System.Data.Entity.Migrations;
+using System.Web.Helpers;
+using System.IdentityModel.Claims;
 
 namespace ReplayFXSchedule.Web
 {
@@ -21,6 +23,7 @@ namespace ReplayFXSchedule.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             // GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
             // Configure DB updates to occur if the web.config says it is ok

@@ -1,0 +1,181 @@
+﻿@model ReplayFXSchedule.Web.Models.Game
+
+@{
+    ViewBag.Title = "Edit Games";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Edit Game</h4>
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm("Edit", "Games", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Partial("_form")
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var list = [@ViewBag.GameLocationIDs];
+        const listElement = $('#locations');
+        const displayListElement = $('#GameLocations');
+        var platforms = {};
+        var genres = {};
+        var developers = {};
+        listElement.val(list.toString());
+        const checkedClass = 'now-ui-icons ui-1_check';
+
+        function loadLocations() {
+            $.ajax({
+                url: '/api/v2/locations/@ViewContext.RouteData.Values["convention_id"]',
+                type: 'GET',
+                success: function (data) {
+                    displayListElement.html('');
+                    data.map(function (location) {
+                        if (location.showForGames) {
+                            displayListElement.append('<div class="align-middle" id="cat' + location.id + '" data-id=' + location.id + '><span id="catspan' + location.id + '"></span>' + location.location + '</div>');
+                            $('#cat' + location.id).click(function () { toggleItem(location.id); });
+                            if (list.indexOf(location.id) > -1) {
+                                $('#catspan' + location.id).addClass(checkedClass);
+                            }
+                        }
+                    });
+                }
+            })
+        }
+
+        function toggleItem(id) {
+            // if it is not there
+            // add it to the list input
+            // add the checkmark to the category
+            if (!$('#catspan' + id).hasClass(checkedClass)) {
+                list.push(id);
+                listElement.val(list.toString());
+                $('#catspan' + id).addClass(checkedClass);
+            }
+            // if it is there
+            // remove it from the list input
+            // remove the checkmark on the category
+            else {
+                var i = list.indexOf(id);
+                list.splice(i, 1);
+                listElement.val(list.toString());
+                $('#catspan' + id).removeClass(checkedClass);
+            }
+        }
+
+        function fill_form(id) {
+            $('#games-by-id').html('');
+            //console.log("the game id", id);
+            var url = 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Games/ByGameID?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312&fields=players%2Cpublishers%2Cgenres%2Coverview&id=' + id;
+            //console.log(url);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (res) {
+                    //console.log(res.data);
+                    const game = res.data.games[0];
+                    //console.log(game);
+                    var tempReleaseDate = new Date(game.release_date);
+                    //console.log(tempReleaseDate);
+                    var releaseYear = tempReleaseDate.getFullYear();
+                    //console.log(releaseYear);
+                    var developer = "";
+                    var genre = "";
+                    if (game.developers !== null && game.developers !== undefined) {
+                        developer = developers[game.developers[0]].name
+                    }
+                    if (game.genres !== null && game.genres !== undefined) {
+                        genre = genres[game.genres[0]].name
+                    }
+                    $('#GameTitle').val(game.game_title);
+                    $('#Overview').val(game.overview);
+                    $('#ReleaseDate').val(releaseYear);
+                    $('#Developer').val(developer);
+                    $('#Genre').val(genre);
+                    $('#Players').val(game.players);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+
+        function initialize() {
+            loadLocations();
+
+            $('#clear-games').click(function () {
+                $('#games-by-id').empty();
+            });
+
+            $.ajax({
+                url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Platforms?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312',
+                dataType: 'json',
+                type: 'GET',
+                success: function (request) {
+                    platforms = request.data.platforms;
+                }
+            });
+            $.ajax({
+                url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Genres?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312',
+                dataType: 'json',
+                type: 'GET',
+                success: function (request) {
+                    genres = request.data.genres;
+                }
+            });
+            $.ajax({
+                url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Developers?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312',
+                dataType: 'json',
+                type: 'GET',
+                success: function (request) {
+                    developers = request.data.developers;
+                }
+            });
+
+            $('#lookup-game').click(function () {
+                var gamerequested = $('#GameTitle').val().toLowerCase();
+                $('#GameTitle').html('');
+                $.ajax({
+                    url: 'https://cors-anywhere.herokuapp.com/https://api.thegamesdb.net/Games/ByGameName?apikey=e56314f1db7ba285efb91340f10a5c5dda8f88b806f2526c87386621a8832312&name=' + gamerequested,
+                    dataType: 'json',
+                    type: 'GET',
+                    success: function (request) {
+                        console.log(request);
+                        request.data.games.forEach((row) => {
+                            $('#games-by-id').append('<li class="list-group-item form-control" id="game' + row.id + '" data-id=' + row.id + '><span id="catspan' + row.id + '"></span>' + row.game_title + '</br>' + row.release_date + '  ' + platforms[row.platform].name + '</li>');
+                            $('#game' + row.id).click(function () { fill_form(row.id); });
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            $('#delete-image').click(function () {
+
+                var image = $("#Image").val();
+                console.log("the value of image is: " + image);
+                $('#Image').val('');
+                $('#imageUrl').attr('src', '/content/img/400x400.png');
+            });
+        }
+
+        $(initialize);
+    </script>
+}
+
+
+
+
+
+
