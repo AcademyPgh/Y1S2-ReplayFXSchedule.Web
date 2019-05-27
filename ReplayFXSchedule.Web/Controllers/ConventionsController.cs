@@ -62,7 +62,7 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.GameTypes = gametypes;
             var games = db.Games.Where(g => g.Convention == null).ToList();
             convention.Games = games;
-
+            db.SaveChanges();
 
             return convention;
         }
