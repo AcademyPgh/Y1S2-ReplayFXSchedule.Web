@@ -161,6 +161,14 @@ namespace ReplayFXSchedule.Web.Controllers
             return events.Where(e => e.EventLocation != null && e.EventLocation.Id == location).ToList();
         }
 
+        [Route("convention/{convention_id}/games/{gametype?}")]
+        public List<Game> GetGames(int convention_id, string gametype)
+        {
+            var convention = db.Conventions.Find(convention_id);
+            var games = convention.Games.Where(g => String.IsNullOrEmpty(gametype) || g.GameType.Name == gametype).ToList();
+            return games;
+        }
+
         private bool isVip(Convention convention)
         {
             if (User.Identity.IsAuthenticated)
