@@ -23,6 +23,14 @@
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td>
+                        All Locations
+                    </td>
+                    <td>
+                        @Html.ActionLink("Schedule Link", "Index", "Screens", new { convention_id = ViewContext.RouteData.Values["convention_id"] }, null)
+                    </td>
+                </tr>
                 @foreach (var item in Model)
                 {
                     <tr>

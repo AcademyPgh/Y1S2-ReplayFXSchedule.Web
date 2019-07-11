@@ -116,6 +116,8 @@
                     const messages = values[0];
                     const events = values[1];
 
+                    console.log(values);
+
                     var messagesHtml = messages.map((message, index) => {
                         if (index === 0) {
                             message.is_first = true;
@@ -142,7 +144,7 @@
                     }
                     else
                     {
-                        $("#featured").html(messagesHtml);
+                        // $("#featured").html(messagesHtml);
                     }
                 })
         }
