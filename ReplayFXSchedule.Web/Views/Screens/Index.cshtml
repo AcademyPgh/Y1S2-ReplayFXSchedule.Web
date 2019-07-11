@@ -124,7 +124,12 @@
                         }
                         return messageTemplate(message);
                     })
-                    var eventsHtml = events.map(event => {
+                    console.log('messages', messagesHtml);
+                    var eventsHtml = events.map((event, index) => {
+                        if (messages.length === 0 && index === 0)
+                        {
+                            event.is_first = true;
+                        }
                         return featureTemplate(event);
                     });
                     const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
