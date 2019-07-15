@@ -358,6 +358,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201905101959232_ConventionLogo.Designer.cs">
       <DependentUpon>201905101959232_ConventionLogo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\201907151427462_RequireEventTypeNames.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\201907151427462_RequireEventTypeNames.Designer.cs">
+      <DependentUpon>201907151427462_RequireEventTypeNames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\ConventionModels.cs" />
@@ -703,6 +707,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201905101959232_ConventionLogo.resx">
       <DependentUpon>201905101959232_ConventionLogo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\201907151427462_RequireEventTypeNames.resx">
+      <DependentUpon>201907151427462_RequireEventTypeNames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

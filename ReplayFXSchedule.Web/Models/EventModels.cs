@@ -100,7 +100,9 @@ namespace ReplayFXSchedule.Web.Models
     public class EventType
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
         public bool IsPrivate { get; set; }
