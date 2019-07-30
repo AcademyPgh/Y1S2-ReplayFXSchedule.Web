@@ -34,6 +34,33 @@ namespace ReplayFXSchedule.Web.Controllers
             return View(conventions);
         }
 
+        public Convention ResetGames(int id)
+        {
+            // claims all orphaned rows to whatever convention id is here
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            if(!user.isSuperAdmin)
+            {
+                return null;
+            }
+            var convention = db.Conventions.Find(id);
+            if(convention == null)
+            {
+                return null;
+            }
+
+            var games = convention.Games.ToList();
+
+            foreach(var game in games)
+            {
+                game.AtConvention = false;
+                game.GameLocations.Clear();
+            }
+
+            return convention;
+
+        }
+
         public Convention ClaimOrphans(int id)
         {
             // claims all orphaned rows to whatever convention id is here
