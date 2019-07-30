@@ -56,6 +56,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 game.AtConvention = false;
                 game.GameLocations.Clear();
             }
+            db.SaveChanges();
 
             return convention;
 
