@@ -43,7 +43,7 @@
                     }
                     else
                     {
-                        <h1>This Stage</h1>
+                        <h1>This Location</h1>
                         }
                     }
             </div>
@@ -98,33 +98,15 @@
         let currSponsor = 0;
 
         const backgrounds = [
-            "/Content/img/mmf/background-100.jpg",
-            "/Content/img/mmf/background-101.jpg",
-            "/Content/img/mmf/background-102.jpg",
-            "/Content/img/mmf/background-103.jpg",
-            "/Content/img/mmf/background-104.jpg",
-            "/Content/img/mmf/background-105.jpg",
-            "/Content/img/mmf/background-106.jpg",
-            "/Content/img/mmf/background-107.jpg",
-            "/Content/img/mmf/background-108.jpg",
-            "/Content/img/mmf/background-109.jpg",
-            "/Content/img/mmf/background-110.jpg",
-            "/Content/img/mmf/background-111.jpg",
-            "/Content/img/mmf/background-112.jpg",
-            "/Content/img/mmf/background-113.jpg",
-            "/Content/img/mmf/background-114.jpg",
-            "/Content/img/mmf/background-115.jpg",
-            "/Content/img/mmf/background-116.jpg",
-            "/Content/img/mmf/background-117.jpg",
-            "/Content/img/mmf/background-118.jpg",
-            "/Content/img/mmf/background-119.jpg",
-            "/Content/img/mmf/background-120.jpg",
-            "/Content/img/mmf/background-121.jpg",
-            "/Content/img/mmf/background-122.jpg",
-            "/Content/img/mmf/background-123.jpg",
-            "/Content/img/mmf/background-124.jpg",
-            "/Content/img/mmf/background-125.jpg",
-            "/Content/img/mmf/background-126.jpg",
+            "/Content/img/temp/osg1background.jpg",
+            "/Content/img/temp/osg2background.jpg",
+            "/Content/img/temp/osg3background.jpg",
+            "/Content/img/temp/osg4background.jpg",
+            "/Content/img/temp/osg5background.jpg",
+            "/Content/img/temp/osg6background.jpg",
+            "/Content/img/temp/osg7background.jpg",
+            "/Content/img/temp/osg8background.jpg",
+            "/Content/img/temp/osg9background.jpg",
         ];
         let currBackground = 0;
 
@@ -134,13 +116,20 @@
                     const messages = values[0];
                     const events = values[1];
 
+                    console.log(values);
+
                     var messagesHtml = messages.map((message, index) => {
                         if (index === 0) {
                             message.is_first = true;
                         }
                         return messageTemplate(message);
                     })
-                    var eventsHtml = events.map(event => {
+                    console.log('messages', messagesHtml);
+                    var eventsHtml = events.map((event, index) => {
+                        if (messages.length === 0 && index === 0)
+                        {
+                            event.is_first = true;
+                        }
                         return featureTemplate(event);
                     });
                     const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
@@ -149,9 +138,9 @@
                         $("#featured").append(eventsHtml[i % eventsHtml.length]);
                         $("#featured").append(messagesHtml[i % messagesHtml.length]);
                     }
-                    $("#featured").html(messagesHtml);
+                    //$("#featured").html(messagesHtml);
                     // temp
-                    @*if (location_view) {
+                    if (location_view) {
                         if (eventsHtml.length == 0 && messagesHtml.length == 0) {
                             const noMoreSource = document.getElementById("no-more-template").innerHTML;
                             const noMoreTemplate = Handlebars.compile(noMoreSource);
@@ -160,8 +149,8 @@
                     }
                     else
                     {
-                        $("#featured").html(messagesHtml);
-                    }*@
+                        // $("#featured").html(messagesHtml);
+                    }
                 })
         }
 
