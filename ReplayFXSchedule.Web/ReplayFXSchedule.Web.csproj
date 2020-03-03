@@ -371,6 +371,7 @@
     </Compile>
     <Compile Include="Models\FormResponse.cs" />
     <Compile Include="Models\GameModels.cs" />
+    <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\SocialModels.cs" />
     <Compile Include="Models\VendorModels.cs" />
     <Compile Include="Models\UserModels.cs" />
