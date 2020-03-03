@@ -34,6 +34,67 @@ namespace ReplayFXSchedule.Web.Controllers
             return View(conventions);
         }
 
+        public Convention ResetGames(int id)
+        {
+            // claims all orphaned rows to whatever convention id is here
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            if(!user.isSuperAdmin)
+            {
+                return null;
+            }
+            var convention = db.Conventions.Find(id);
+            if(convention == null)
+            {
+                return null;
+            }
+
+            var games = convention.Games.ToList();
+
+            foreach(var game in games)
+            {
+                game.AtConvention = false;
+                game.GameLocations.Clear();
+            }
+            db.SaveChanges();
+
+            return convention;
+
+        }
+
+        public Convention ClaimOrphans(int id)
+        {
+            // claims all orphaned rows to whatever convention id is here
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            var user = us.GetUser();
+            if(!user.isSuperAdmin)
+            {
+                return null;
+            }
+            var convention = db.Conventions.Find(id);
+            if(convention == null)
+            {
+                return null;
+            }
+            // things that must be moved
+            // game locations
+            // event types
+            // game types
+            // games
+
+            var gamelocations = db.GameLocations.Where(gl => gl.Convention == null).ToList();
+            convention.GameLocations = gamelocations;
+            var eventtypes = db.EventTypes.Where(et => et.Convention == null).ToList();
+            convention.EventTypes = eventtypes;
+            var gametypes = db.GameTypes.Where(gt => gt.Convention == null).ToList();
+            convention.GameTypes = gametypes;
+            var games = db.Games.Where(g => g.Convention == null).ToList();
+            convention.Games = games;
+            db.SaveChanges();
+
+            return convention;
+        }
+
         // GET: Conventions/Details/5
         public ActionResult Details(int? id)
         {

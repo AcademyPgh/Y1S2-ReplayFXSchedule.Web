@@ -140,6 +140,9 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<Sponsor> Sponsors { get; set; }
         public virtual List<DisplayMessage> DisplayMessages { get; set; }
 
+        [NotMapped]
+        public virtual List<Menu> Menu { get; set; }
+
         [JsonIgnore]
         public virtual List<Post> Posts { get; set; }
 
@@ -156,6 +159,8 @@ namespace ReplayFXSchedule.Web.Models
                 return promos;
             }
         }
+
+        
 
         [JsonIgnore]
         public virtual List<AppUserPermission> AppUserPermissions { get; set; }
