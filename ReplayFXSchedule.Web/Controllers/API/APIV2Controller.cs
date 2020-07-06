@@ -29,17 +29,23 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.EventTypes = GetEventTypes(convention, showPrivate);
             convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
+
+            convention.Menu = GetMenus(convention.Id);
+            return Ok(convention);
+        }
+
+        private List<Menu> GetMenus(int id)
+        {
             List<Menu> menu = new List<Menu>();
 
             menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
             MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
-            menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption});
+            menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
             menu.Add(new Menu { Type = "EventMenu" });
             menu.Add(new Menu { Type = "VendorsList", Title = "Vendors" });
             menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
             menu.Add(new Menu { Type = "StaticMap", Title = "Map" });
-            convention.Menu = menu;
-            return Ok(convention);
+            return menu;
         }
 
         [Route("conventions")]
