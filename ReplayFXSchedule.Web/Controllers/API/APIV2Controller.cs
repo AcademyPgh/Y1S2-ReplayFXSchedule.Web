@@ -38,13 +38,26 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             List<Menu> menu = new List<Menu>();
 
-            menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
-            MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
-            menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
-            menu.Add(new Menu { Type = "EventMenu" });
-            menu.Add(new Menu { Type = "VendorsList", Title = "Vendors" });
-            menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
-            menu.Add(new Menu { Type = "StaticMap", Title = "Map" });
+            if(id == 15)
+            {
+                menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
+                MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
+                menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "EventMenu" });
+                menu.Add(new Menu { Type = "VendorsList", Title = "Vendors" });
+                menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
+            }
+            else
+            {
+                menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
+                MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
+                menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "EventMenu" });
+                menu.Add(new Menu { Type = "VendorsList", Title = "Vendors" });
+                menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
+                menu.Add(new Menu { Type = "StaticMap", Title = "Map" });
+            }
+
             return menu;
         }
 
