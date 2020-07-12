@@ -21,6 +21,7 @@ namespace ReplayFXSchedule.Web.Models
         public string Location { get; set; }
         public string Image { get; set; }
         public string Url { get; set; }
+        public virtual List<VendorType> VendorTypes { get; set; }
 
         public string ImageUrl
         {
@@ -36,5 +37,29 @@ namespace ReplayFXSchedule.Web.Models
                 }
             }
         }
+    }
+
+    public class VendorType
+    {
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        [Display(Name = "Display Name")]
+        public string DisplayName { get; set; }
+        public bool IsPrivate { get; set; }
+        public bool IsMenu { get; set; }
+
+        [JsonIgnore]
+        public virtual Convention Convention { get; set; }
+        [JsonIgnore]
+        public virtual List<Vendor> Vendors { get; set; }
+    }
+
+    public class VendorTypeView
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string DisplayName { get; set; }
     }
 }

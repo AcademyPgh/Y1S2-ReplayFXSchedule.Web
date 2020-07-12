@@ -139,6 +139,7 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<Event> Events { get; set; }
         public virtual List<Sponsor> Sponsors { get; set; }
         public virtual List<DisplayMessage> DisplayMessages { get; set; }
+        public virtual List<VendorType> VendorTypes { get; set; }
 
         [NotMapped]
         public virtual List<Menu> Menu { get; set; }

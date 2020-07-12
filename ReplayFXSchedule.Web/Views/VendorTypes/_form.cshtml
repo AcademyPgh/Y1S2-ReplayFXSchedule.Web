@@ -1,0 +1,59 @@
+﻿@model ReplayFXSchedule.Web.Models.VendorType
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="row">
+        @Html.LabelFor(model => model.IsPrivate, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10 form-group">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" data-val="true" name="IsPrivate" value="true" @(Model != null && Model.IsPrivate ? "checked" : "")>
+                    &nbsp;
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @Html.LabelFor(model => model.IsMenu, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10 form-group">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" data-val="true" name="IsMenu" value="true" @(Model != null && Model.IsMenu ? "checked" : "")>
+                    &nbsp;
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@((string)ViewContext.RouteData.Values["action"] == "Create" ? "Create" : "Save Changes")" class="btn btn-default" />
+            @Html.ActionLink("Back to List", "Index", "EventTypes", null, new { @class = "replayButton btn btn-default" })
+        </div>
+    </div>
+</div>
+

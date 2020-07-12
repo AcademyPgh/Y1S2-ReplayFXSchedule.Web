@@ -244,6 +244,7 @@
     <Compile Include="Controllers\API\UsersV2Controller.cs" />
     <Compile Include="Controllers\ConventionsController.cs" />
     <Compile Include="Controllers\DisplayMessagesController.cs" />
+    <Compile Include="Controllers\VendorTypesController.cs" />
     <Compile Include="Controllers\GameLocationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublicController.cs" />
@@ -361,6 +362,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\201907151427462_RequireEventTypeNames.cs" />
     <Compile Include="Migrations\ReplayFXDbContext\201907151427462_RequireEventTypeNames.Designer.cs">
       <DependentUpon>201907151427462_RequireEventTypeNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202007120014469_VendorTypes.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202007120014469_VendorTypes.Designer.cs">
+      <DependentUpon>202007120014469_VendorTypes.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\Context.cs" />
@@ -623,6 +628,12 @@
     <Content Include="Views\DisplayMessages\Index.cshtml" />
     <Content Include="Views\DisplayMessages\_form.cshtml" />
     <Content Include="Views\Screens\List.cshtml" />
+    <Content Include="Views\VendorTypes\_form.cshtml" />
+    <Content Include="Views\VendorTypes\Create.cshtml" />
+    <Content Include="Views\VendorTypes\Delete.cshtml" />
+    <Content Include="Views\VendorTypes\Details.cshtml" />
+    <Content Include="Views\VendorTypes\Edit.cshtml" />
+    <Content Include="Views\VendorTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -711,6 +722,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\201907151427462_RequireEventTypeNames.resx">
       <DependentUpon>201907151427462_RequireEventTypeNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202007120014469_VendorTypes.resx">
+      <DependentUpon>202007120014469_VendorTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
