@@ -28,6 +28,7 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.Events = GetEvents(convention, showPrivate);
             convention.EventTypes = GetEventTypes(convention, showPrivate);
             convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
+            convention.VendorTypes = convention.VendorTypes.OrderBy(e => e.Name).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
 
             convention.Menu = GetMenus(convention_id);
