@@ -48,6 +48,15 @@ namespace ReplayFXSchedule.Web.Controllers
                 menu.Add(new Menu { Type = "EventMenu" });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
             }
+            else if (id == 16)
+            {
+                menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
+                MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
+                menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "VendorMenu" });
+                menu.Add(new Menu { Type = "EventMenu" });
+                menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
+            }
             else
             {
                 menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
