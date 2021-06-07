@@ -22,7 +22,9 @@ namespace ReplayFXSchedule.Web.Models
         [DataType(DataType.Time)]
         [Display(Name = "End Time")]
         public string EndTime { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Extended Description")]
         public string ExtendedDescription { get; set; }
         public string Location {
