@@ -476,5 +476,29 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             return outList;
         }
+
+        public ActionResult RemoveAll(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if(!us.GetUser().isSuperAdmin)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            List<Event> replayEvents = convention.Events.ToList();
+            if (replayEvents == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.Events.RemoveRange(replayEvents);
+            return RedirectToAction("Index");
+        }
     }
 }
