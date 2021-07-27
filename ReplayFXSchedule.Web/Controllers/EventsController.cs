@@ -498,6 +498,7 @@ namespace ReplayFXSchedule.Web.Controllers
             }
 
             db.Events.RemoveRange(replayEvents);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
     }
