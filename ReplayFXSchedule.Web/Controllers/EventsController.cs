@@ -104,7 +104,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id, int EventLocations)
+        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,URL,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id, int EventLocations)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -237,7 +237,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id, int EventLocations)
+        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,URL,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id, int EventLocations)
         {
             //int indexExt = 0;
             //string ext = "";
@@ -315,6 +315,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpe.EndTime = replayEvent.EndTime;
                 rpe.Description = replayEvent.Description;
                 rpe.ExtendedDescription = replayEvent.ExtendedDescription;
+                rpe.URL = replayEvent.URL;
                 //rpe.Location = replayEvent.Location;
                 rpe.Image = replayEvent.Image;
                 rpe.PromoImage = replayEvent.PromoImage;
@@ -499,6 +500,37 @@ namespace ReplayFXSchedule.Web.Controllers
 
             db.Events.RemoveRange(replayEvents);
             // db.SaveChanges();  // let's not leave this little line uncommented for now.
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ChangeDescFields(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.GetUser().isSuperAdmin)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            List<Event> replayEvents = convention.Events.ToList();
+            if (replayEvents == null)
+            {
+                return HttpNotFound();
+            }
+
+            foreach (var mmfevent in replayEvents)
+            {
+                mmfevent.URL = mmfevent.Description;
+                mmfevent.Description = mmfevent.ExtendedDescription;
+                mmfevent.ExtendedDescription = "";
+            }
+
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
     }
