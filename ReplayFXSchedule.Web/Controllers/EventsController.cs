@@ -503,35 +503,5 @@ namespace ReplayFXSchedule.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ChangeDescFields(int convention_id)
-        {
-            var us = new UserService((ClaimsIdentity)User.Identity, db);
-            if (!us.GetUser().isSuperAdmin)
-            {
-                return new HttpNotFoundResult();
-            }
-
-            var convention = db.Conventions.Find(convention_id);
-            if (convention == null)
-            {
-                return new HttpNotFoundResult();
-            }
-
-            List<Event> replayEvents = convention.Events.ToList();
-            if (replayEvents == null)
-            {
-                return HttpNotFound();
-            }
-
-            foreach (var mmfevent in replayEvents)
-            {
-                mmfevent.URL = mmfevent.Description;
-                mmfevent.Description = mmfevent.ExtendedDescription;
-                mmfevent.ExtendedDescription = "";
-            }
-
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
     }
 }
