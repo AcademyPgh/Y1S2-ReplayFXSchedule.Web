@@ -20,7 +20,7 @@ namespace ReplayFXSchedule.Web.Controllers
         private AzureTools azure = new AzureTools();
 
         // GET: ReplayEvents
-        public ActionResult Index(int convention_id, string search)
+        public ActionResult Index(int convention_id, string search, bool alpha = false)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if(!us.IsConventionAdmin(convention_id))
@@ -34,6 +34,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
             //  return View(db.ReplayEvents.Where(x => x.Title.StartsWith(search)|| search == null).ToList());
+            if(alpha)
+            {
+                return View(convention.Events.OrderBy(x => x.Title).ThenBy(x => x.Date).ToList());
+            }
             return View(convention.Events.OrderBy(x => x.Date).ThenBy(x => x.StartTime).ToList());
         }
 
