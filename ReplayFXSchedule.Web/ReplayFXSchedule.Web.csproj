@@ -649,16 +649,17 @@
     <Content Include="Views\VendorTypes\Details.cshtml" />
     <Content Include="Views\VendorTypes\Edit.cshtml" />
     <Content Include="Views\VendorTypes\Index.cshtml" />
-    <Content Include="Views\Guests\Create.cshtml" />
-    <Content Include="Views\Guests\Delete.cshtml" />
-    <Content Include="Views\Guests\Details.cshtml" />
-    <Content Include="Views\Guests\Edit.cshtml" />
-    <Content Include="Views\Guests\Index.cshtml" />
     <Content Include="Views\GuestTypes\Create.cshtml" />
     <Content Include="Views\GuestTypes\Delete.cshtml" />
     <Content Include="Views\GuestTypes\Details.cshtml" />
     <Content Include="Views\GuestTypes\Edit.cshtml" />
     <Content Include="Views\GuestTypes\Index.cshtml" />
+    <Content Include="Views\GuestTypes\_form.cshtml" />
+    <Content Include="Views\Guests\Create.cshtml" />
+    <Content Include="Views\Guests\Delete.cshtml" />
+    <Content Include="Views\Guests\Details.cshtml" />
+    <Content Include="Views\Guests\Edit.cshtml" />
+    <Content Include="Views\Guests\Index.cshtml" />
     <Content Include="Views\Guests\_form.cshtml" />
   </ItemGroup>
   <ItemGroup>
