@@ -1,4 +1,4 @@
-﻿@model ReplayFXSchedule.Web.Models.Vendor
+﻿@model ReplayFXSchedule.Web.Models.Guest
 
 @{
     ViewBag.Title = "Create";
@@ -6,11 +6,11 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Create Vendor</h4>
+        <h4 class="card-title">Create Guest</h4>
     </div>
     <div class="card-body">
 
-        @using (Html.BeginForm("Create", "Vendors", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Create", "Guests", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
@@ -22,15 +22,15 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        var list = [@ViewBag.VendorTypeIDs];
+        var list = [@ViewBag.GuestTypeIDs];
         const listElement = $('#categories');
         listElement.val(list.toString());
         const checkedClass = 'now-ui-icons ui-1_check';
-        const displayListElement = $('#VendorTypes');
+        const displayListElement = $('#GuestTypes');
 
         function loadCategories() {
             $.ajax({
-                url: '/api/v2/vendortypes/@ViewBag.ConId',
+                url: '/api/v2/guesttypes/@ViewBag.ConId',
                 type: 'GET',
                 success: function (data) {
                     displayListElement.html('');
@@ -80,5 +80,4 @@
         }
 
         $(initialize);
-    </script>
-}
+    </script>}

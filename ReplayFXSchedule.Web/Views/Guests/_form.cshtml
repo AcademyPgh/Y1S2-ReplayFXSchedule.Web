@@ -1,0 +1,90 @@
+﻿@model ReplayFXSchedule.Web.Models.Guest
+
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="row">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10">
+            <div class="form-group">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10">
+            <div class="form-group">
+                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10">
+            <div class="form-group">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @Html.LabelFor(model => model.ExtendedDescription, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10">
+            <div class="form-group">
+                @Html.TextAreaFor(model => model.ExtendedDescription, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ExtendedDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10">
+            <div class="form-group">
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <div class="fileinput-new thumbnail" style="width: 250px; height: 66px;">
+                        @if (Model != null && Model.ImageUrl != null)
+                        {
+                            <img src="@Url.Content(Model.ImageUrl)" class="photo" id="imageUrl" alt="..." />
+                        }
+                        else
+                        {
+                            <img src="/content/img/640x170.png" class="photo" id="imageUrl" alt="...">
+                        }
+                    </div>
+                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 250px; max-height: 66px;"></div>
+                    <div>
+                        <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="upload"></span>
+                        <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Original</a>
+                        <div class="btn btn-default fileinput-new" id="delete-image">Remove Image</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="col-md-2 col-form-label">Types</label>
+        <div class="col-md-10">
+            <div class="form-group">
+                <div class="form-control">
+                    <ul id="VendorTypes" class="list-unstyled"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input name="categories" id="categories" type="hidden" />
+            @Html.HiddenFor(model => model.Image)
+            <input type="submit" value="Save" class="btn btn-default" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
+</div>

@@ -119,6 +119,14 @@ namespace ReplayFXSchedule.Web.Controllers
             return eventTypes;
         }
 
+        [Route("guesttypes/{convention_id}")]
+        [HttpGet]
+        public List<GuestType> GuestTypes(int convention_id)
+        {
+            var guestTypes = db.Conventions.Find(convention_id).GuestTypes.ToList();
+            return guestTypes;
+        }
+
         [Route("vendortypes/{convention_id}")]
         [HttpGet]
         public List<VendorType> VendorTypes(int convention_id)
