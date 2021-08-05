@@ -4,66 +4,83 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Guest</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ExtendedDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ExtendedDescription, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ExtendedDescription, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Edit Guest</h4>
     </div>
-}
+    <div class="card-body">
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+        @using (Html.BeginForm("Edit", "Guests", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Partial("_form")
+        }
+    </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var list = [@ViewBag.GuestTypeIDs];
+        const listElement = $('#categories');
+        listElement.val(list.toString());
+        const checkedClass = 'now-ui-icons ui-1_check';
+        const displayListElement = $('#GuestTypes');
+
+        function loadCategories() {
+            $.ajax({
+                url: '/api/v2/guesttypes/@ViewBag.ConId',
+                type: 'GET',
+                success: function (data) {
+                    displayListElement.html('');
+                    data.map(function (category) {
+                        displayListElement.append('<div class="align-middle" id="cat' + category.id + '" data-id=' + category.id + '><span id="catspan' + category.id + '"></span>' + category.name + '</div>');
+                        $('#cat' + category.id).click(function () { toggleItem(category.id); });
+                        if (list.indexOf(category.id) > -1) {
+                            $('#catspan' + category.id).addClass(checkedClass);
+                        }
+                    });
+                }
+            })
+        }
+
+        function toggleItem(id) {
+            // if it is not there
+            // add it to the list input
+            // add the checkmark to the category
+            if (!$('#catspan' + id).hasClass(checkedClass)) {
+                list.push(id);
+                listElement.val(list.toString());
+                $('#catspan' + id).addClass(checkedClass);
+            }
+            // if it is there
+            // remove it from the list input
+            // remove the checkmark on the category
+            else {
+                var i = list.indexOf(id);
+                list.splice(i, 1);
+                listElement.val(list.toString());
+                $('#catspan' + id).removeClass(checkedClass);
+            }
+        }
+
+        $('#delete-image').click(function () {
+
+            var image = $("#Image").val();
+            console.log("the value of image is: " + image);
+            $('#Image').val('');
+            $('#imageUrl').attr('src', '/content/img/640x170.png');
+        })
+
+
+
+        function initialize() {
+            loadCategories();
+        }
+
+        $(initialize);
+    </script>
+
+}

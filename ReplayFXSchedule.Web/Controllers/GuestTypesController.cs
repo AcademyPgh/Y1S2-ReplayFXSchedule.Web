@@ -4,9 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
+using ReplayFXSchedule.Web.Shared;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -15,29 +17,61 @@ namespace ReplayFXSchedule.Web.Controllers
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
         // GET: GuestTypes
-        public ActionResult Index()
+        public ActionResult Index(int convention_id)
         {
-            return View(db.GuestTypes.ToList());
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View(convention.GuestTypes.ToList());
         }
 
         // GET: GuestTypes/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GuestType guestType = db.GuestTypes.Find(id);
-            if (guestType == null)
+            GuestType replayGuestType = convention.GuestTypes.Where(e => e.Id == id).FirstOrDefault();
+            if (replayGuestType == null)
             {
                 return HttpNotFound();
             }
-            return View(guestType);
+            return View(replayGuestType);
         }
 
         // GET: GuestTypes/Create
-        public ActionResult Create()
+        public ActionResult Create(int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             return View();
         }
 
@@ -46,31 +80,52 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,DisplayName,IsPrivate,IsMenu")] GuestType guestType)
+        public ActionResult Create([Bind(Include = "Id,Name,DisplayName,IsPrivate,IsMenu")] GuestType replayGuestType, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             if (ModelState.IsValid)
             {
-                db.GuestTypes.Add(guestType);
+                convention.GuestTypes.Add(replayGuestType);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(guestType);
+            return View(replayGuestType);
         }
 
         // GET: GuestTypes/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GuestType guestType = db.GuestTypes.Find(id);
-            if (guestType == null)
+            GuestType replayGuestType = convention.GuestTypes.Where(e => e.Id == id).FirstOrDefault();
+            if (replayGuestType == null)
             {
                 return HttpNotFound();
             }
-            return View(guestType);
+            return View(replayGuestType);
         }
 
         // POST: GuestTypes/Edit/5
@@ -78,39 +133,70 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,DisplayName,IsPrivate,IsMenu")] GuestType guestType)
+        public ActionResult Edit([Bind(Include = "Id,Name,DisplayName,IsPrivate,IsMenu")] GuestType replayGuestType, int convention_id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (ModelState.IsValid)
             {
-                db.Entry(guestType).State = EntityState.Modified;
+                db.Entry(replayGuestType).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(guestType);
+            return View(replayGuestType);
         }
 
         // GET: GuestTypes/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int convention_id, int? id)
         {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GuestType guestType = db.GuestTypes.Find(id);
-            if (guestType == null)
+            GuestType replayGuestType = convention.GuestTypes.Where(e => e.Id == id).FirstOrDefault();
+            if (replayGuestType == null)
             {
                 return HttpNotFound();
             }
-            return View(guestType);
+            return View(replayGuestType);
         }
 
         // POST: GuestTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int convention_id, int id)
         {
-            GuestType guestType = db.GuestTypes.Find(id);
-            db.GuestTypes.Remove(guestType);
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            GuestType replayGuestType = convention.GuestTypes.Where(e => e.Id == id).FirstOrDefault();
+            db.GuestTypes.Remove(replayGuestType);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

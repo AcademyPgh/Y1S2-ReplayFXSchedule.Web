@@ -10,7 +10,6 @@ namespace ReplayFXSchedule.Web.Models
 {
     public class Guest
     {
-        [Key]
         public int Id { get; set; }
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
