@@ -265,7 +265,7 @@
         }
 
         function setBackground() {
-            $("#background").css("background-image", "url(" + backgrounds[currBackground] + ")");
+            $("#background").css("background-image", "linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(" + backgrounds[currBackground] + ")");
             currBackground = currBackground + 1;
             if (currBackground >= backgrounds.length) {
                 currBackground = 0;
