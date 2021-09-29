@@ -429,6 +429,7 @@
     <Content Include="Content\img\mmf\background-124.jpg" />
     <Content Include="Content\img\mmf\background-125.jpg" />
     <Content Include="Content\img\mmf\background-126.jpg" />
+    <Content Include="Content\img\temp\bg-grid.png" />
     <Content Include="Content\img\temp\osgm-logo.png" />
     <Content Include="Content\img\replayfxlogo.png" />
     <Content Include="Content\css\now-ui-dashboard.css" />
