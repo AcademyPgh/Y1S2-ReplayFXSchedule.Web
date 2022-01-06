@@ -87,6 +87,12 @@
                                 <p>Sponsors</p>
                             </a>
                         </li>
+                        <li class="@((string)ViewContext.RouteData.Values["controller"] == "Guests" ? "active" : "")">
+                            <a href="@Url.Action("Index", "Guests", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                <i class="now-ui-icons users_single-02"></i>
+                                <p>Guests</p>
+                            </a>
+                        </li>
                         <li class="@((string)ViewContext.RouteData.Values["controller"] == "DisplayMessages" ? "active" : "")">
                             <a href="@Url.Action("Index", "DisplayMessages", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                                 <i class="now-ui-icons media-1_album"></i>
@@ -120,6 +126,12 @@
                                         <a href="@Url.Action("Index", "GameTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                                             <span class="sidebar-mini-icon">GT</span>
                                             <span class="sidebar-normal">Game Types</span>
+                                        </a>
+                                    </li>
+                                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "GuestTypes" ? "active" : "")">
+                                        <a href="@Url.Action("Index", "GuestTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                            <span class="sidebar-mini-icon">GT</span>
+                                            <span class="sidebar-normal">Guest Types</span>
                                         </a>
                                     </li>
                                     <li class="@((string)ViewContext.RouteData.Values["controller"] == "GameLocations" ? "active" : "")">

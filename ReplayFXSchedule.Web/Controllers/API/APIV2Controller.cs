@@ -30,6 +30,8 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
             convention.VendorTypes = convention.VendorTypes.OrderBy(e => e.Name).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
+            convention.Guests = convention.Guests.OrderBy(e => e.Name).ToList();
+            convention.GuestTypes = convention.GuestTypes.OrderBy(e => e.Name).ToList();
 
             convention.Menu = GetMenus(convention_id);
             return Ok(convention);
@@ -117,6 +119,14 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             var eventTypes = db.Conventions.Find(convention_id).EventTypes.ToList();
             return eventTypes;
+        }
+
+        [Route("guesttypes/{convention_id}")]
+        [HttpGet]
+        public List<GuestType> GuestTypes(int convention_id)
+        {
+            var guestTypes = db.Conventions.Find(convention_id).GuestTypes.ToList();
+            return guestTypes;
         }
 
         [Route("vendortypes/{convention_id}")]

@@ -107,7 +107,7 @@ namespace ReplayFXSchedule.Web.Models
             {
                 if (MapImage != null)
                 {
-                    return ConfigurationManager.AppSettings["ImagePrefix"] + ConfigurationManager.AppSettings["AzureFolder"]  + @"/" + MapImage;
+                    return ConfigurationManager.AppSettings["ImagePrefix"] + ConfigurationManager.AppSettings["AzureFolder"] + @"/" + MapImage;
                 }
                 else
                 {
@@ -135,6 +135,8 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<GameType> GameTypes { get; set; }
         public virtual List<Game> Games { get; set; }
         public virtual List<GameLocation> GameLocations { get; set; }
+        public virtual List<Guest> Guests { get; set; }
+        public virtual List<GuestType> GuestTypes {get; set;}
         public virtual List<EventType> EventTypes { get; set; }
         public virtual List<Event> Events { get; set; }
         public virtual List<Sponsor> Sponsors { get; set; }
