@@ -20,6 +20,8 @@ namespace ReplayFXSchedule.Web.Models
         public string Image { get; set; }
         public string Url { get; set; }
         public virtual List<GuestType> GuestTypes { get; set; }
+        public virtual List<Event> Events { get; set; }
+        public virtual List<Vendor> Vendors { get; set; }
         public string ImageUrl
         {
             get

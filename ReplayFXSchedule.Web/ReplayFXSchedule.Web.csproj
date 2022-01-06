@@ -382,6 +382,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\202108040101284_EventsFix.Designer.cs">
       <DependentUpon>202108040101284_EventsFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202201061749487_AddedLists.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202201061749487_AddedLists.Designer.cs">
+      <DependentUpon>202201061749487_AddedLists.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\GuestModels.cs" />
     <Compile Include="Models\Context.cs" />
@@ -764,6 +768,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\202108040101284_EventsFix.resx">
       <DependentUpon>202108040101284_EventsFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202201061749487_AddedLists.resx">
+      <DependentUpon>202201061749487_AddedLists.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

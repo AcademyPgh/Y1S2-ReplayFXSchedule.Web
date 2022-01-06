@@ -46,6 +46,7 @@ namespace ReplayFXSchedule.Web.Models
         public bool IsPromo { get; set; }
         public bool IsPrivate { get; set; }
         public string URL { get; set; } // add if to get to check for https
+        public virtual List<Guest> Guests { get; set; }
 
         [Display(Name = "Event Type")]
         public virtual List<EventType> EventTypes { get; set; }
@@ -98,6 +99,7 @@ namespace ReplayFXSchedule.Web.Models
                 }
             }
         }
+        
     }
 
     public class EventType

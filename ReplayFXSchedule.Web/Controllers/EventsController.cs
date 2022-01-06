@@ -87,6 +87,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 eventToCopy = db.Events.Find(id);
             }
+            ViewBag.GuestIds = "";
             ViewBag.EventTypeIDs = "";
             ViewBag.ConId = convention_id;
             var dropdownlist = new List<SelectListItem>();
