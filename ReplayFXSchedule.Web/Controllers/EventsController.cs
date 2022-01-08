@@ -87,7 +87,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 eventToCopy = db.Events.Find(id);
             }
-            ViewBag.GuestIds = "";
+            ViewBag.GuestIDs = "";
             ViewBag.EventTypeIDs = "";
             ViewBag.ConId = convention_id;
             var dropdownlist = new List<SelectListItem>();
@@ -109,7 +109,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,URL,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id, int EventLocations)
+        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,URL,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, string guests, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id, int EventLocations)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -143,13 +143,13 @@ namespace ReplayFXSchedule.Web.Controllers
                     }
                 }
                 replayEvent.Guests = new List<Guest>();
-                //foreach(var id in guests.Split(','))
-                //{
-                //    if (int.TryParse(id, out int Id))
-                //    {
-                //        replayEvent.Guests.Add(db.Guests.Find(Id));
-                //    }
-                //}
+                foreach (var id in guests.Split(','))
+                {
+                    if (int.TryParse(id, out int Id))
+                    {
+                        replayEvent.Guests.Add(db.Guests.Find(Id));
+                    }
+                }
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -184,6 +184,7 @@ namespace ReplayFXSchedule.Web.Controllers
 
             ViewBag.ConId = convention_id;
             ViewBag.EventTypeIDs = string.Join(",", replayEvent.EventTypes.Select(r => r.Id));
+            ViewBag.GuestIDs = string.Join(",", replayEvent.Guests.Select(r => r.Id));
             var dropdownlist = new List<SelectListItem>();
             foreach (var location in db.Conventions.Find(convention_id).GameLocations.Where(gl => gl.ShowForEvents == true).ToList())
             {
@@ -246,12 +247,60 @@ namespace ReplayFXSchedule.Web.Controllers
             return Json(eventList, JsonRequestBehavior.AllowGet);
         }
 
+        private string AddGuest(int id, int typeId)
+        {
+            Event rpe = db.Events.Find(id);
+            Guest rpet = db.Guests.Find(typeId);
+
+            rpe.Guests.Add(rpet);
+            db.SaveChanges();
+
+            return "success";
+        }
+
+        private string RemoveGuest(int id, int typeId)
+        {
+            Event rpe = db.Events.Find(id);
+            Guest typetoremove = new Guest();
+            foreach (var item in rpe.Guests)
+            {
+                if (item.Id == typeId)
+                {
+                    typetoremove = item;
+                }
+            }
+            rpe.Guests.Remove(typetoremove);
+            db.SaveChanges();
+            return "success";
+        }
+
+        public ActionResult GetGuests(int convention_id, int id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            Event rpe = convention.Events.Where(e => e.Id == id).FirstOrDefault();
+            List<GuestView> guestlist = GuestView(rpe.Guests.ToList());
+
+
+            return Json(guestlist, JsonRequestBehavior.AllowGet);
+        }
+
         // POST: ReplayEvents/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,URL,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id, int EventLocations)
+        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,URL,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id, int EventLocations, string guests)
         {
             //int indexExt = 0;
             //string ext = "";
@@ -338,6 +387,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpe.EventLocation = convention.GameLocations.Where(gl => gl.Id == EventLocations).FirstOrDefault();
 
                 SaveReplayEventTypes(replayEvent.Id, categories.Split(','));
+                SaveReplayGuests(replayEvent.Id, guests.Split(','));
                 db.SaveChanges();
 
                 //RemoveAllEventTypes(replayEvent.Id);
@@ -381,6 +431,43 @@ namespace ReplayFXSchedule.Web.Controllers
             foreach (var i in ids)
             {
                 replayEvent.EventTypes.Add(db.EventTypes.Find(i));
+            }
+        }
+
+        private void SaveReplayGuests(int id, string[] GuestIDs)
+        {
+            List<int> ids = new List<int>();
+            List<Guest> typesToRemove = new List<Guest>();
+            foreach (var guestId in GuestIDs)
+            {
+                int i;
+                if (int.TryParse(guestId, out i))
+                {
+                    ids.Add(i);
+                }
+            }
+
+            var replayEvent = db.Events.Find(id);
+            foreach (var guest in replayEvent.Guests)
+            {
+                if (ids.Contains(guest.Id))
+                {
+                    // keep it, remove from the ids list
+                    ids.Remove(guest.Id);
+                }
+                else
+                {
+
+                    typesToRemove.Add(guest);
+                }
+            }
+            foreach (var type in typesToRemove)
+            {
+                replayEvent.Guests.Remove(type);
+            }
+            foreach (var i in ids)
+            {
+                replayEvent.Guests.Add(db.Guests.Find(i));
             }
         }
 
@@ -485,6 +572,39 @@ namespace ReplayFXSchedule.Web.Controllers
                     Name = item.Name,
                     Id = item.Id,
                     DisplayName = item.DisplayName
+                };
+                outList.Add(temp);
+
+            }
+            return outList;
+        }
+
+        public ActionResult GetAllGuests(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return Json(GuestView(convention.Guests.ToList()), JsonRequestBehavior.AllowGet);
+        }
+
+        private List<GuestView> GuestView(List<Guest> baseList)
+        {
+            List<GuestView> outList = new List<GuestView>();
+
+            foreach (var item in baseList)
+            {
+                GuestView temp = new GuestView
+                {
+                    Name = item.Name,
+                    Id = item.Id,                    
                 };
                 outList.Add(temp);
 

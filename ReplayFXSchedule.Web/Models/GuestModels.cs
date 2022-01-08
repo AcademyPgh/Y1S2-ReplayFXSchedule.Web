@@ -55,6 +55,12 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<Guest> Guests { get; set; }
     }
 
+    public class GuestView
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     public class GuestTypeView
     {
         public int Id { get; set; }

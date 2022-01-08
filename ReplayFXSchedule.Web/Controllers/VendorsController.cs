@@ -88,7 +88,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, int convention_id, string categories, string guests)
+        public ActionResult Create([Bind(Include = "Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, int convention_id, string categories)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -112,15 +112,7 @@ namespace ReplayFXSchedule.Web.Controllers
                     {
                         replayVendor.VendorTypes.Add(db.VendorTypes.Find(Id));
                     }
-                }
-                replayVendor.Guests = new List<Guest>();
-                foreach (var id in guests.Split(','))
-                {
-                    if (int.TryParse(id, out int Id)) 
-                    {
-                        replayVendor.Guests.Add(db.Guests.Find(Id));
-                    }
-                }
+                }                
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
