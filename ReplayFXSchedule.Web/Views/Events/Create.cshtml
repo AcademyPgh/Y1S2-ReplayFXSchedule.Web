@@ -24,6 +24,7 @@
     @Scripts.Render("~/bundles/jqueryval")
 
 <script>
+     
         var list = [@ViewBag.EventTypeIDs];
         const listElement = $('#categories');
         listElement.val(list.toString());
@@ -36,7 +37,6 @@
                 type: 'GET',
                 success: function (data) {
                     displayListElement.html('');
-                    console.log(data);
                     data.map(function (category) {
                         displayListElement.append('<div class="align-middle" id="cat' + category.id + '" data-id=' + category.id + '><span id="catspan' + category.id + '"></span>' + category.name + '</div>');
                         $('#cat' + category.id).click(function () { toggleItem(category.id); });
@@ -50,7 +50,7 @@
 
         var guestList = [@ViewBag.GuestIds];
         const guestListElement = $('#guests');
-        guestListElement.val(list.toString());
+        guestListElement.val(guestList.toString());
         const displayGuestListElement = $('#Guests');
 
         function loadGuest() {
@@ -61,10 +61,10 @@
                     displayGuestListElement.html('');
                     console.log(data);
                     data.map(function (guest) {
-                        displayGuestListElement.append('<div class="align-middle" id="cat' + guest.id + '" data-id=' + guest.id + '><span id="catspan' + guest.id + '"></span>' + guest.name + '</div>');
-                        $('#cat' + guest.id).click(function () { toggleGuest(guest.id); });
-                        if (list.indexOf(guest.id) > -1) {
-                            $('#catspan' + guest.id).addClass(checkedClass);
+                        displayGuestListElement.append('<div class="align-middle" id="guest' + guest.id + '" data-id=' + guest.id + '><span id="guestspan' + guest.id + '"></span>' + guest.name + '</div>');
+                        $('#guest' + guest.id).click(function () { toggleGuest(guest.id); });
+                        if (guestList.indexOf(guest.id) > -1) {
+                            $('#guestspan' + guest.id).addClass(checkedClass);
                         }
                     });
                 }
@@ -99,6 +99,7 @@
                 guestList.push(id);
                 guestListElement.val(guestList.toString());
                 $('#guestspan' + id).addClass(checkedClass);
+                console.log(guestList);
             }
             // if it is there
             // remove it from the list input
@@ -108,6 +109,7 @@
                 guestList.splice(i, 1);
                 guestListElement.val(guestList.toString());
                 $('#guestspan' + id).removeClass(checkedClass);
+                console.log(guestList);
             }
         }
 
@@ -115,6 +117,7 @@
         {
             loadCategories();
             loadFormItems();
+            loadGuest();
         }
 
         function loadFormItems()

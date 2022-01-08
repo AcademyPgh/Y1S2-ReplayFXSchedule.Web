@@ -76,6 +76,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
 
+            ViewBag.GuestIds = "";
             ViewBag.VendorTypeIDs = "";
             ViewBag.ConId = convention_id;
 
@@ -87,7 +88,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, int convention_id, string categories)
+        public ActionResult Create([Bind(Include = "Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, int convention_id, string categories, string guests)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -110,6 +111,14 @@ namespace ReplayFXSchedule.Web.Controllers
                     if (int.TryParse(id, out int Id))
                     {
                         replayVendor.VendorTypes.Add(db.VendorTypes.Find(Id));
+                    }
+                }
+                replayVendor.Guests = new List<Guest>();
+                foreach (var id in guests.Split(','))
+                {
+                    if (int.TryParse(id, out int Id)) 
+                    {
+                        replayVendor.Guests.Add(db.Guests.Find(Id));
                     }
                 }
 

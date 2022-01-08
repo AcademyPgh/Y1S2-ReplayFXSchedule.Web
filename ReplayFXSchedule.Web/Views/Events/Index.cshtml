@@ -46,6 +46,11 @@
 
                     </th>
                     <th>
+
+                        @Html.DisplayNameFor(model => model.Guests)
+
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.Location)
                     </th>
                     <th></th>
@@ -54,41 +59,47 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Date)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @if (item.ImageUrl != null)
-                                {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
-                        </td>
-                        <td>
-                            @foreach (var eventType in item.EventTypes)
-                            {
-                                <span class="categoryType">@Html.DisplayFor(model => eventType.DisplayName) </span><br />
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Location)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Copy", "Create", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @if (item.ImageUrl != null)
+                        {<img src="@Url.Content(item.ImageUrl)" class="index-img" />}
+                    </td>
+                    <td>
+                        @foreach (var eventType in item.EventTypes)
+                        {
+                            <span class="categoryType">@Html.DisplayFor(model => eventType.DisplayName) </span><br />
+                        }
+                    </td>
+                    <td>
+                        @foreach (var guest in item.Guests)
+                        {
+                            <span class="categoryType">@Html.DisplayFor(model => guest.Name) </span><br />
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Copy", "Create", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

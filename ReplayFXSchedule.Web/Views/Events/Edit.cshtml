@@ -20,7 +20,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         var list = [@ViewBag.EventTypeIDs];
         const listElement = $('#categories');
         listElement.val(list.toString());
@@ -38,6 +38,30 @@
                         $('#cat' + category.id).click(function () { toggleItem(category.id); });
                         if (list.indexOf(category.id) > -1) {
                             $('#catspan' + category.id).addClass(checkedClass);
+                        }
+                    });
+                }
+            })
+        }
+
+        var guestList = [@ViewBag.GuestIds];
+        const guestListElement = $('#guests');
+        console.log(guestList);
+        guestListElement.val(guestList.toString());
+        const displayGuestListElement = $('#Guests');
+
+        function loadGuest() {
+            $.ajax({
+                url: '/api/v2/guests/@ViewBag.ConId',
+                type: 'GET',
+                success: function (data) {
+                    displayGuestListElement.html('');
+                    console.log(data);
+                    data.map(function (guest) {
+                        displayGuestListElement.append('<div class="align-middle" id="guest' + guest.id + '" data-id=' + guest.id + '><span id="guestspan' + guest.id + '"></span>' + guest.name + '</div>');
+                        $('#guest' + guest.id).click(function () { toggleGuest(guest.id); });
+                        if (guestList.indexOf(guest.id) > -1) {
+                            $('#guestspan' + guest.id).addClass(checkedClass);
                         }
                     });
                 }
@@ -62,7 +86,29 @@
                 listElement.val(list.toString());
                 $('#catspan' + id).removeClass(checkedClass);
             }
+    }
+
+    function toggleGuest(id) {
+        // if it is not there
+        // add it to the list input
+        // add the checkmark to the category
+        if (!$('#guestspan' + id).hasClass(checkedClass)) {
+            guestList.push(id);
+            guestListElement.val(guestList.toString());
+            $('#guestspan' + id).addClass(checkedClass);
+            console.log(guestList);
         }
+        // if it is there
+        // remove it from the list input
+        // remove the checkmark on the category
+        else {
+            var i = guestList.indexOf(id);
+            guestList.splice(i, 1);
+            guestListElement.val(guestList.toString());
+            $('#guestspan' + id).removeClass(checkedClass);
+            console.log(guestList);
+        }
+    }
 
             $('#delete-image').click(function () {
 
@@ -97,6 +143,7 @@
         function initialize() {
             loadCategories();
             loadFormItems();
+            loadGuest();
         }
 
         function loadFormItems() {
@@ -140,5 +187,5 @@
         }
 
         $(initialize);
-            </script>
+</script>
         }

@@ -135,13 +135,22 @@ namespace ReplayFXSchedule.Web.Controllers
                 replayEvent.EventLocation = con.GameLocations.Where(gl => gl.Id == EventLocations).FirstOrDefault();
                 con.Events.Add(replayEvent);
                 replayEvent.EventTypes = new List<EventType>();
-                foreach(var id in categories.Split(','))
+                foreach (var id in categories.Split(','))
                 {
                     if (int.TryParse(id, out int Id))
                     {
                         replayEvent.EventTypes.Add(db.EventTypes.Find(Id));
                     }
                 }
+                replayEvent.Guests = new List<Guest>();
+                //foreach(var id in guests.Split(','))
+                //{
+                //    if (int.TryParse(id, out int Id))
+                //    {
+                //        replayEvent.Guests.Add(db.Guests.Find(Id));
+                //    }
+                //}
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
