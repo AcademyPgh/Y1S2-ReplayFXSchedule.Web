@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "BulkLoad";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Bulk Load Events</h4>
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm("UploadCSV", "Events", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <input type="file" name="upload">
+
+            <button type="submit" class="btn btn-default">Go</button>
+        }
+    </div>
+</div>

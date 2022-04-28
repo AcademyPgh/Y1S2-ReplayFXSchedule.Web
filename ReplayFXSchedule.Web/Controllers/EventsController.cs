@@ -10,6 +10,7 @@ using ReplayFXSchedule.Web.Models;
 using Newtonsoft.Json;
 using ReplayFXSchedule.Web.Shared;
 using System.Security.Claims;
+using Microsoft.VisualBasic.FileIO;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -20,7 +21,7 @@ namespace ReplayFXSchedule.Web.Controllers
         private AzureTools azure = new AzureTools();
 
         // GET: ReplayEvents
-        public ActionResult Index(int convention_id, string search)
+        public ActionResult Index(int convention_id, string search, bool alpha = false)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if(!us.IsConventionAdmin(convention_id))
@@ -34,6 +35,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
             //  return View(db.ReplayEvents.Where(x => x.Title.StartsWith(search)|| search == null).ToList());
+            if(alpha)
+            {
+                return View(convention.Events.OrderBy(x => x.Title).ThenBy(x => x.Date).ToList());
+            }
             return View(convention.Events.OrderBy(x => x.Date).ThenBy(x => x.StartTime).ToList());
         }
 
@@ -104,7 +109,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id, int EventLocations)
+        public ActionResult Create([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,URL,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, int convention_id, int EventLocations)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -237,7 +242,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id, int EventLocations)
+        public ActionResult Edit([Bind(Include = "Id,Title,Date,StartTime,EndTime,Description,ExtendedDescription,URL,Image,IsPromo,PromoImage,IsPrivate")] Event replayEvent, string categories, HttpPostedFileBase upload, HttpPostedFileBase promoUpload, string image, int convention_id, int EventLocations)
         {
             //int indexExt = 0;
             //string ext = "";
@@ -315,6 +320,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 rpe.EndTime = replayEvent.EndTime;
                 rpe.Description = replayEvent.Description;
                 rpe.ExtendedDescription = replayEvent.ExtendedDescription;
+                rpe.URL = replayEvent.URL;
                 //rpe.Location = replayEvent.Location;
                 rpe.Image = replayEvent.Image;
                 rpe.PromoImage = replayEvent.PromoImage;
@@ -476,5 +482,93 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             return outList;
         }
+
+        public ActionResult RemoveAll(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if(!us.GetUser().isSuperAdmin)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            List<Event> replayEvents = convention.Events.ToList();
+            if (replayEvents == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.Events.RemoveRange(replayEvents);
+            db.SaveChanges();  // let's not leave this little line uncommented for now.
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult BulkLoad(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadCSV(int convention_id, HttpPostedFileBase upload)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            EventImporter importer;
+            List<Event> events = new List<Event>();
+            using (TextFieldParser parser = new TextFieldParser(upload.InputStream))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                string[] fields = parser.ReadFields();
+                importer = new EventImporter(fields);
+                while (!parser.EndOfData)
+                {
+                    //Processing row
+                    fields = parser.ReadFields();
+                    var con = importer.EventFactory(fields, db);
+                    convention.Events.Add(con);
+                    events.Add(con);
+                }
+            }
+
+            db.SaveChanges();
+
+            var result = JsonConvert.SerializeObject(events,
+            Formatting.None,
+            new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            });
+
+            return Content(result, "application/json");
+        }
+
     }
 }

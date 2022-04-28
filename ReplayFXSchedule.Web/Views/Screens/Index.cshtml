@@ -98,15 +98,7 @@
         let currSponsor = 0;
 
         const backgrounds = [
-            "/Content/img/temp/osg1background.jpg",
-            "/Content/img/temp/osg2background.jpg",
-            "/Content/img/temp/osg3background.jpg",
-            "/Content/img/temp/osg4background.jpg",
-            "/Content/img/temp/osg5background.jpg",
-            "/Content/img/temp/osg6background.jpg",
-            "/Content/img/temp/osg7background.jpg",
-            "/Content/img/temp/osg8background.jpg",
-            "/Content/img/temp/osg9background.jpg",
+            "/Content/img/temp/bg-grid.png",
         ];
         let currBackground = 0;
 
@@ -265,7 +257,7 @@
         }
 
         function setBackground() {
-            $("#background").css("background-image", "url(" + backgrounds[currBackground] + ")");
+            $("#background").css("background-image", "linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(" + backgrounds[currBackground] + ")");
             currBackground = currBackground + 1;
             if (currBackground >= backgrounds.length) {
                 currBackground = 0;

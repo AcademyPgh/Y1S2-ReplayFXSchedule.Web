@@ -22,7 +22,9 @@ namespace ReplayFXSchedule.Web.Models
         [DataType(DataType.Time)]
         [Display(Name = "End Time")]
         public string EndTime { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Extended Description")]
         public string ExtendedDescription { get; set; }
         public string Location {
@@ -43,6 +45,7 @@ namespace ReplayFXSchedule.Web.Models
         public string PromoImage { get; set; }
         public bool IsPromo { get; set; }
         public bool IsPrivate { get; set; }
+        public string URL { get; set; } // add if to get to check for https
 
         [Display(Name = "Event Type")]
         public virtual List<EventType> EventTypes { get; set; }

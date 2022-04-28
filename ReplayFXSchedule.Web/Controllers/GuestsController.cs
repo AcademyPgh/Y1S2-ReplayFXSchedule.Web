@@ -12,13 +12,12 @@ using ReplayFXSchedule.Web.Shared;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
-    [Authorize]
-    public class VendorsController : Controller
+    public class GuestsController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
         private AzureTools azure = new AzureTools();
 
-        // GET: ReplayVendors
+        // GET: Guests
         public ActionResult Index(int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -32,10 +31,10 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            return View(convention.Vendors.OrderBy(v => v.Title).ToList());
+            return View(convention.Guests.OrderBy(v => v.Name).ToList());
         }
 
-        // GET: ReplayVendors/Details/5
+        // GET: Guests/Details/5
         public ActionResult Details(int convention_id, int? id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -53,15 +52,15 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = convention.Vendors.Where(v => v.Id == id).FirstOrDefault();
-            if (replayVendor == null)
+            Guest replayGuest = convention.Guests.Where(v => v.Id == id).FirstOrDefault();
+            if (replayGuest == null)
             {
                 return HttpNotFound();
             }
-            return View(replayVendor);
+            return View(replayGuest);
         }
 
-        // GET: ReplayVendors/Create
+        // GET: Guests/Create
         public ActionResult Create(int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -76,18 +75,18 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
 
-            ViewBag.VendorTypeIDs = "";
+            ViewBag.GuestTypeIDs = "";
             ViewBag.ConId = convention_id;
 
             return View();
         }
 
-        // POST: ReplayVendors/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // POST: Guests/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, int convention_id, string categories)
+        public ActionResult Create([Bind(Include = "Name,Description,ExtendedDescription,Image,Url")] Guest replayGuest, HttpPostedFileBase upload, int convention_id, string categories)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -102,25 +101,25 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                replayVendor.Image = azure.GetFileName(upload);
-                convention.Vendors.Add(replayVendor);
-                replayVendor.VendorTypes = new List<VendorType>();
+                replayGuest.Image = azure.GetFileName(upload);
+                convention.Guests.Add(replayGuest);
+                replayGuest.GuestTypes = new List<GuestType>();
                 foreach (var id in categories.Split(','))
                 {
                     if (int.TryParse(id, out int Id))
                     {
-                        replayVendor.VendorTypes.Add(db.VendorTypes.Find(Id));
+                        replayGuest.GuestTypes.Add(db.GuestTypes.Find(Id));
                     }
                 }
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(replayVendor);
+            Console.WriteLine("fire");
+            return View(replayGuest);
         }
 
-        // GET: ReplayVendors/Edit/5
+        // GET: Guests/Edit/5
         public ActionResult Edit(int convention_id, int? id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -138,24 +137,24 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = convention.Vendors.Where(v => v.Id == id).FirstOrDefault();
-            if (replayVendor == null)
+            Guest replayGuest = convention.Guests.Where(v => v.Id == id).FirstOrDefault();
+            if (replayGuest == null)
             {
                 return HttpNotFound();
             }
 
             ViewBag.ConId = convention_id;
-            ViewBag.VendorTypeIDs = string.Join(",", replayVendor.VendorTypes.Select(r => r.Id));
+            ViewBag.GuestTypeIDs = string.Join(",", replayGuest.GuestTypes.Select(r => r.Id));
 
-            return View(replayVendor);
+            return View(replayGuest);
         }
 
         private string AddType(int id, int typeId)
         {
-            Vendor vend = db.Vendors.Find(id);
-            VendorType vendtype = db.VendorTypes.Find(typeId);
+            Guest guest = db.Guests.Find(id);
+            GuestType guestType = db.GuestTypes.Find(typeId);
 
-            vend.VendorTypes.Add(vendtype);
+            guest.GuestTypes.Add(guestType);
             db.SaveChanges();
 
             return "success";
@@ -163,16 +162,16 @@ namespace ReplayFXSchedule.Web.Controllers
 
         private string RemoveType(int id, int typeId)
         {
-            Vendor vend = db.Vendors.Find(id);
-            VendorType typetoremove = new VendorType();
-            foreach (var item in vend.VendorTypes)
+            Guest guest = db.Guests.Find(id);
+            GuestType typetoremove = new GuestType();
+            foreach (var item in guest.GuestTypes)
             {
                 if (item.Id == typeId)
                 {
                     typetoremove = item;
                 }
             }
-            vend.VendorTypes.Remove(typetoremove);
+            guest.GuestTypes.Remove(typetoremove);
             db.SaveChanges();
             return "success";
         }
@@ -191,19 +190,19 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
 
-            Vendor rpe = convention.Vendors.Where(e => e.Id == id).FirstOrDefault();
-            List<VendorTypeView> eventList = VendorTypeView(rpe.VendorTypes.ToList());
+            Guest rpe = convention.Guests.Where(e => e.Id == id).FirstOrDefault();
+            List<GuestTypeView> eventList = GuestTypeView(rpe.GuestTypes.ToList());
 
 
             return Json(eventList, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: ReplayVendors/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // POST: Guests/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,ExtendedDescription,Location,Image,Url")] Vendor replayVendor, HttpPostedFileBase upload, string image, int convention_id, string categories)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,ExtendedDescription,Image,Url")] Guest replayGuest, HttpPostedFileBase upload, string image, int convention_id, string categories)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -218,7 +217,7 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                var vendor = db.Vendors.Find(replayVendor.Id);
+                var guest = db.Guests.Find(replayGuest.Id);
                 if (upload != null)
                 {
                     if (!string.IsNullOrEmpty(image))
@@ -226,61 +225,60 @@ namespace ReplayFXSchedule.Web.Controllers
                         azure.deletefromAzure(image);
                         image = null;
                     }
-                    replayVendor.Image = azure.GetFileName(upload);
+                    replayGuest.Image = azure.GetFileName(upload);
                 }
 
-                vendor.Title = replayVendor.Title;
-                vendor.Description = replayVendor.Description;
-                vendor.ExtendedDescription = replayVendor.ExtendedDescription;
-                vendor.Location = replayVendor.Location;
-                vendor.Image = replayVendor.Image;
-                vendor.Url = replayVendor.Url;
+                guest.Name = replayGuest.Name;
+                guest.Description = replayGuest.Description;
+                guest.ExtendedDescription = replayGuest.ExtendedDescription;
+                guest.Image = replayGuest.Image;
+                guest.Url = replayGuest.Url;
 
-                SaveVendorTypes(vendor.Id, categories.Split(','));
+                SaveGuestTypes(guest.Id, categories.Split(','));
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(replayVendor);
+            return View(replayGuest);
         }
-
-        private void SaveVendorTypes(int id, string[] VendorTypeIDs)
+        private void SaveGuestTypes(int id, string[] GuestTypeIDs)
         {
             List<int> ids = new List<int>();
-            List<VendorType> typesToRemove = new List<VendorType>();
-            foreach (var vendorId in VendorTypeIDs)
+            List<GuestType> typesToRemove = new List<GuestType>();
+            foreach (var guestId in GuestTypeIDs)
             {
                 int i;
-                if (int.TryParse(vendorId, out i))
+                if (int.TryParse(guestId, out i))
                 {
                     ids.Add(i);
                 }
             }
 
-            var vendor = db.Vendors.Find(id);
-            foreach (var vendorType in vendor.VendorTypes)
+            var guest = db.Guests.Find(id);
+            foreach (var guestType in guest.GuestTypes)
             {
-                if (ids.Contains(vendorType.Id))
+                if (ids.Contains(guestType.Id))
                 {
                     // keep it, remove from the ids list
-                    ids.Remove(vendorType.Id);
+                    ids.Remove(guestType.Id);
                 }
                 else
                 {
 
-                    typesToRemove.Add(vendorType);
+                    typesToRemove.Add(guestType);
                 }
             }
             foreach (var type in typesToRemove)
             {
-                vendor.VendorTypes.Remove(type);
+                guest.GuestTypes.Remove(type);
             }
             foreach (var i in ids)
             {
-                vendor.VendorTypes.Add(db.VendorTypes.Find(i));
+                guest.GuestTypes.Add(db.GuestTypes.Find(i));
             }
         }
 
-        // GET: ReplayVendors/Delete/5
+
+        // GET: Guests/Delete/5
         public ActionResult Delete(int convention_id, int? id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -298,15 +296,15 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vendor replayVendor = convention.Vendors.Where(v => v.Id == id).FirstOrDefault();
-            if (replayVendor == null)
+            Guest replayGuest = convention.Guests.Where(v => v.Id == id).FirstOrDefault();
+            if (replayGuest == null)
             {
                 return HttpNotFound();
             }
-            return View(replayVendor);
+            return View(replayGuest);
         }
 
-        // POST: ReplayVendors/Delete/5
+        // POST: Guests/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int convention_id, int id)
@@ -322,10 +320,10 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            Vendor replayVendor = convention.Vendors.Where(v => v.Id == id).FirstOrDefault();
-            if (replayVendor.Image != null)
-            { azure.deletefromAzure(replayVendor.Image); }
-            db.Vendors.Remove(replayVendor);
+            Guest replayGuest = convention.Guests.Where(v => v.Id == id).FirstOrDefault();
+            if (replayGuest.Image != null)
+            { azure.deletefromAzure(replayGuest.Image); }
+            db.Guests.Remove(replayGuest);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -339,13 +337,13 @@ namespace ReplayFXSchedule.Web.Controllers
             base.Dispose(disposing);
         }
 
-        private List<VendorTypeView> VendorTypeView(List<VendorType> baseList)
+        private List<GuestTypeView> GuestTypeView(List<GuestType> baseList)
         {
-            List<VendorTypeView> outList = new List<VendorTypeView>();
+            List<GuestTypeView> outList = new List<GuestTypeView>();
 
             foreach (var item in baseList)
             {
-                VendorTypeView temp = new VendorTypeView
+                GuestTypeView temp = new GuestTypeView
                 {
                     Name = item.Name,
                     Id = item.Id,

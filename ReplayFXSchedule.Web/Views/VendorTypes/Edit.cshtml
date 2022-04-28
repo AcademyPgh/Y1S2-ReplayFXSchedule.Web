@@ -1,0 +1,23 @@
+﻿@model ReplayFXSchedule.Web.Models.VendorType
+
+@{
+    ViewBag.Title = "Edit Vendor Type";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Edit Vendor Type</h4>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Partial("_form")
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

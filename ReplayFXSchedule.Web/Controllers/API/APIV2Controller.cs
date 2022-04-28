@@ -28,7 +28,10 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.Events = GetEvents(convention, showPrivate);
             convention.EventTypes = GetEventTypes(convention, showPrivate);
             convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
+            convention.VendorTypes = convention.VendorTypes.OrderBy(e => e.Name).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
+            convention.Guests = convention.Guests.OrderBy(e => e.Name).ToList();
+            convention.GuestTypes = convention.GuestTypes.OrderBy(e => e.Name).ToList();
 
             convention.Menu = GetMenus(convention_id);
             return Ok(convention);
@@ -43,8 +46,17 @@ namespace ReplayFXSchedule.Web.Controllers
                 menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
                 MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
                 menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "VendorMenu" });
                 menu.Add(new Menu { Type = "EventMenu" });
-                menu.Add(new Menu { Type = "VendorsList", Title = "Vendors" });
+                menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
+            }
+            else if (id == 16)
+            {
+                menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
+                MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
+                menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "VendorMenu" });
+                menu.Add(new Menu { Type = "EventMenu" });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
             }
             if(id == 16)
@@ -116,6 +128,22 @@ namespace ReplayFXSchedule.Web.Controllers
         {
             var eventTypes = db.Conventions.Find(convention_id).EventTypes.ToList();
             return eventTypes;
+        }
+
+        [Route("guesttypes/{convention_id}")]
+        [HttpGet]
+        public List<GuestType> GuestTypes(int convention_id)
+        {
+            var guestTypes = db.Conventions.Find(convention_id).GuestTypes.ToList();
+            return guestTypes;
+        }
+
+        [Route("vendortypes/{convention_id}")]
+        [HttpGet]
+        public List<VendorType> VendorTypes(int convention_id)
+        {
+            var vendorTypes = db.Conventions.Find(convention_id).VendorTypes.ToList();
+            return vendorTypes;
         }
 
         [Route("locations/{convention_id}")]

@@ -8,21 +8,18 @@ using System.Web;
 
 namespace ReplayFXSchedule.Web.Models
 {
-    public class Vendor
+    public class Guest
     {
-        [Key]
         public int Id { get; set; }
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         [Display(Name = "Extended Description")]
         public string ExtendedDescription { get; set; }
-        public string Location { get; set; }
         public string Image { get; set; }
         public string Url { get; set; }
-        public virtual List<VendorType> VendorTypes { get; set; }
-
+        public virtual List<GuestType> GuestTypes { get; set; }
         public string ImageUrl
         {
             get
@@ -39,7 +36,7 @@ namespace ReplayFXSchedule.Web.Models
         }
     }
 
-    public class VendorType
+    public class GuestType
     {
         public int Id { get; set; }
         [Required]
@@ -53,10 +50,10 @@ namespace ReplayFXSchedule.Web.Models
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]
-        public virtual List<Vendor> Vendors { get; set; }
+        public virtual List<Guest> Guests { get; set; }
     }
 
-    public class VendorTypeView
+    public class GuestTypeView
     {
         public int Id { get; set; }
         public string Name { get; set; }
