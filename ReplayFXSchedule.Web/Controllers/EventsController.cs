@@ -10,6 +10,7 @@ using ReplayFXSchedule.Web.Models;
 using Newtonsoft.Json;
 using ReplayFXSchedule.Web.Shared;
 using System.Security.Claims;
+using Microsoft.VisualBasic.FileIO;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -503,8 +504,70 @@ namespace ReplayFXSchedule.Web.Controllers
             }
 
             db.Events.RemoveRange(replayEvents);
-            // db.SaveChanges();  // let's not leave this little line uncommented for now.
+            db.SaveChanges();  // let's not leave this little line uncommented for now.
             return RedirectToAction("Index");
+        }
+
+        public ActionResult BulkLoad(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadCSV(int convention_id, HttpPostedFileBase upload)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            EventImporter importer;
+            List<Event> events = new List<Event>();
+            using (TextFieldParser parser = new TextFieldParser(upload.InputStream))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                string[] fields = parser.ReadFields();
+                importer = new EventImporter(fields);
+                while (!parser.EndOfData)
+                {
+                    //Processing row
+                    fields = parser.ReadFields();
+                    var con = importer.EventFactory(fields, db);
+                    convention.Events.Add(con);
+                    events.Add(con);
+                }
+            }
+
+            db.SaveChanges();
+
+            var result = JsonConvert.SerializeObject(events,
+            Formatting.None,
+            new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            });
+
+            return Content(result, "application/json");
         }
 
     }
