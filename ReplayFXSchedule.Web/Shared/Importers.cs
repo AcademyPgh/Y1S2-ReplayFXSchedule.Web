@@ -118,16 +118,16 @@ namespace ReplayFXSchedule.Web.Shared
             Event currentEvent = new Event();
             currentEvent.Date = DateTime.Parse(GetStringValue("Date"));
             currentEvent.Description = GetStringValue("Description");
-            currentEvent.EndTime = GetStringValue("EndTime");
+            currentEvent.EndTime = GetStringValue("EndTime").Replace(": ", " ");
             currentEvent.Title = GetStringValue("Title");
-            currentEvent.StartTime = GetStringValue("StartTime");
+            currentEvent.StartTime = GetStringValue("StartTime").Replace(": ", " ");
             currentEvent.ExtendedDescription = GetStringValue("ExtendedDescription");
 
 
 
             currentEvent.URL = GetUrls();
 
-            List<int> eventTypeIds = GetStringValue("EventTypes").Split(',').Where(s => int.TryParse(s, out int i)).Select(s => Convert.ToInt32(s)).ToList();
+            List<int> eventTypeIds = (GetStringValue("EventTypes") + "," + GetStringValue("GenreTypes")).Split(',').Where(s => int.TryParse(s, out int i)).Select(s => Convert.ToInt32(s)).ToList();
             currentEvent.EventTypes = context.EventTypes.Where(et => eventTypeIds.Contains(et.Id)).ToList();
 
             if(int.TryParse(GetStringValue("EventLocation"), out int locationId))
