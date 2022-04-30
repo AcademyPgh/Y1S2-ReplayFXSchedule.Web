@@ -665,6 +665,7 @@
     <Content Include="Views\Guests\Index.cshtml" />
     <Content Include="Views\Guests\_form.cshtml" />
     <Content Include="Views\Events\BulkLoad.cshtml" />
+    <Content Include="Views\EventTypes\BulkLoad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

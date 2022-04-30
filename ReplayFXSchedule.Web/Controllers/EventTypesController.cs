@@ -201,6 +201,44 @@ namespace ReplayFXSchedule.Web.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public ActionResult BulkLoad(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View(convention.EventTypes.ToList());
+        }
+        [HttpPost]
+        public ActionResult BulkLoad(int convention_id, string EventTypes)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var types = EventTypes.Split();
+
+            var ets = types.Where(t => t.Length > 0).Select(t => new EventType { Name = t.ToLower(), DisplayName = t }).ToList();
+            convention.EventTypes.AddRange(ets);
+            db.SaveChanges();
+
+            return View(convention.EventTypes.ToList());
+        }
 
         protected override void Dispose(bool disposing)
         {

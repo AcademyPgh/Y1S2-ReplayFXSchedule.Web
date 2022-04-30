@@ -508,6 +508,7 @@ namespace ReplayFXSchedule.Web.Controllers
             return RedirectToAction("Index");
         }
 
+
         public ActionResult BulkLoad(int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
