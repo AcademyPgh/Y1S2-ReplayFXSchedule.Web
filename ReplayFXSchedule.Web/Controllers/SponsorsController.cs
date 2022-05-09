@@ -31,7 +31,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            return View(convention.Sponsors.ToList());
+            return View(convention.Sponsors.OrderBy(e => e.Name).ToList());
         }
 
         // GET: Sponsors/Details/5
