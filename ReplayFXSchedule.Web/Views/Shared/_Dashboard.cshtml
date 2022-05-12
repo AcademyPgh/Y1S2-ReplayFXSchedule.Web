@@ -116,6 +116,12 @@
                                             <span class="sidebar-normal">Event Types</span>
                                         </a>
                                     </li>
+                                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "EventMenus" ? "active" : "")">
+                                        <a href="@Url.Action("Index", "EventMenus", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                            <span class="sidebar-mini-icon">EM</span>
+                                            <span class="sidebar-normal">Event Menues</span>
+                                        </a>
+                                    </li>
                                     <li class="@((string)ViewContext.RouteData.Values["controller"] == "VendorTypes" ? "active" : "")">
                                         <a href="@Url.Action("Index", "VendorTypes", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
                                             <span class="sidebar-mini-icon">VT</span>

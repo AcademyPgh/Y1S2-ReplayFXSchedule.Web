@@ -242,6 +242,7 @@
     <Compile Include="Controllers\API\UsersV2Controller.cs" />
     <Compile Include="Controllers\ConventionsController.cs" />
     <Compile Include="Controllers\DisplayMessagesController.cs" />
+    <Compile Include="Controllers\EventMenusController.cs" />
     <Compile Include="Controllers\GuestsController.cs" />
     <Compile Include="Controllers\GuestTypesController.cs" />
     <Compile Include="Controllers\VendorTypesController.cs" />
@@ -382,6 +383,14 @@
     <Compile Include="Migrations\ReplayFXDbContext\202108040101284_EventsFix.cs" />
     <Compile Include="Migrations\ReplayFXDbContext\202108040101284_EventsFix.Designer.cs">
       <DependentUpon>202108040101284_EventsFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205111815297_EventMenu.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205111815297_EventMenu.Designer.cs">
+      <DependentUpon>202205111815297_EventMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205120010316_AdditionalEventMenu.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205120010316_AdditionalEventMenu.Designer.cs">
+      <DependentUpon>202205120010316_AdditionalEventMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\GuestModels.cs" />
@@ -666,6 +675,11 @@
     <Content Include="Views\Guests\_form.cshtml" />
     <Content Include="Views\Events\BulkLoad.cshtml" />
     <Content Include="Views\EventTypes\BulkLoad.cshtml" />
+    <Content Include="Views\EventMenus\Create.cshtml" />
+    <Content Include="Views\EventMenus\Delete.cshtml" />
+    <Content Include="Views\EventMenus\Details.cshtml" />
+    <Content Include="Views\EventMenus\Edit.cshtml" />
+    <Content Include="Views\EventMenus\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -769,6 +783,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\202108040101284_EventsFix.resx">
       <DependentUpon>202108040101284_EventsFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205111815297_EventMenu.resx">
+      <DependentUpon>202205111815297_EventMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205120010316_AdditionalEventMenu.resx">
+      <DependentUpon>202205120010316_AdditionalEventMenu.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
