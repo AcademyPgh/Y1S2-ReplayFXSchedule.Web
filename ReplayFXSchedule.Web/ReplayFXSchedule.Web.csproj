@@ -392,6 +392,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\202205120010316_AdditionalEventMenu.Designer.cs">
       <DependentUpon>202205120010316_AdditionalEventMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205120304427_AddIsMenuToEventMenus.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205120304427_AddIsMenuToEventMenus.Designer.cs">
+      <DependentUpon>202205120304427_AddIsMenuToEventMenus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\GuestModels.cs" />
     <Compile Include="Models\Context.cs" />
@@ -789,6 +793,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205120010316_AdditionalEventMenu.resx">
       <DependentUpon>202205120010316_AdditionalEventMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205120304427_AddIsMenuToEventMenus.resx">
+      <DependentUpon>202205120304427_AddIsMenuToEventMenus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

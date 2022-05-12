@@ -85,7 +85,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 .Select(em =>
                     new SelectListItem
                     {
-                        Text = em.Display,
+                        Text = em.DisplayName,
                         Value = em.Id.ToString(),
                         Selected = false
                     })
@@ -157,7 +157,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 .Select(em =>
                     new SelectListItem
                     {
-                        Text = em.Display,
+                        Text = em.DisplayName,
                         Value = em.Id.ToString(),
                         Selected = replayEventType.EventMenu != null && em.Id == replayEventType.EventMenu.Id
                     })

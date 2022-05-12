@@ -16,5 +16,6 @@ namespace ReplayFXSchedule.Web.Models
     {
         public string Title;
         public string ScheduleFilter;
+        public string Tabs;
     }
 }

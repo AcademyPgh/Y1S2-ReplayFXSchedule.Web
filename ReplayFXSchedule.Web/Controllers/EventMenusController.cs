@@ -81,7 +81,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int convention_id, [Bind(Include = "Id,Display,Name")] EventMenu eventMenu)
+        public ActionResult Create(int convention_id, [Bind(Include = "Id,DisplayName,Name,IsMenu")] EventMenu eventMenu)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -135,7 +135,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int convention_id, [Bind(Include = "Id,Display,Name")] EventMenu eventMenu)
+        public ActionResult Edit(int convention_id, [Bind(Include = "Id,DisplayName,Name,IsMenu")] EventMenu eventMenu)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
