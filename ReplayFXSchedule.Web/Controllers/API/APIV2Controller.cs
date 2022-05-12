@@ -65,6 +65,8 @@ namespace ReplayFXSchedule.Web.Controllers
                 menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
                 MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
                 menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "TabSchedule", Title = "Schedule" });
+
                 menu.Add(new Menu { Type = "EventMenu" });
                 menu.Add(new Menu { Type = "VendorsList", Title = "Visual Artists" });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
