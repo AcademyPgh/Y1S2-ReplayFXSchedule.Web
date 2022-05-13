@@ -328,6 +328,38 @@ namespace ReplayFXSchedule.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult AddConnection(int convention_id, int id, int connection_id, string connection_type)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            Guest replayGuest = convention.Guests.Where(v => v.Id == id).FirstOrDefault();
+            if (replayGuest == null)
+            {
+                return HttpNotFound();
+            }
+
+            if(connection_type == "event")
+            {
+                replayGuest.Events.Add(convention.Events.Where(e => e.Id == connection_id).FirstOrDefault());
+            }
+            if(connection_type == "vendor")
+            {
+                replayGuest.Vendors.Add(convention.Vendors.Where(v => v.Id == connection_id).FirstOrDefault());
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
