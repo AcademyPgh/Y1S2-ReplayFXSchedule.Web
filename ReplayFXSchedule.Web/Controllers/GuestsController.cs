@@ -360,6 +360,57 @@ namespace ReplayFXSchedule.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult MakeEventsConnections(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            
+            foreach(var evnt in convention.Events)
+            {
+                evnt.Guests.Add(new Guest
+                {
+                    Name = evnt.Title,
+                    Convention = convention,
+                    Description = evnt.Description,
+                    ExtendedDescription = evnt.ExtendedDescription,
+                    Image = evnt.Image,
+                    Url = evnt.URL
+                });
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RemoveAllGuests(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            db.Guests.RemoveRange(convention.Guests);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
