@@ -49,6 +49,10 @@ namespace ReplayFXSchedule.Web.Models
 
         [Display(Name = "Event Type")]
         public virtual List<EventType> EventTypes { get; set; }
+
+        [JsonIgnore]
+        public virtual List<Guest> Guests { get; set; }
+
         public string StartTime12
         {
             get {
