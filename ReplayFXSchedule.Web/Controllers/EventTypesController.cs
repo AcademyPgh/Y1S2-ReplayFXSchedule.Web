@@ -187,6 +187,7 @@ namespace ReplayFXSchedule.Web.Controllers
             if (ModelState.IsValid)
             {
                 var rpe = convention.EventTypes.Where(et => et.Id == replayEventType.Id).FirstOrDefault();
+                rpe.Name = replayEventType.Name;
                 rpe.DisplayName = replayEventType.DisplayName;
                 rpe.IsMenu = replayEventType.IsMenu;
                 rpe.IsPrivate = replayEventType.IsPrivate;
