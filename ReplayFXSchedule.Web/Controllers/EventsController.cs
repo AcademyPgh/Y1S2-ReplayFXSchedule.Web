@@ -504,7 +504,7 @@ namespace ReplayFXSchedule.Web.Controllers
             }
 
             db.Events.RemoveRange(replayEvents);
-            db.SaveChanges();  // let's not leave this little line uncommented for now.
+            // db.SaveChanges();  // let's not leave this little line uncommented for now.
             return RedirectToAction("Index");
         }
 
