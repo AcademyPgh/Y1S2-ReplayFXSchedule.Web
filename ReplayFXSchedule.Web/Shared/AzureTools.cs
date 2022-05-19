@@ -50,7 +50,7 @@ namespace ReplayFXSchedule.Web.Shared
             CloudBlobContainer container = blobClient.GetContainerReference(ConfigurationManager.AppSettings["AzureFolder"]);
             // Retrieve reference to a blob named "someimage.jpg".
             CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
-            // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.
+            // If it already exists, delete it.
             if (blockBlob.Exists())
             {
                 blockBlob.Delete();

@@ -29,6 +29,8 @@ namespace ReplayFXSchedule.Web.Models
         public DbSet<UserEmail> UserEmails { get; set; }
         public DbSet<DisplayMessage> DisplayMessages { get; set; }
 
+        public DbSet<ScreenImage> ScreenImages { get; set; }
+
         public System.Data.Entity.DbSet<ReplayFXSchedule.Web.Models.EventMenu> EventMenus { get; set; }
     }
 }
