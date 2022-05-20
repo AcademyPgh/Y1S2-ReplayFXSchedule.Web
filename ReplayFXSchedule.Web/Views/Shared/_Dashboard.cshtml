@@ -146,6 +146,12 @@
                                             <span class="sidebar-normal">Locations</span>
                                         </a>
                                     </li>
+                                    <li class="@((string)ViewContext.RouteData.Values["controller"] == "ScreenImages" ? "active" : "")">
+                                        <a href="@Url.Action("Index", "ScreenImages", new { convention_id = ViewContext.RouteData.Values["convention_id"] })">
+                                            <span class="sidebar-mini-icon">SBI</span>
+                                            <span class="sidebar-normal">Screen Backgrounds</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
