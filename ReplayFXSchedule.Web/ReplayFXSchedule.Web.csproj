@@ -430,7 +430,7 @@
     <Compile Include="Shared\Importers.cs" />
     <Compile Include="Shared\UserTools.cs" />
     <Compile Include="Startup.cs" />
-    <None Include="Views\ScreenImages\_form.cshtml" />
+    <Content Include="Views\ScreenImages\_form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
