@@ -73,11 +73,20 @@ namespace ReplayFXSchedule.Web.Controllers
 
             cache.ApiResult = JsonConvert.SerializeObject(convention, new JsonSerializerSettings()
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+        });
             cache.LastRun = DateTime.Now;
             db.SaveChanges();
             return cache;
+        }
+
+        [Route("ClearCache")]
+        [HttpGet]
+        public IHttpActionResult ClearCache()
+        {
+            db.Database.ExecuteSqlCommand("TRUNCATE TABLE [GarbageCaches]");
+            return Ok("done");
         }
 
         private List<Menu> GetMenus(int id)
