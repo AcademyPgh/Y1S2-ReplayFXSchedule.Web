@@ -7,8 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Net.Http;
+using System.Text;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -21,8 +24,40 @@ namespace ReplayFXSchedule.Web.Controllers
         // GET: Public
         [Route("convention/{convention_id}")]
         [HttpGet]
-        public IHttpActionResult Index(int convention_id)
+        public async Task<HttpResponseMessage> Index(int convention_id)
         {
+            var cache = db.Cache.Where(c => c.ConventionId == convention_id).OrderByDescending(c => c.LastRun).FirstOrDefault();
+            string convention = "";
+            if(cache == null)
+            {
+                cache = await UpdateCache(convention_id, null);
+            }
+            if (cache.LastRun < DateTime.Now.AddMinutes(-2))
+            {
+                UpdateCache(convention_id, cache.ApiResult);
+            }
+
+            convention = cache.ApiResult;
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StringContent(convention, Encoding.UTF8, "application/json");
+            return response;
+        }
+
+        public async Task<GarbageCache> UpdateCache(int convention_id, string old_api)
+        {
+            var cache = new GarbageCache
+            {
+                ConventionId = convention_id,
+                ApiResult = old_api,
+                LastRun = DateTime.Now
+            };
+
+            db.Cache.Add(cache);
+            if (!String.IsNullOrEmpty(old_api))
+            {
+                db.SaveChanges();
+            }
+
             Convention convention = db.Conventions.Find(convention_id);
             var showPrivate = isVip(convention);
             convention.Events = GetEvents(convention, showPrivate);
@@ -35,7 +70,11 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.Sponsors = convention.Sponsors.OrderBy(e => e.Name).ToList();
 
             convention.Menu = GetMenus(convention_id);
-            return Ok(convention);
+
+            cache.ApiResult = JsonConvert.SerializeObject(convention);
+            cache.LastRun = DateTime.Now;
+            db.SaveChanges();
+            return cache;
         }
 
         private List<Menu> GetMenus(int id)
