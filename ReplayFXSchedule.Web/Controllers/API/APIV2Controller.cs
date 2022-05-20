@@ -71,7 +71,10 @@ namespace ReplayFXSchedule.Web.Controllers
 
             convention.Menu = GetMenus(convention_id);
 
-            cache.ApiResult = JsonConvert.SerializeObject(convention);
+            cache.ApiResult = JsonConvert.SerializeObject(convention, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
             cache.LastRun = DateTime.Now;
             db.SaveChanges();
             return cache;
