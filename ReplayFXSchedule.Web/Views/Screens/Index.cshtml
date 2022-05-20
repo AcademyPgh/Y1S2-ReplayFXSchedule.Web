@@ -23,7 +23,7 @@
 </head>
 <body>
     <div class="background" id="background"></div>
-    <div class="screen">
+    <div class="screen" onclick="setBackground()">
         @*<div class="map">
             <iframe src="http://www.track4business.com/RealtimeTracker/index.php?trackandtrace=1&viewuser=11df78dc0694e050e09da8e0b7c128aa&fs=1" scrolling="no"></iframe>
         </div>*@
@@ -44,7 +44,7 @@
                     else
                     {
                         <h1>This Location</h1>
-                        }
+                    }
                     }
             </div>
             <div class="marquee">
@@ -65,7 +65,7 @@
         @{
             bool location_view = (location != null);
             string location_string = "";
-            if(location_view)
+            if (location_view)
             {
                 location_string = location.Location;
             }
@@ -97,53 +97,64 @@
         const sponsorImages = [@Html.Raw(sponsorImages)];
         let currSponsor = 0;
 
-        const backgrounds = [
-            "/Content/img/temp/bg-grid.png",
-        ];
-        let currBackground = 0;
+        @{ 
+            string backgroundImages = "";
+            foreach (var background in Model.ScreenImages)
+            {
+                if (background.Image != null) {
+                    backgroundImages += $"'{background.ImageUrl}', ";
+                }
+            }
+        }
 
-        function loadData() {
-            Promise.all([getMessages, getEvents])
-                .then((values) => {
-                    const messages = values[0];
-                    const events = values[1];
+            const backgrounds = [@Html.Raw(backgroundImages)];
 
-                    console.log(values);
 
-                    var messagesHtml = messages.map((message, index) => {
-                        if (index === 0) {
-                            message.is_first = true;
-                        }
-                        return messageTemplate(message);
-                    })
-                    console.log('messages', messagesHtml);
-                    var eventsHtml = events.map((event, index) => {
-                        if (messages.length === 0 && index === 0)
-                        {
-                            event.is_first = true;
-                        }
-                        return featureTemplate(event);
-                    });
-                    const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
-                    $("#featured").html('');
-                    for (var i = 0; i < longest; i++) {
-                        $("#featured").append(eventsHtml[i % eventsHtml.length]);
-                        $("#featured").append(messagesHtml[i % messagesHtml.length]);
+
+            let currBackground = 0;
+
+            function loadData() {
+                Promise.all([getMessages, getEvents])
+        .then((values) => {
+                const messages = values[0];
+                const events = values[1];
+
+                console.log(values);
+
+                var messagesHtml = messages.map((message, index) => {
+                    if (index === 0) {
+                        message.is_first = true;
                     }
-                    //$("#featured").html(messagesHtml);
-                    // temp
-                    if (location_view) {
-                        if (eventsHtml.length == 0 && messagesHtml.length == 0) {
-                            const noMoreSource = document.getElementById("no-more-template").innerHTML;
-                            const noMoreTemplate = Handlebars.compile(noMoreSource);
-                            $("#featured").html(noMoreTemplate({ location: '@location_string' }));
-                        }
-                    }
-                    else
-                    {
-                        // $("#featured").html(messagesHtml);
-                    }
+                    return messageTemplate(message);
                 })
+            console.log('messages', messagesHtml);
+                var eventsHtml = events.map((event, index) => {
+                if (messages.length === 0 && index === 0)
+                {
+                    event.is_first = true;
+            }
+                return featureTemplate(event);
+            });
+            const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
+            $("#featured").html('');
+            for (var i = 0; i < longest; i++) {
+                $("#featured").append(eventsHtml[i % eventsHtml.length]);
+                $("#featured").append(messagesHtml[i % messagesHtml.length]);
+        }
+            //$("#featured").html(messagesHtml);
+            // temp
+            if (location_view) {
+                if (eventsHtml.length == 0 && messagesHtml.length == 0) {
+                    const noMoreSource = document.getElementById("no-more-template").innerHTML;
+        const noMoreTemplate = Handlebars.compile(noMoreSource);
+                    $("#featured").html(noMoreTemplate({ location: '@location_string' }));
+                }
+            }
+            else
+    {
+        // $("#featured").html(messagesHtml);
+    }
+        })
         }
 
         const getMessages = new Promise((resolve, reject) => {
@@ -151,7 +162,7 @@
             console.log(url);
 
             $.ajax({
-                url: url,
+            url: url,
                 method: 'GET'
             })
                 .then((res) => {
@@ -162,17 +173,17 @@
 
         });
 
-        const getEvents = new Promise((resolve, reject) => {
+            const getEvents = new Promise((resolve, reject) => {
             var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
             if (location_view) {
                 url = url + '/@locationId';
             }
             console.log(url);
             $.ajax({
-                url: url,
+            url: url,
                 method: 'GET'
             })
-                .then((res) => {
+                    .then((res) => {
                     let featured = [];
                     let full = [];
                     const currDate = moment().format('YYYY-MM-DD');
@@ -186,52 +197,52 @@
 
                     featuredArray = full;
                     updateMarqueeData(fullTemplate({ events: full }));
-                    numberOfEvents = full.length;
-                    resolve(featuredArray);
+            numberOfEvents = full.length;
+            resolve(featuredArray);
                 });
         });
 
-        function loadEvents() {
-            var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
-            if (location_view) {
-                url = url + '/@locationId';
-        }
-        console.log(url);
+            function loadEvents() {
+                var url = '/api/v2/convention/@Model.Id/events/' + moment().format('MM-DD-YYYY');
+                if (location_view) {
+                    url = url + '/@locationId';
+                }
+                console.log(url);
         $.ajax({
-            url: url,
+                url: url,
             method: 'GET'
         })
             .then((res) => {
-                let featured = [];
-                let full = [];
-                const currDate = moment().format('YYYY-MM-DD');
+             let featured = [];
+             let full = [];
+             const currDate = moment().format('YYYY-MM-DD');
 
-                res.forEach((row) => {
-                    full.push(row);
-                    if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
-                        featured.push(row);
-                    }
-                });
-                console.log("featured", featured);
-                console.log("full", full);
-                if (location_view) {
-                    if (featured[0]) {
+             res.forEach((row) => {
+                 full.push(row);
+                 if (row.endTime === null || moment(currDate + 'T' + row.endTime.slice(0, 5)).isAfter(moment())) {
+                     featured.push(row);
+                 }
+             });
+             console.log("featured", featured);
+             console.log("full", full);
+             if (location_view) {
+                 if (featured[0]) {
                         $("#featured").html(featureTemplate(featured[0]));
-                    } else {
-                        const noMoreSource = document.getElementById("no-more-template").innerHTML;
-                        const noMoreTemplate = Handlebars.compile(noMoreSource);
+                 } else {
+                     const noMoreSource = document.getElementById("no-more-template").innerHTML;
+                     const noMoreTemplate = Handlebars.compile(noMoreSource);
                         $("#featured").html(noMoreTemplate({ location: '@location_string' }));
                     }
                 } else {
                     $("#featured").html(featureTemplate({ events: featured }));
-                }
-                updateMarqueeData(fullTemplate({ events: full }));
-                numberOfEvents = full.length;
+            }
+            updateMarqueeData(fullTemplate({ events: full }));
+            numberOfEvents = full.length;
             })
         }
 
         function displayMainArea() {
-            if (location_view) {
+                if (location_view) {
                     if (featuredArray[0]) {
                         $("#featured").html(featureTemplate(featuredArray[0]));
                     } else {
@@ -241,43 +252,43 @@
                     }
                 } else {
                     $("#featured").html(featureTemplate({ events: featuredArray }));
-                }
+            }
         }
 
 
 
         function setSponsor() {
-            if (sponsorImages.length > 0) {
+                if (sponsorImages.length > 0) {
                 $("#sponsor").attr("src", sponsorImages[currSponsor]);
-                currSponsor = currSponsor + 1;
-                if (currSponsor >= sponsorImages.length) {
-                    currSponsor = 0;
+                    currSponsor = currSponsor + 1;
+                    if (currSponsor >= sponsorImages.length) {
+                        currSponsor = 0;
+                    }
                 }
             }
-        }
 
-        function setBackground() {
+            function setBackground() {
             $("#background").css("background-image", "linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(" + backgrounds[currBackground] + ")");
-            currBackground = currBackground + 1;
-            if (currBackground >= backgrounds.length) {
-                currBackground = 0;
+                currBackground = currBackground + 1;
+                if (currBackground >= backgrounds.length) {
+                    currBackground = 0;
+                }
             }
-        }
 
-        function preloadBackgrounds() {
-            for (let i = 0; i < backgrounds.length; i++) {
-                images[i] = new Image()
-                images[i].src = backgrounds[i];
+            function preloadBackgrounds() {
+                for (let i = 0; i < backgrounds.length; i++) {
+                    images[i] = new Image()
+                    images[i].src = backgrounds[i];
+                }
             }
-        }
 
-        function updateMarqueeData(html) {
-            stopMarquee();
+            function updateMarqueeData(html) {
+                stopMarquee();
             $("#full_list").html(html);
-            startMarquee();
-        }
+                startMarquee();
+            }
 
-        function startMarquee() {
+            function startMarquee() {
             $('.marquee').marquee({
                 duration: 10000 + (2000 * numberOfEvents),
                 gap: 200,
@@ -289,24 +300,24 @@
 
         function stopMarquee() {
             $('.marquee').marquee('destroy');
-        }
+            }
 
-        function toggleMap() {
+            function toggleMap() {
             $('.map').toggleClass("hidden-map");
-        }
+            }
 
-        function startup() {
-            setBackground();
-            preloadBackgrounds();
-            //setInterval(setBackground, 180000);
-            setInterval(setBackground, 90000);
-            setInterval(setSponsor, 5000);
-            setInterval(loadData, 600000);
-            setInterval(toggleMap, 24000);
-            startMarquee();
-            loadData();
-            setTimeout(() => { location.reload(true) }, 1200000);
-        }
+            function startup() {
+                setBackground();
+                preloadBackgrounds();
+                //setInterval(setBackground, 180000);
+                setInterval(setBackground, 90000);
+                setInterval(setSponsor, 5000);
+                setInterval(loadData, 600000);
+                setInterval(toggleMap, 24000);
+                startMarquee();
+                loadData();
+                setTimeout(() => { location.reload(true) }, 1200000);
+            }
 
         $(startup);
     </script>

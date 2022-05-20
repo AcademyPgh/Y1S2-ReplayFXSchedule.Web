@@ -109,7 +109,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 if (upload != null)
                 {
                     AzureTools azure = new AzureTools();
-                    screenImage.Name = azure.GetFileName(upload);
+                    screenImage.Image = azure.GetFileName(upload);
                 }
                 convention.ScreenImages.Add(screenImage);
                 db.SaveChanges();
@@ -171,7 +171,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 {
                     AzureTools azure = new AzureTools();
                     azure.deletefromAzure(screenImage.Name);
-                    screenImage.Name = azure.GetFileName(upload);
+                    screenImage.Image = azure.GetFileName(upload);
                 }
 
                 db.Entry(screenImage).State = EntityState.Modified;
