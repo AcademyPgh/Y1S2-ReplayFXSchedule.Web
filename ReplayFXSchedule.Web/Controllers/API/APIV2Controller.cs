@@ -45,6 +45,10 @@ namespace ReplayFXSchedule.Web.Controllers
 
         public async Task<GarbageCache> UpdateCache(int convention_id, string old_api)
         {
+            var cachedelete = db.Cache.Where(c => c.LastRun < DateTime.Now.AddMinutes(-10));
+            db.Cache.RemoveRange(cachedelete);
+            db.SaveChanges();
+
             var cache = new GarbageCache
             {
                 ConventionId = convention_id,
