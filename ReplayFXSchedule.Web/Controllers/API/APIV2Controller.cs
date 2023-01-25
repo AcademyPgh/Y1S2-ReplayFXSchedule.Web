@@ -134,10 +134,6 @@ namespace ReplayFXSchedule.Web.Controllers
                 menu.Add(new Menu { Type = "EventMenu" });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
             }
-            else if (id == 11) // MMF test
-            {
-                menu.Add(new Menu { Type = "LinkedMap", Title = "2023 INFO" });
-            }
             else if (id == 11) // Millvale Music Festival
             {
                 menu.Add(new Menu { Type = "TabSchedule", Title = "Schedule" });
