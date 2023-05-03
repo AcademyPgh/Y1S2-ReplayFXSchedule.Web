@@ -128,6 +128,7 @@ namespace ReplayFXSchedule.Web.Models
         public string DisplayName { get; set; }
         public string Name { get; set; }
         public bool IsMenu { get; set; }
+        [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]
         public virtual List<EventType> EventTypes { get; set; }
