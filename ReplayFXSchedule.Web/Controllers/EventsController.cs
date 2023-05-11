@@ -536,7 +536,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 DateTime end = DateTime.Parse(replayEvent.EndTime, System.Globalization.CultureInfo.CurrentCulture);
                 replayEvent.EndTime = end.ToString("HH:mm");
             }
-            // db.SaveChanges();  // let's not leave this little line uncommented for now.
+            db.SaveChanges();  // let's not leave this little line uncommented for now.
             return RedirectToAction("Index");
         }
 
