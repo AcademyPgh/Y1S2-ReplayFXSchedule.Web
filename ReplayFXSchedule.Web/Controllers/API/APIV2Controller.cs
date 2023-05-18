@@ -143,7 +143,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 tempOption = new MenuOption { Title = "Acts" };
                 menu.Add(new Menu { Type = "GuestsList", Title = "Acts" , Options = tempOption});
                 menu.Add(new Menu { Type = "EventMenu" });
-                menu.Add(new Menu { Type = "VendorsMenu" });
+                menu.Add(new Menu { Type = "VendorMenu" });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
                 menu.Add(new Menu { Type = "StaticMap", Title = "Map" });
             }
