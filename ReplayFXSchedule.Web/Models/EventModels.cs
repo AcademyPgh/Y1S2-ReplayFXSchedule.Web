@@ -74,6 +74,21 @@ namespace ReplayFXSchedule.Web.Models
                 return null;
             }
         }
+
+        public DateTime DisplayDate // this is for items that start at midnight, 1 or 2 am
+        {
+            get
+            {
+                if (DateTime.TryParse(StartTime, out DateTime output))
+                {
+                    if(output.Hour < 3)
+                    {
+                        return Date + new TimeSpan(0, -24, 0, 0);
+                    }
+                }
+                return Date;
+            }
+        }
         public string ImageUrl
         {
             get
