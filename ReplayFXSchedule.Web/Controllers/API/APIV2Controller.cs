@@ -141,7 +141,7 @@ namespace ReplayFXSchedule.Web.Controllers
                 MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
                 menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
                 tempOption = new MenuOption { Title = "ACTS" };
-                menu.Add(new Menu { Type = "GuestsList", Title = "Acts" , Options = tempOption});
+                //menu.Add(new Menu { Type = "GuestsList", Title = "Acts" , Options = tempOption});
                 menu.Add(new Menu { Type = "EventMenu" });
                 tempOption = new MenuOption { Title = "VISUAL ARTISTS" };
                 menu.Add(new Menu { Type = "VendorsList", Title = "Visual Artists", Options = tempOption });
