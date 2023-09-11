@@ -705,6 +705,7 @@
     <Content Include="Views\ScreenImages\Details.cshtml" />
     <Content Include="Views\ScreenImages\Edit.cshtml" />
     <Content Include="Views\ScreenImages\Index.cshtml" />
+    <Content Include="Views\Games\_form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
