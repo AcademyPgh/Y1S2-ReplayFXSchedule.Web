@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -13,11 +13,11 @@ using ReplayFXSchedule.Web.Shared;
 namespace ReplayFXSchedule.Web.Controllers
 {
     [Authorize]
-    public class EventTypesController : Controller
+    public class EventMenusController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
 
-        // GET: ReplayEventTypes
+        // GET: EventMenus
         public ActionResult Index(int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -30,11 +30,10 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-
-            return View(convention.EventTypes.ToList());
+            return View(convention.EventMenus.ToList());
         }
 
-        // GET: ReplayEventTypes/Details/5
+        // GET: EventMenus/Details/5
         public ActionResult Details(int convention_id, int? id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -52,15 +51,15 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = convention.EventTypes.Where(e => e.Id == id).FirstOrDefault();
-            if (replayEventType == null)
+            EventMenu eventMenu = convention.EventMenus.Where(e => e.Id == id).FirstOrDefault();
+            if (eventMenu == null)
             {
                 return HttpNotFound();
             }
-            return View(replayEventType);
+            return View(eventMenu);
         }
 
-        // GET: ReplayEventTypes/Create
+        // GET: EventMenus/Create
         public ActionResult Create(int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -74,32 +73,15 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
 
-            var eventMenus = new List<SelectListItem>();
-            eventMenus.Add(new SelectListItem
-            {
-                Text = "None",
-                Value = "0",
-                Selected = true
-            });
-            eventMenus.AddRange(convention.EventMenus
-                .Select(em =>
-                    new SelectListItem
-                    {
-                        Text = em.DisplayName,
-                        Value = em.Id.ToString(),
-                        Selected = false
-                    })
-                .ToList());
-            ViewBag.EventMenus = eventMenus;
             return View();
         }
 
-        // POST: ReplayEventTypes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: EventMenus/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,DisplayName,IsPrivate,IsMenu")] EventType replayEventType, int convention_id, int EventMenus)
+        public ActionResult Create(int convention_id, [Bind(Include = "Id,DisplayName,Name,IsMenu")] EventMenu eventMenu)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -114,16 +96,15 @@ namespace ReplayFXSchedule.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                replayEventType.EventMenu = convention.EventMenus.Where(em => em.Id == EventMenus).FirstOrDefault();
-                convention.EventTypes.Add(replayEventType);
+                convention.EventMenus.Add(eventMenu);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(replayEventType);
+            return View(eventMenu);
         }
 
-        // GET: ReplayEventTypes/Edit/5
+        // GET: EventMenus/Edit/5
         public ActionResult Edit(int convention_id, int? id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -136,43 +117,25 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = convention.EventTypes.Where(e => e.Id == id).FirstOrDefault();
-            if (replayEventType == null)
+            EventMenu eventMenu = convention.EventMenus.Where(e => e.Id == id).FirstOrDefault();
+            if (eventMenu == null)
             {
                 return HttpNotFound();
             }
-
-            var eventMenus = new List<SelectListItem>();
-            eventMenus.Add(new SelectListItem
-            {
-                Text = "None",
-                Value = "0",
-                Selected = false
-            });
-            eventMenus.AddRange(convention.EventMenus
-                .Select(em =>
-                    new SelectListItem
-                    {
-                        Text = em.DisplayName,
-                        Value = em.Id.ToString(),
-                        Selected = replayEventType.EventMenu != null && em.Id == replayEventType.EventMenu.Id
-                    })
-                .ToList());
-            ViewBag.EventMenus = eventMenus;
-
-            return View(replayEventType);
+            return View(eventMenu);
         }
 
-        // POST: ReplayEventTypes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: EventMenus/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,DisplayName,IsPrivate,IsMenu")] EventType replayEventType, int convention_id, int EventMenus)
+        public ActionResult Edit(int convention_id, [Bind(Include = "Id,DisplayName,Name,IsMenu")] EventMenu eventMenu)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -184,21 +147,17 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
+
             if (ModelState.IsValid)
             {
-                var rpe = convention.EventTypes.Where(et => et.Id == replayEventType.Id).FirstOrDefault();
-                rpe.Name = replayEventType.Name;
-                rpe.DisplayName = replayEventType.DisplayName;
-                rpe.IsMenu = replayEventType.IsMenu;
-                rpe.IsPrivate = replayEventType.IsPrivate;
-                rpe.EventMenu = convention.EventMenus.Where(em => em.Id == EventMenus).FirstOrDefault();
+                db.Entry(eventMenu).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(replayEventType);
+            return View(eventMenu);
         }
 
-        // GET: ReplayEventTypes/Delete/5
+        // GET: EventMenus/Delete/5
         public ActionResult Delete(int convention_id, int? id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -211,19 +170,20 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EventType replayEventType = convention.EventTypes.Where(e => e.Id == id).FirstOrDefault();
-            if (replayEventType == null)
+            EventMenu eventMenu = convention.EventMenus.Where(e => e.Id == id).FirstOrDefault();
+            if (eventMenu == null)
             {
                 return HttpNotFound();
             }
-            return View(replayEventType);
+            return View(eventMenu);
         }
 
-        // POST: ReplayEventTypes/Delete/5
+        // POST: EventMenus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int convention_id, int id)
@@ -239,48 +199,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 return new HttpNotFoundResult();
             }
 
-            EventType replayEventType = convention.EventTypes.Where(e => e.Id == id).FirstOrDefault();
-            db.EventTypes.Remove(replayEventType);
+            EventMenu eventMenu = convention.EventMenus.Where(e => e.Id == id).FirstOrDefault();
+            db.EventMenus.Remove(eventMenu);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-        [HttpGet]
-        public ActionResult BulkLoad(int convention_id)
-        {
-            var us = new UserService((ClaimsIdentity)User.Identity, db);
-            if (!us.IsConventionAdmin(convention_id))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var convention = db.Conventions.Find(convention_id);
-            if (convention == null)
-            {
-                return new HttpNotFoundResult();
-            }
-
-            return View(convention.EventTypes.ToList());
-        }
-        [HttpPost]
-        public ActionResult BulkLoad(int convention_id, string EventTypes)
-        {
-            var us = new UserService((ClaimsIdentity)User.Identity, db);
-            if (!us.IsConventionAdmin(convention_id))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var convention = db.Conventions.Find(convention_id);
-            if (convention == null)
-            {
-                return new HttpNotFoundResult();
-            }
-
-            var types = EventTypes.Split();
-
-            var ets = types.Where(t => t.Length > 0).Select(t => new EventType { Name = t.ToLower(), DisplayName = t }).ToList();
-            convention.EventTypes.AddRange(ets);
-            db.SaveChanges();
-
-            return View(convention.EventTypes.ToList());
         }
 
         protected override void Dispose(bool disposing)

@@ -242,8 +242,10 @@
     <Compile Include="Controllers\API\UsersV2Controller.cs" />
     <Compile Include="Controllers\ConventionsController.cs" />
     <Compile Include="Controllers\DisplayMessagesController.cs" />
+    <Compile Include="Controllers\EventMenusController.cs" />
     <Compile Include="Controllers\GuestsController.cs" />
     <Compile Include="Controllers\GuestTypesController.cs" />
+    <Compile Include="Controllers\ScreenImagesController.cs" />
     <Compile Include="Controllers\VendorTypesController.cs" />
     <Compile Include="Controllers\GameLocationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -383,7 +385,32 @@
     <Compile Include="Migrations\ReplayFXDbContext\202108040101284_EventsFix.Designer.cs">
       <DependentUpon>202108040101284_EventsFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205111815297_EventMenu.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205111815297_EventMenu.Designer.cs">
+      <DependentUpon>202205111815297_EventMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205120010316_AdditionalEventMenu.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205120010316_AdditionalEventMenu.Designer.cs">
+      <DependentUpon>202205120010316_AdditionalEventMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205120304427_AddIsMenuToEventMenus.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205120304427_AddIsMenuToEventMenus.Designer.cs">
+      <DependentUpon>202205120304427_AddIsMenuToEventMenus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205132007037_ConnectGuestsToVendorsAndEvents.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205132007037_ConnectGuestsToVendorsAndEvents.Designer.cs">
+      <DependentUpon>202205132007037_ConnectGuestsToVendorsAndEvents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205200354466_AddScreenImages.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205200354466_AddScreenImages.Designer.cs">
+      <DependentUpon>202205200354466_AddScreenImages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202205200629362_GarbageCache.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202205200629362_GarbageCache.Designer.cs">
+      <DependentUpon>202205200629362_GarbageCache.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
+    <Compile Include="Models\GarbageCache.cs" />
     <Compile Include="Models\GuestModels.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\ConventionModels.cs" />
@@ -394,6 +421,7 @@
     <Compile Include="Models\FormResponse.cs" />
     <Compile Include="Models\GameModels.cs" />
     <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\ScreenImageModels.cs" />
     <Compile Include="Models\SocialModels.cs" />
     <Compile Include="Models\VendorModels.cs" />
     <Compile Include="Models\UserModels.cs" />
@@ -402,6 +430,7 @@
     <Compile Include="Shared\Importers.cs" />
     <Compile Include="Shared\UserTools.cs" />
     <Compile Include="Startup.cs" />
+    <Content Include="Views\ScreenImages\_form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -665,6 +694,18 @@
     <Content Include="Views\Guests\Index.cshtml" />
     <Content Include="Views\Guests\_form.cshtml" />
     <Content Include="Views\Events\BulkLoad.cshtml" />
+    <Content Include="Views\EventTypes\BulkLoad.cshtml" />
+    <Content Include="Views\EventMenus\Create.cshtml" />
+    <Content Include="Views\EventMenus\Delete.cshtml" />
+    <Content Include="Views\EventMenus\Details.cshtml" />
+    <Content Include="Views\EventMenus\Edit.cshtml" />
+    <Content Include="Views\EventMenus\Index.cshtml" />
+    <Content Include="Views\ScreenImages\Create.cshtml" />
+    <Content Include="Views\ScreenImages\Delete.cshtml" />
+    <Content Include="Views\ScreenImages\Details.cshtml" />
+    <Content Include="Views\ScreenImages\Edit.cshtml" />
+    <Content Include="Views\ScreenImages\Index.cshtml" />
+    <Content Include="Views\Games\_form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -768,6 +809,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\202108040101284_EventsFix.resx">
       <DependentUpon>202108040101284_EventsFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205111815297_EventMenu.resx">
+      <DependentUpon>202205111815297_EventMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205120010316_AdditionalEventMenu.resx">
+      <DependentUpon>202205120010316_AdditionalEventMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205120304427_AddIsMenuToEventMenus.resx">
+      <DependentUpon>202205120304427_AddIsMenuToEventMenus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205132007037_ConnectGuestsToVendorsAndEvents.resx">
+      <DependentUpon>202205132007037_ConnectGuestsToVendorsAndEvents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205200354466_AddScreenImages.resx">
+      <DependentUpon>202205200354466_AddScreenImages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202205200629362_GarbageCache.resx">
+      <DependentUpon>202205200629362_GarbageCache.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

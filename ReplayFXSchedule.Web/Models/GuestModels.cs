@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Configuration;
 using System.Linq;
 using System.Web;
@@ -20,6 +21,24 @@ namespace ReplayFXSchedule.Web.Models
         public string Image { get; set; }
         public string Url { get; set; }
         public virtual List<GuestType> GuestTypes { get; set; }
+        [JsonIgnore]
+        public virtual List<Event> Events { get; set; }
+        [JsonIgnore]
+        public virtual List<Vendor> Vendors { get; set; }
+
+        [NotMapped]
+        public List<GuestConnector> Connections
+        {
+            get
+            {
+                var con = new List<GuestConnector>();
+                con.AddRange(Events.Select(e => new GuestConnector { Id = e.Id, Type = "event" }));
+                con.AddRange(Vendors.Select(v => new GuestConnector { Id = v.Id, Type = "vendor" }));
+
+                return con;
+            }
+        }
+        
         public string ImageUrl
         {
             get
@@ -34,6 +53,12 @@ namespace ReplayFXSchedule.Web.Models
                 }
             }
         }
+    }
+
+    public class GuestConnector
+    {
+        public int Id { get; set; }
+        public string Type { get; set; }
     }
 
     public class GuestType

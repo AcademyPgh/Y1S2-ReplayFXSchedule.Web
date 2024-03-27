@@ -49,6 +49,10 @@ namespace ReplayFXSchedule.Web.Models
 
         [Display(Name = "Event Type")]
         public virtual List<EventType> EventTypes { get; set; }
+
+        [JsonIgnore]
+        public virtual List<Guest> Guests { get; set; }
+
         public string StartTime12
         {
             get {
@@ -68,6 +72,21 @@ namespace ReplayFXSchedule.Web.Models
                     return output.ToString("hh\\:mm tt");
                 }
                 return null;
+            }
+        }
+
+        public DateTime DisplayDate // this is for items that start at midnight, 1 or 2 am
+        {
+            get
+            {
+                if (DateTime.TryParse(StartTime, out DateTime output))
+                {
+                    if(output.Hour < 3)
+                    {
+                        return Date + new TimeSpan(0, -24, 0, 0);
+                    }
+                }
+                return Date;
             }
         }
         public string ImageUrl
@@ -110,11 +129,24 @@ namespace ReplayFXSchedule.Web.Models
         public string DisplayName { get; set; }
         public bool IsPrivate { get; set; }
         public bool IsMenu { get; set; }
+        public virtual EventMenu EventMenu {get;set;}
 
         [JsonIgnore]
         public virtual Convention Convention { get; set; }
         [JsonIgnore]
         public virtual List<Event> Events { get; set; }
+    }
+
+    public class EventMenu
+    {
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
+        public string Name { get; set; }
+        public bool IsMenu { get; set; }
+        [JsonIgnore]
+        public virtual Convention Convention { get; set; }
+        [JsonIgnore]
+        public virtual List<EventType> EventTypes { get; set; }
     }
 
     public class EventTypeView

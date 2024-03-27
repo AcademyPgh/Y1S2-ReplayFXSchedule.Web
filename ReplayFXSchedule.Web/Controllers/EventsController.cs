@@ -508,6 +508,38 @@ namespace ReplayFXSchedule.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult FixTimes(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.GetUser().isSuperAdmin)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            List<Event> replayEvents = convention.Events.ToList();
+            if (replayEvents == null)
+            {
+                return HttpNotFound();
+            }
+
+            foreach (var replayEvent in replayEvents)
+            {
+                DateTime start = DateTime.Parse(replayEvent.StartTime, System.Globalization.CultureInfo.CurrentCulture);
+                replayEvent.StartTime = start.ToString("HH:mm");
+
+                DateTime end = DateTime.Parse(replayEvent.EndTime, System.Globalization.CultureInfo.CurrentCulture);
+                replayEvent.EndTime = end.ToString("HH:mm");
+            }
+            db.SaveChanges();  // let's not leave this little line uncommented for now.
+            return RedirectToAction("Index");
+        }
+
         public ActionResult BulkLoad(int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);

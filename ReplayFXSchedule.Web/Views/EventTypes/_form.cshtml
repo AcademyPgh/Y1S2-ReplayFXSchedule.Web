@@ -20,6 +20,16 @@
     </div>
 
     <div class="row">
+        @Html.LabelFor(model => model.EventMenu, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+        <div class="col-md-10">
+            <div class="form-group">
+                @Html.DropDownList("EventMenus", ViewBag.EventMenus as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EventMenu, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         @Html.LabelFor(model => model.IsPrivate, htmlAttributes: new { @class = "col-md-2 col-form-label" })
         <div class="col-md-10 form-group">
             <div class="form-check">

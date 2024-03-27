@@ -13,11 +13,11 @@ using ReplayFXSchedule.Web.Shared;
 namespace ReplayFXSchedule.Web.Controllers
 {
     [Authorize]
-    public class SponsorsController : Controller
+    public class ScreenImagesController : Controller
     {
         private ReplayFXDbContext db = new ReplayFXDbContext();
-        private AzureTools azure = new AzureTools();
-        // GET: Sponsors
+
+        // GET: ScreenImages
         public ActionResult Index(int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -31,12 +31,22 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            return View(convention.Sponsors.OrderBy(e => e.Name).ToList());
+            //ScreenImage image = convention.ScreenImages.Where(e => e.Id == id).FirstOrDefault();
+            //if (image == null)
+            //{
+            //    return HttpNotFound();
+            //}
+
+            return View(convention.ScreenImages.ToList());
         }
 
-        // GET: Sponsors/Details/5
-        public ActionResult Details(int convention_id, int? id)
+        // GET: ScreenImages/Details/5
+        public ActionResult Details(int? id, int convention_id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
             {
@@ -48,19 +58,16 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Sponsor sponsor = convention.Sponsors.Where(s => s.Id == id).FirstOrDefault();
-            if (sponsor == null)
+
+            ScreenImage screenImage = convention.ScreenImages.Where(e => e.Id == id).FirstOrDefault();
+            if (screenImage == null)
             {
                 return HttpNotFound();
             }
-            return View(sponsor);
+            return View(screenImage);
         }
 
-        // GET: Sponsors/Create
+        // GET: ScreenImages/Create
         public ActionResult Create(int convention_id)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
@@ -74,15 +81,16 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
+
             return View();
         }
 
-        // POST: Sponsors/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // POST: ScreenImages/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,Url,Image")] Sponsor sponsor, int convention_id, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "Name,Image")] ScreenImage screenImage, int convention_id, HttpPostedFileBase upload)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -95,128 +103,55 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
+
             if (ModelState.IsValid)
             {
-                sponsor.Image = azure.GetFileName(upload);
-                convention.Sponsors.Add(sponsor);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(sponsor);
-        }
-
-        // GET: Sponsors/Edit/5
-        public ActionResult Edit(int convention_id, int? id)
-        {
-            var us = new UserService((ClaimsIdentity)User.Identity, db);
-            if (!us.IsConventionAdmin(convention_id))
-            {
-                return new HttpNotFoundResult();
-            }
-
-            var convention = db.Conventions.Find(convention_id);
-            if (convention == null)
-            {
-                return new HttpNotFoundResult();
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Sponsor sponsor = convention.Sponsors.Where(s => s.Id == id).FirstOrDefault();
-            if (sponsor == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sponsor);
-        }
-
-        // POST: Sponsors/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Url,Image")] Sponsor sponsor, int convention_id, HttpPostedFileBase upload)
-        {
-            var us = new UserService((ClaimsIdentity)User.Identity, db);
-            if (!us.IsConventionAdmin(convention_id))
-            {
-                return new HttpNotFoundResult();
-            }
-
-            var convention = db.Conventions.Find(convention_id);
-            var spons = convention.Sponsors.Where(s => s.Id == sponsor.Id).FirstOrDefault();
-            if (convention == null || spons == null)
-            {
-                return new HttpNotFoundResult();
-            }
-            if (ModelState.IsValid)
-            {
-
-                var deleteImage = false;
-                if (spons.Image != sponsor.Image || upload != null)
-                {
-                    if (!string.IsNullOrEmpty(spons.Image))
-                    {
-                        if (db.Sponsors.Where(e => e.Convention.Id == convention_id && e.Image == spons.Image).ToList().Count == 1)
-                        {
-                            // if we are on the last one
-                            deleteImage = true;
-                        }
-                    }
-                }
-                if (deleteImage)
-                {
-                    if (!string.IsNullOrEmpty(spons.Image))
-                    {
-                        azure.deletefromAzure(spons.Image);
-                        spons.Image = null;
-                    }
-                }
                 if (upload != null)
                 {
-                    spons.Image = azure.GetFileName(upload);
+                    AzureTools azure = new AzureTools();
+                    screenImage.Image = azure.GetFileName(upload);
                 }
-
-                spons.Name = sponsor.Name;
-                spons.Url = sponsor.Url;
+                convention.ScreenImages.Add(screenImage);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(sponsor);
+
+            return View(screenImage);
         }
 
-        // GET: Sponsors/Delete/5
-        public ActionResult Delete(int convention_id, int? id)
+        // GET: ScreenImages/Edit/5
+        public ActionResult Edit(int? id, int convention_id)
         {
-            var us = new UserService((ClaimsIdentity)User.Identity, db);
-            if (!us.IsConventionAdmin(convention_id))
-            {
-                return new HttpNotFoundResult();
-            }
-
-            var convention = db.Conventions.Find(convention_id);
-            if (convention == null)
-            {
-                return new HttpNotFoundResult();
-            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Sponsor sponsor = convention.Sponsors.Where(s => s.Id == id).FirstOrDefault();
-            if (sponsor == null)
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            ScreenImage screenImage = convention.ScreenImages.Where(e => e.Id == id).FirstOrDefault();
+            if (screenImage == null)
             {
                 return HttpNotFound();
             }
-            return View(sponsor);
+            return View(screenImage);
         }
 
-        // POST: Sponsors/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: ScreenImages/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int convention_id, int id)
+        public ActionResult Edit([Bind(Include = "Id,Name,Image")] ScreenImage screenImage, int convention_id, HttpPostedFileBase upload)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if (!us.IsConventionAdmin(convention_id))
@@ -229,8 +164,73 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            Sponsor sponsor = convention.Sponsors.Where(s => s.Id == id).FirstOrDefault();
-            db.Sponsors.Remove(sponsor);
+
+            if (ModelState.IsValid)
+            {
+                if(upload != null)
+                {
+                    AzureTools azure = new AzureTools();
+                    azure.deletefromAzure(screenImage.Name);
+                    screenImage.Image = azure.GetFileName(upload);
+                }
+
+                db.Entry(screenImage).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(screenImage);
+        }
+
+        // GET: ScreenImages/Delete/5
+        public ActionResult Delete(int? id, int convention_id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            ScreenImage screenImage = convention.ScreenImages.Where(e => e.Id == id).FirstOrDefault();
+            if (screenImage == null)
+            {
+                return HttpNotFound();
+            }
+            return View(screenImage);
+        }
+
+        // POST: ScreenImages/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id, int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            ScreenImage screenImage = convention.ScreenImages.Where(e => e.Id == id).FirstOrDefault();
+            if (screenImage == null)
+            {
+                return HttpNotFound();
+            }
+            db.ScreenImages.Remove(screenImage);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

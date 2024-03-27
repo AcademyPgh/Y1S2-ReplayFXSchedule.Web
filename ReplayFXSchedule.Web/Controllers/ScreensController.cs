@@ -26,6 +26,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.location = location;
             return View("Index", con);
         }

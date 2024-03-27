@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ReplayFXSchedule.Web.Models.EventType>
+
+@{
+    ViewBag.Title = "BulkLoad";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Bulk Load</h4>
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <textarea name="EventTypes"></textarea>
+            <input type="submit" value="Submit" />
+        }
+
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var eventType in Model)
+            {
+            <tr>
+                <td>@eventType.DisplayName</td>
+                <td>@eventType.Id</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
