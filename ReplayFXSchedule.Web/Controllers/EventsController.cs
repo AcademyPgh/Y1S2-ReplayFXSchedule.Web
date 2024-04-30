@@ -584,6 +584,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 {
                     //Processing row
                     fields = parser.ReadFields();
+                    if(fields.All(f => string.IsNullOrEmpty(f)))
+                    {
+                        continue;
+                    }
                     var con = importer.EventFactory(fields, db);
                     convention.Events.Add(con);
                     events.Add(con);
