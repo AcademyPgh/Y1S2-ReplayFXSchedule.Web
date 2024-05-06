@@ -1,6 +1,9 @@
 ﻿body {
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
+    font-size: 1vw;
+    margin: 0px;
+    padding: 0px;
 }
 
 .background {
@@ -33,7 +36,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
+    font-size: 2em;
     text-shadow: 4px 4px 4px #222;
     flex-direction: column;
 }
@@ -152,6 +155,7 @@
     justify-content: space-between;
     align-items: center;
     padding-left: 3.5%;
+    padding-bottom: 2em;
 }
 
 .lower-cta {
