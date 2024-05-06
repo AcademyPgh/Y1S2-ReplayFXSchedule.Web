@@ -1,7 +1,7 @@
 ﻿body {
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
-    font-size: 1vw;
+    font-size: 0.8vw;
     margin: 0px;
     padding: 0px;
 }
@@ -27,6 +27,7 @@
     display: grid;
     grid-template-columns: [one] 70% [two] auto;
     grid-template-rows: [top] 85% [bottom] auto;
+    grid-gap: 0px;
     color: white;
 }
 
@@ -83,7 +84,7 @@
 
 .marquee-container {
     grid-column: two;
-    grid-row: top / 3;
+    grid-row: top / span 2;
     background: rgba(0,0,0,.5);
     text-shadow: 4px 4px 4px #222;
 }
