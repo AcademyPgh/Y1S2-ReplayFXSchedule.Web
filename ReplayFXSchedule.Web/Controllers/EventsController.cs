@@ -595,6 +595,24 @@ namespace ReplayFXSchedule.Web.Controllers
             }
 
             db.SaveChanges();
+            var queue = new List<PhotoProcessQueue>();
+            foreach(var ev in events)
+            {
+                if(!String.IsNullOrEmpty(ev.Image))
+                {
+                    var processQueue = new PhotoProcessQueue
+                    {
+                        EventId = ev.Id,
+                        URL = ev.Image,
+                        Created = DateTime.Now,
+                        Status = PhotoProcessQueueStatus.New
+                    };
+                    ev.Image = null;
+                    queue.Add(processQueue);
+                }
+            }
+            db.PhotoProcessQueue.AddRange(queue);
+            db.SaveChanges();
 
             var result = JsonConvert.SerializeObject(events,
             Formatting.None,

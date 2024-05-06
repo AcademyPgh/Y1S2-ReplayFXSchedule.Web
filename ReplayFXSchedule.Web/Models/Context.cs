@@ -32,6 +32,7 @@ namespace ReplayFXSchedule.Web.Models
         public DbSet<ScreenImage> ScreenImages { get; set; }
 
         public DbSet<GarbageCache> Cache { get; set; }
-        public System.Data.Entity.DbSet<ReplayFXSchedule.Web.Models.EventMenu> EventMenus { get; set; }
+        public DbSet<EventMenu> EventMenus { get; set; }
+        public DbSet<PhotoProcessQueue> PhotoProcessQueue { get; set; }
     }
 }

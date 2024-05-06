@@ -1,11 +1,110 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using ReplayFXSchedule.Web.Models;
 
 namespace ReplayFXSchedule.Web.Shared
 {
+    public static class GoogleDownloader
+    {
+        static string ExtractFileId(string url)
+        {
+            string fileId = string.Empty;
+
+            if (url.Contains("/file/d/"))
+            {
+                int startIndex = url.IndexOf("/file/d/") + "/file/d/".Length;
+                int endIndex = url.IndexOf("/", startIndex);
+                if (endIndex == -1)
+                {
+                    endIndex = url.Length;
+                }
+                fileId = url.Substring(startIndex, endIndex - startIndex);
+            }
+            else if (url.Contains("open?id="))
+            {
+                int startIndex = url.IndexOf("open?id=") + "open?id=".Length;
+                int endIndex = url.IndexOf("&", startIndex);
+                if (endIndex == -1)
+                {
+                    endIndex = url.Length;
+                }
+                fileId = url.Substring(startIndex, endIndex - startIndex);
+            }
+
+            return fileId;
+        }
+        public static MemoryStream Download(string url)
+        {
+            string fileId = ExtractFileId(url);
+            string modifiedUrl = $"https://drive.google.com/uc?id={fileId}";
+
+            using (WebClient webClient = new WebClient())
+            {
+                try
+                {
+                    byte[] imageData = webClient.DownloadData(modifiedUrl);
+                    return ProcessImageStream(new MemoryStream(imageData));
+                }
+                catch (WebException ex)
+                {
+                    Console.WriteLine("Error downloading the image: " + ex.Message);
+                }
+            }
+            return null;
+        }
+
+        static MemoryStream ProcessImageStream(MemoryStream stream)
+        {
+            try
+            {
+                using (Image originalImage = Image.FromStream(stream))
+                {
+                    int maxSize = 1024;
+                    int newWidth, newHeight;
+                    newWidth = originalImage.Width;
+                    newHeight = originalImage.Height;
+
+                    if (originalImage.Width > originalImage.Height)
+                    {
+                        newWidth = maxSize;
+                        newHeight = (int)(originalImage.Height * (maxSize / (double)originalImage.Width));
+                    }
+                    else
+                    {
+                        newWidth = (int)(originalImage.Width * (maxSize / (double)originalImage.Height));
+                        newHeight = maxSize;
+                    }
+
+                    using (Bitmap resizedImage = new Bitmap(newWidth, newHeight))
+                    {
+                        using (Graphics graphics = Graphics.FromImage(resizedImage))
+                        {
+                            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                            graphics.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+                        }
+
+                        MemoryStream resizedImageStream = new MemoryStream();
+                        resizedImage.Save(resizedImageStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        resizedImageStream.Position = 0;
+                        return resizedImageStream;
+                    }
+                }
+            }
+                        catch (Exception ex)
+            {
+                Console.WriteLine("Error processing the image, most likely heic: " + ex.Message);
+                return null;
+            }
+        }
+
+    }
+
     public class EventImporter
     {
         private Dictionary<string, int> FieldOrder;
@@ -42,6 +141,7 @@ namespace ReplayFXSchedule.Web.Shared
             methods.Add(CleanFacebook);
             methods.Add(CleanTwitter);
             methods.Add(CleanInstagram);
+            methods.Add(CleanTikTok);
 
             foreach(var method in methods)
             {
@@ -75,6 +175,38 @@ namespace ReplayFXSchedule.Web.Shared
             return Clean(url);
         }
 
+        private string CleanTikTok()
+        {
+            string url = GetStringValue("TikTok");
+            if (url.Length > 0)
+            {
+                url = GetUsername(url, "tiktok.com/");
+                return Clean($"tiktok.com/@{url}");
+            }
+            return "";
+        }
+
+        private string GetUsername(string url, string domain)
+        {
+            if (url.Length > 0)
+            {
+                int index = url.ToLower().IndexOf(domain);
+                if (index > -1)
+                {
+                    url = url.Substring(index + domain.Length);
+                }
+                index = url.IndexOf("?");
+                if (index > -1)
+                {
+                    url = url.Substring(0, index);
+                }
+
+                url = url.Replace("@", "");
+                return url;
+            }
+            return "";
+        }
+
         private string CleanFacebook()
         {
             string url = GetStringValue("Facebook");
@@ -86,12 +218,7 @@ namespace ReplayFXSchedule.Web.Shared
             string url = GetStringValue("Twitter");
             if (url.Length > 0)
             {
-                if (url.Contains("twitter.com"))
-                {
-                    return Clean(url);
-                }
-
-                url = url.Replace("@", "");
+                url = GetUsername(url, "twitter.com/");
                 return Clean($"twitter.com/{url}");
             }
             return "";
@@ -102,11 +229,7 @@ namespace ReplayFXSchedule.Web.Shared
             string url = GetStringValue("Instagram");
             if (url.Length > 0)
             {
-                if (url.Contains("instagram.com"))
-                {
-                    return Clean(url);
-                }
-                url = url.Replace("@", "");
+                url = GetUsername(url, "instagram.com/");
                 return Clean($"instagram.com/{url}");
             }
             return "";
@@ -122,7 +245,10 @@ namespace ReplayFXSchedule.Web.Shared
             currentEvent.Title = GetStringValue("Title");
             currentEvent.StartTime = GetStringValue("StartTime").Replace(": ", " ");
             currentEvent.ExtendedDescription = GetStringValue("ExtendedDescription");
-
+            if (!String.IsNullOrEmpty(GetStringValue("GoogleImage")))
+            {
+                currentEvent.Image = GetStringValue("GoogleImage");
+            }
 
 
             currentEvent.URL = GetUrls();

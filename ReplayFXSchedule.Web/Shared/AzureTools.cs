@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Web;
 
 namespace ReplayFXSchedule.Web.Shared
@@ -26,11 +27,23 @@ namespace ReplayFXSchedule.Web.Shared
             return imagename;
         }
 
-
-        public void uploadtoAzure(string filename, HttpPostedFileBase upload)
+        public string GetFileName(System.IO.Stream upload)
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-            CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            string ext;
+            string imagename = null;
+            if (upload != null)
+            {
+                ext = ".jpg";
+                imagename = Guid.NewGuid() + ext;
+                uploadtoAzure(imagename, upload);
+            }
+            return imagename;
+        }
+
+        public void uploadtoAzure(string filename, System.IO.Stream upload)
+        {
+               CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                              CloudConfigurationManager.GetSetting("StorageConnectionString"));
             // Create the blob client.
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             // Retrieve reference to a previously created container.
@@ -38,7 +51,12 @@ namespace ReplayFXSchedule.Web.Shared
             // Retrieve reference to a blob named "someimage.jpg".
             CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{filename}");
             // Create or overwrite the "someimage.jpg" blob with contents from an upload stream.
-            blockBlob.UploadFromStream(upload.InputStream);
+            blockBlob.UploadFromStream(upload);
+        }
+
+        public void uploadtoAzure(string filename, HttpPostedFileBase upload)
+        {
+            uploadtoAzure(filename, upload.InputStream);
         }
         public void deletefromAzure(string filename)
         {
