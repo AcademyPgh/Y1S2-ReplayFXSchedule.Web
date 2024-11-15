@@ -328,15 +328,17 @@ namespace ReplayFXSchedule.Web.Controllers
 
         [HttpPost]
         [Route("convention/{convention_id}/registerPhone")]
-        public bool RegisterPhone(int convention_id, string phone)
+        public bool RegisterPhone(int convention_id, RegisterPhoneData data)
         {
             var newPhone = new PhoneId();
-            newPhone.FCM = phone;
+            newPhone.FCM = data.phone;
             newPhone.ConventionId = convention_id;
             db.PhoneIds.Add(newPhone);
             db.SaveChanges();
             return true;
         }
+
+
 
         private bool isVip(Convention convention)
         {
@@ -395,5 +397,9 @@ namespace ReplayFXSchedule.Web.Controllers
             return Ok();
         }
 
+    }
+    public class RegisterPhoneData
+    {
+        public string phone { get; set; }
     }
 }
