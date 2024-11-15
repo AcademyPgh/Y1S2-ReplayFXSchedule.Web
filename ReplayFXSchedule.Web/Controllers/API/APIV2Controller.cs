@@ -327,7 +327,7 @@ namespace ReplayFXSchedule.Web.Controllers
         }
 
         [HttpPost]
-        [Route("/convention/{convention_id}/registerPhone")]
+        [Route("convention/{convention_id}/registerPhone")]
         public bool RegisterPhone(int convention_id, string phone)
         {
             var newPhone = new PhoneId();
