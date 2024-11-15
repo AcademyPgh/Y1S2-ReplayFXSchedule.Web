@@ -436,6 +436,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\202405061421024_AddPhotoProcessQueue.Designer.cs">
       <DependentUpon>202405061421024_AddPhotoProcessQueue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202411150252007_AddFCM.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202411150252007_AddFCM.Designer.cs">
+      <DependentUpon>202411150252007_AddFCM.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\GarbageCache.cs" />
     <Compile Include="Models\GuestModels.cs" />
@@ -448,6 +452,7 @@
     <Compile Include="Models\FormResponse.cs" />
     <Compile Include="Models\GameModels.cs" />
     <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\PhoneId.cs" />
     <Compile Include="Models\PhotoProcessQueue.cs" />
     <Compile Include="Models\ScreenImageModels.cs" />
     <Compile Include="Models\SocialModels.cs" />
@@ -863,6 +868,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\202405061421024_AddPhotoProcessQueue.resx">
       <DependentUpon>202405061421024_AddPhotoProcessQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202411150252007_AddFCM.resx">
+      <DependentUpon>202411150252007_AddFCM.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

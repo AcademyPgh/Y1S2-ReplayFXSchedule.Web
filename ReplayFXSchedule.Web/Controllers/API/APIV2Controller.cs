@@ -326,6 +326,18 @@ namespace ReplayFXSchedule.Web.Controllers
             return games;
         }
 
+        [HttpPost]
+        [Route("/convention/{convention_id}/registerPhone")]
+        public bool RegisterPhone(int convention_id, string phone)
+        {
+            var newPhone = new PhoneId();
+            newPhone.FCM = phone;
+            newPhone.ConventionId = convention_id;
+            db.PhoneIds.Add(newPhone);
+            db.SaveChanges();
+            return true;
+        }
+
         private bool isVip(Convention convention)
         {
             if (User.Identity.IsAuthenticated)
