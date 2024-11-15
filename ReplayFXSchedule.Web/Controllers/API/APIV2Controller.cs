@@ -135,6 +135,17 @@ namespace ReplayFXSchedule.Web.Controllers
                 menu.Add(new Menu { Type = "EventMenu" });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
             }
+            else if (id == 19) // Pittsburgh Robotics
+            {
+                menu.Add(new Menu { Type = "TabSchedule", Title = "Schedule" });
+                MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
+                menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "EventMenu" });
+                tempOption = new MenuOption { Title = "Exhibitors" };
+                menu.Add(new Menu { Type = "VendorsList", Title = "Exhibitors", Options = tempOption });
+                menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
+                menu.Add(new Menu { Type = "StaticMap", Title = "Map" });
+            }
             else if (id == 11) // Millvale Music Festival
             {
                 menu.Add(new Menu { Type = "TabSchedule", Title = "Schedule" });
