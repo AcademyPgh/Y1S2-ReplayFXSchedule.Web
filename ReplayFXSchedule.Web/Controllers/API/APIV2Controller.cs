@@ -330,10 +330,18 @@ namespace ReplayFXSchedule.Web.Controllers
         [Route("convention/{convention_id}/registerPhone")]
         public bool RegisterPhone(int convention_id, RegisterPhoneData data)
         {
-            var newPhone = new PhoneId();
-            newPhone.FCM = data.phone;
-            newPhone.ConventionId = convention_id;
-            db.PhoneIds.Add(newPhone);
+            var phone = db.PhoneIds.Where(pi => pi.ConventionId == convention_id && pi.FCM == data.phone).FirstOrDefault();
+            if (phone == null)
+            {
+                var newPhone = new PhoneId();
+                newPhone.FCM = data.phone;
+                newPhone.ConventionId = convention_id;
+                newPhone.LastContact = DateTime.Now;
+                db.PhoneIds.Add(newPhone);
+                db.SaveChanges();
+                return true;
+            }
+            phone.LastContact = DateTime.Now;
             db.SaveChanges();
             return true;
         }

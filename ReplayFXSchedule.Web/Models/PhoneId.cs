@@ -9,6 +9,7 @@ namespace ReplayFXSchedule.Web.Models
     {
         public int Id { get; set; }
         public string FCM { get; set; }
+        public DateTime LastContact { get; set; }
         public int ConventionId { get; set; }
         public virtual Convention Convention { get; set; }
     }

@@ -440,6 +440,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\202411150252007_AddFCM.Designer.cs">
       <DependentUpon>202411150252007_AddFCM.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202411150358570_AddDateToPhoneId.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202411150358570_AddDateToPhoneId.Designer.cs">
+      <DependentUpon>202411150358570_AddDateToPhoneId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\GarbageCache.cs" />
     <Compile Include="Models\GuestModels.cs" />
@@ -871,6 +875,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\202411150252007_AddFCM.resx">
       <DependentUpon>202411150252007_AddFCM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202411150358570_AddDateToPhoneId.resx">
+      <DependentUpon>202411150358570_AddDateToPhoneId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
