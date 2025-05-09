@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ReplayFXSchedule.Web.Migrations.ReplayFXDbContext;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -150,6 +151,9 @@ namespace ReplayFXSchedule.Web.Models
 
         [JsonIgnore]
         public virtual List<Post> Posts { get; set; }
+
+        [JsonIgnore]
+        public virtual List<PhoneId> PhoneIds { get; set; }
 
         [NotMapped]
         public virtual List<Promo> Promos { get

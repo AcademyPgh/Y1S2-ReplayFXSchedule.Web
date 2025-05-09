@@ -135,13 +135,24 @@ namespace ReplayFXSchedule.Web.Controllers
                 menu.Add(new Menu { Type = "EventMenu" });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
             }
+            else if (id == 19) // Pittsburgh Robotics
+            {
+                menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
+                MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
+                menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "EventMenu" });
+                tempOption = new MenuOption { Title = "Exhibitors" };
+                menu.Add(new Menu { Type = "VendorsList", Title = "Exhibitors", Options = tempOption });
+                menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
+                menu.Add(new Menu { Type = "StaticMap", Title = "Map" });
+            }
             else if (id == 11) // Millvale Music Festival
             {
                 menu.Add(new Menu { Type = "TabSchedule", Title = "Schedule" });
                 MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
                 menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
                 tempOption = new MenuOption { Title = "ACTS" };
-                //menu.Add(new Menu { Type = "GuestsList", Title = "Acts" , Options = tempOption});
+                menu.Add(new Menu { Type = "GuestsList", Title = "Acts" , Options = tempOption});
                 menu.Add(new Menu { Type = "EventMenu" });
                 tempOption = new MenuOption { Title = "VISUAL ARTISTS" };
                 menu.Add(new Menu { Type = "VendorsList", Title = "Visual Artists", Options = tempOption });
@@ -315,6 +326,28 @@ namespace ReplayFXSchedule.Web.Controllers
             return games;
         }
 
+        [HttpPost]
+        [Route("convention/{convention_id}/registerPhone")]
+        public bool RegisterPhone(int convention_id, RegisterPhoneData data)
+        {
+            var phone = db.PhoneIds.Where(pi => pi.ConventionId == convention_id && pi.FCM == data.phone).FirstOrDefault();
+            if (phone == null)
+            {
+                var newPhone = new PhoneId();
+                newPhone.FCM = data.phone;
+                newPhone.ConventionId = convention_id;
+                newPhone.LastContact = DateTime.Now;
+                db.PhoneIds.Add(newPhone);
+                db.SaveChanges();
+                return true;
+            }
+            phone.LastContact = DateTime.Now;
+            db.SaveChanges();
+            return true;
+        }
+
+
+
         private bool isVip(Convention convention)
         {
             if (User.Identity.IsAuthenticated)
@@ -372,5 +405,9 @@ namespace ReplayFXSchedule.Web.Controllers
             return Ok();
         }
 
+    }
+    public class RegisterPhoneData
+    {
+        public string phone { get; set; }
     }
 }
