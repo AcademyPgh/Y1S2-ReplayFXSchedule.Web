@@ -34,5 +34,6 @@ namespace ReplayFXSchedule.Web.Models
         public DbSet<GarbageCache> Cache { get; set; }
         public DbSet<EventMenu> EventMenus { get; set; }
         public DbSet<PhotoProcessQueue> PhotoProcessQueue { get; set; }
+        public DbSet<PhoneId> PhoneIds { get; set; }
     }
 }

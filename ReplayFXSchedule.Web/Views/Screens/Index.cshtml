@@ -29,7 +29,7 @@
         </div>*@
         <div class="featured">
             <div class="fixed-header"></div>
-            <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="false" data-interval="15000">
+            <div id="carousel" class="carousel slide" data-pause="false" data-ride="carousel" data-interval="15000">
                 <div class="carousel-inner" id="featured">
                 </div>
             </div>
@@ -121,28 +121,46 @@
 
                 console.log(values);
 
-                var messagesHtml = messages.map((message, index) => {
-                    if (index === 0) {
+            var hasFirst = false;
+            const longest = messages.length > events.length ? messages.length : events.length;
+
+            var slides = [];
+            var messagesHtml = [];
+            if (messages.length > 0) {
+                for (var i = 0; i < longest; i++) {
+                    const message = JSON.parse(JSON.stringify(messages[i % messages.length]));
+                    if (!hasFirst && i === 0) {
+                        hasFirst = true;
                         message.is_first = true;
                     }
-                    return messageTemplate(message);
-                })
-            console.log('messages', messagesHtml);
-                var eventsHtml = events.map((event, index) => {
-                if (messages.length === 0 && index === 0)
-                {
-                    event.is_first = true;
+                    messagesHtml.push(messageTemplate(message))
+                }
             }
-                return featureTemplate(event);
-            });
-            const longest = messagesHtml.length > eventsHtml.length ? messagesHtml.length : eventsHtml.length;
+            else {
+                messagesHtml = Array.new(longest).fill(null);
+            }
+            var eventsHtml = [];
+            if (events.length > 0) {
+                for (var i = 0; i < longest; i++) {
+                    const event = JSON.parse(JSON.stringify(events[i % events.length]));
+                    if (!hasFirst && i === 0) {
+                        hasFirst = true;
+                        event.is_first = true;
+                    }
+                    eventsHtml.push(featureTemplate(event));
+                }
+            }
+            else {
+                eventsHtml = Array.new(longest).fill(null);
+            }
+
             $("#featured").html('');
             for (var i = 0; i < longest; i++) {
-                $("#featured").append(eventsHtml[i % eventsHtml.length]);
-                $("#featured").append(messagesHtml[i % messagesHtml.length]);
-        }
-            //$("#featured").html(messagesHtml);
-            // temp
+                $("#featured").append(eventsHtml[i]);
+                $("#featured").append(messagesHtml[i]);
+            }
+            // $("#carousel").carousel();
+
             if (location_view) {
                 if (eventsHtml.length == 0 && messagesHtml.length == 0) {
                     const noMoreSource = document.getElementById("no-more-template").innerHTML;

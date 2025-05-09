@@ -21,7 +21,7 @@ namespace ReplayFXSchedule.Web.Controllers
         private AzureTools azure = new AzureTools();
 
         // GET: ReplayEvents
-        public ActionResult Index(int convention_id, string search, bool alpha = false)
+        public ActionResult Index(int convention_id, string search, bool alpha = true)
         {
             var us = new UserService((ClaimsIdentity)User.Identity, db);
             if(!us.IsConventionAdmin(convention_id))
