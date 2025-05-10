@@ -148,7 +148,8 @@ namespace ReplayFXSchedule.Web.Controllers
             }
             else if (id == 11) // Millvale Music Festival
             {
-                menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
+                // menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
+                // don't add the above, all event types become tabs and it is a big ol mess
                 menu.Add(new Menu { Type = "TabSchedule", Title = "Schedule" });
                 MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
                 menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
