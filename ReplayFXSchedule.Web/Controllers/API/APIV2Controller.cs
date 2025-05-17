@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Http;
 using System.Net.Http;
 using System.Text;
+using System.Web.Http.Results;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -46,7 +47,7 @@ namespace ReplayFXSchedule.Web.Controllers
 
         [Route("convention/{convention_id}")]
         [HttpGet]
-        public async Task<Convention> Index(int convention_id)
+        public async Task<JsonResult<string>> Index(int convention_id)
         {
             Convention convention = db.Conventions.Find(convention_id);
             var showPrivate = isVip(convention);
@@ -60,7 +61,14 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.Sponsors = convention.Sponsors.OrderBy(e => e.Name).ToList();
 
             convention.Menu = GetMenus(convention_id);
-            return convention;
+
+            JsonSerializerSettings jsSettings = new JsonSerializerSettings();
+            jsSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            jsSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+            jsSettings.Formatting = Formatting.None;
+            jsSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            string result = JsonConvert.SerializeObject(convention, Formatting.Indented, jsSettings);
+            return Json(result);
         }
 
         public async Task<GarbageCache> UpdateCache(int convention_id, string old_api)
