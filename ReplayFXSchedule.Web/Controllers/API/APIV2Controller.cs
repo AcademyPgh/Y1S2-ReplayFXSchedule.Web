@@ -47,7 +47,7 @@ namespace ReplayFXSchedule.Web.Controllers
 
         [Route("convention/{convention_id}")]
         [HttpGet]
-        public async Task<StringContent> Index(int convention_id)
+        public async Task<HttpResponseMessage> Index(int convention_id)
         {
             Convention convention = db.Conventions.Find(convention_id);
             var showPrivate = isVip(convention);
@@ -68,7 +68,10 @@ namespace ReplayFXSchedule.Web.Controllers
             jsSettings.Formatting = Formatting.None;
             jsSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             string result = JsonConvert.SerializeObject(convention, Formatting.Indented, jsSettings);
-            return new StringContent(result, Encoding.UTF8, "application/json");
+
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StringContent(result, Encoding.UTF8, "application/json");
+            return response;
         }
 
         public async Task<GarbageCache> UpdateCache(int convention_id, string old_api)
