@@ -376,7 +376,7 @@ namespace ReplayFXSchedule.Web.Controllers
             
             foreach(var evnt in convention.Events)
             {
-                evnt.Guests.Add(new Guest
+                db.Guests.Add(new Guest
                 {
                     Name = evnt.Title,
                     Convention = convention,
