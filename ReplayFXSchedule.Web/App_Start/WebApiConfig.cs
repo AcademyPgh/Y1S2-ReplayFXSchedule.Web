@@ -41,6 +41,7 @@ namespace ReplayFXSchedule.Web
         public BrowserJsonFormatter()
         {
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            //this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
             this.SerializerSettings.Formatting = Formatting.Indented;
             this.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             this.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
