@@ -22,54 +22,54 @@ namespace ReplayFXSchedule.Web.Controllers
         private ReplayFXDbContext db = new ReplayFXDbContext();
         private UserService us;
 
-        //// GET: Public
-        //[Route("convention/{convention_id}")]
-        //[HttpGet]
-        //public async Task<HttpResponseMessage> Index(int convention_id)
-        //{
-        //    var cache = db.Cache.Where(c => c.ConventionId == convention_id).OrderByDescending(c => c.LastRun).FirstOrDefault();
-        //    string convention = "";
-        //    if(cache == null)
-        //    {
-        //        cache = await UpdateCache(convention_id, null);
-        //    }
-        //    if (cache.LastRun < DateTime.Now.AddMinutes(-2))
-        //    {
-        //        UpdateCache(convention_id, cache.ApiResult);
-        //    }
-
-        //    convention = cache.ApiResult;
-        //    var response = Request.CreateResponse(HttpStatusCode.OK);
-        //    response.Content = new StringContent(convention, Encoding.UTF8, "application/json");
-        //    return response;
-        //}
-
-
+        // GET: Public
         [Route("convention/{convention_id}")]
         [HttpGet]
-        public async Task<JsonResult<string>> Index(int convention_id)
+        public async Task<HttpResponseMessage> Index(int convention_id)
         {
-            Convention convention = db.Conventions.Find(convention_id);
-            var showPrivate = isVip(convention);
-            convention.Events = GetEvents(convention, showPrivate);
-            convention.EventTypes = GetEventTypes(convention, showPrivate);
-            convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
-            convention.VendorTypes = convention.VendorTypes.OrderBy(e => e.Name).ToList();
-            convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
-            convention.Guests = convention.Guests.OrderBy(e => e.Name).ToList();
-            convention.GuestTypes = convention.GuestTypes.OrderBy(e => e.Name).ToList();
-            convention.Sponsors = convention.Sponsors.OrderBy(e => e.Name).ToList();
+            var cache = db.Cache.Where(c => c.ConventionId == convention_id).OrderByDescending(c => c.LastRun).FirstOrDefault();
+            string convention = "";
+            if (cache == null)
+            {
+                cache = await UpdateCache(convention_id, null);
+            }
+            if (cache.LastRun < DateTime.Now.AddMinutes(-2))
+            {
+                UpdateCache(convention_id, cache.ApiResult);
+            }
 
-            convention.Menu = GetMenus(convention_id);
-
-            JsonSerializerSettings jsSettings = new JsonSerializerSettings();
-            jsSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            jsSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-            jsSettings.Formatting = Formatting.None;
-            jsSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            string result = JsonConvert.SerializeObject(convention, Formatting.Indented, jsSettings);
-            return Json(result);
+            convention = cache.ApiResult;
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StringContent(convention, Encoding.UTF8, "application/json");
+            return response;
         }
+
+
+        //[Route("convention/{convention_id}")]
+        //[HttpGet]
+        //public async Task<JsonResult<string>> Index(int convention_id)
+        //{
+        //    Convention convention = db.Conventions.Find(convention_id);
+        //    var showPrivate = isVip(convention);
+        //    convention.Events = GetEvents(convention, showPrivate);
+        //    convention.EventTypes = GetEventTypes(convention, showPrivate);
+        //    convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
+        //    convention.VendorTypes = convention.VendorTypes.OrderBy(e => e.Name).ToList();
+        //    convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
+        //    convention.Guests = convention.Guests.OrderBy(e => e.Name).ToList();
+        //    convention.GuestTypes = convention.GuestTypes.OrderBy(e => e.Name).ToList();
+        //    convention.Sponsors = convention.Sponsors.OrderBy(e => e.Name).ToList();
+
+        //    convention.Menu = GetMenus(convention_id);
+
+        //    JsonSerializerSettings jsSettings = new JsonSerializerSettings();
+        //    jsSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        //    jsSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+        //    jsSettings.Formatting = Formatting.None;
+        //    jsSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        //    string result = JsonConvert.SerializeObject(convention, Formatting.Indented, jsSettings);
+        //    return Json(result);
+        //}
 
         public async Task<GarbageCache> UpdateCache(int convention_id, string old_api)
         {
