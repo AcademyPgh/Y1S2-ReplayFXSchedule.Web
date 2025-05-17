@@ -100,7 +100,7 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
             convention.VendorTypes = convention.VendorTypes.OrderBy(e => e.Name).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
-            //convention.Guests = convention.Guests.OrderBy(e => e.Name).ToList();
+            convention.Guests = convention.Guests.OrderBy(e => e.Name).ToList();
             convention.GuestTypes = convention.GuestTypes.OrderBy(e => e.Name).ToList();
             convention.Sponsors = convention.Sponsors.OrderBy(e => e.Name).ToList();
 

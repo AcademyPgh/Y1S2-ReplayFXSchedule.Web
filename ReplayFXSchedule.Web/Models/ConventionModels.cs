@@ -136,6 +136,7 @@ namespace ReplayFXSchedule.Web.Models
         public virtual List<GameType> GameTypes { get; set; }
         public virtual List<Game> Games { get; set; }
         public virtual List<GameLocation> GameLocations { get; set; }
+        [JsonIgnore]
         public virtual List<Guest> Guests { get; set; }
         public virtual List<GuestType> GuestTypes {get; set;}
         public virtual List<EventType> EventTypes { get; set; }
