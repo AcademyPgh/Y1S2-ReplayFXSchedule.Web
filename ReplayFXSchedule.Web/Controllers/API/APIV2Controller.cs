@@ -13,6 +13,7 @@ using System.Web.Http;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http.Results;
+using System.Data.Entity;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -76,7 +77,7 @@ namespace ReplayFXSchedule.Web.Controllers
 
         public async Task<GarbageCache> UpdateCache(int convention_id, string old_api)
         {
-            var cachedelete = db.Cache.Where(c => c.LastRun < DateTime.Now.AddMinutes(-10));
+            var cachedelete = db.Cache.Where(c => c.LastRun < DbFunctions.AddSeconds(DateTime.Now, -600));
             db.Cache.RemoveRange(cachedelete);
             db.SaveChanges();
 
