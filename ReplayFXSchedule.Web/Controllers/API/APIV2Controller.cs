@@ -128,6 +128,7 @@ namespace ReplayFXSchedule.Web.Controllers
         private List<Menu> GetMenus(int id)
         {
             List<Menu> menu = new List<Menu>();
+            var convention = db.Conventions.Find(id);
 
             if (id == 15)
             {
@@ -157,6 +158,16 @@ namespace ReplayFXSchedule.Web.Controllers
                 menu.Add(new Menu { Type = "VendorsList", Title = "Exhibitors", Options = tempOption });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
                 menu.Add(new Menu { Type = "StaticMap", Title = "Map" });
+            }
+            else if (id == 20) // Northside Music Festival
+            {
+                menu.Add(new Menu { Type = "Schedule", Title = "Schedule" });
+                MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
+                menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
+                menu.Add(new Menu { Type = "EventMenu" });
+                menu.Add(new Menu { Type = "VendorsList", Title = "Vendors" });
+                menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
+                menu.Add(new Menu { Type = "MapLink", Title = "Map" });
             }
             else if (id == 11) // Millvale Music Festival
             {
