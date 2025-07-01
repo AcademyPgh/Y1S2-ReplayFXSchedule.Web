@@ -165,9 +165,13 @@ namespace ReplayFXSchedule.Web.Controllers
                 MenuOption tempOption = new MenuOption { Title = "My Schedule", ScheduleFilter = "my-schedule" };
                 menu.Add(new Menu { Type = "Schedule", Title = "My Schedule", Options = tempOption });
                 menu.Add(new Menu { Type = "EventMenu" });
-                menu.Add(new Menu { Type = "VendorsList", Title = "Vendors" });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
-                menu.Add(new Menu { Type = "MapLink", Title = "Map" });
+                tempOption = new MenuOption { URL = "https://my.atlist.com/map/314839b7-f960-4165-813e-6836e7a0c851/?share=true" };
+                menu.Add(new Menu { Type = "StaticMap", Title = "Friday Map", Options = tempOption });
+                tempOption = new MenuOption { URL = "https://my.atlist.com/map/886e0739-52e2-4d6b-8a1f-fba3d988c0fb/?share=true" };
+                menu.Add(new Menu { Type = "StaticMap", Title = "Saturday Map", Options = tempOption });
+                tempOption = new MenuOption { URL = "https://my.atlist.com/map/e4b376da-31af-4072-8fd1-7e66378156b9/?share=true" };
+                menu.Add(new Menu { Type = "StaticMap", Title = "Sunday Map", Options = tempOption });
             }
             else if (id == 11) // Millvale Music Festival
             {
@@ -179,13 +183,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 tempOption = new MenuOption { Title = "ACTS" };
                 menu.Add(new Menu { Type = "GuestsList", Title = "Acts" , Options = tempOption});
                 menu.Add(new Menu { Type = "EventMenu" });
+                tempOption = new MenuOption { Title = "VISUAL ARTISTS" };
+                menu.Add(new Menu { Type = "VendorsList", Title = "Visual Artists", Options = tempOption });
                 menu.Add(new Menu { Type = "Sponsors", Title = "Sponsors" });
-                tempOption = new MenuOption { URL = "https://my.atlist.com/map/314839b7-f960-4165-813e-6836e7a0c851/?share=true" };
-                menu.Add(new Menu { Type = "StaticMap", Title = "Friday Map", Options = tempOption });
-                tempOption = new MenuOption { URL = "https://my.atlist.com/map/886e0739-52e2-4d6b-8a1f-fba3d988c0fb/?share=true" };
-                menu.Add(new Menu { Type = "StaticMap", Title = "Saturday Map", Options = tempOption });
-                tempOption = new MenuOption { URL = "https://my.atlist.com/map/e4b376da-31af-4072-8fd1-7e66378156b9/?share=true" };
-                menu.Add(new Menu { Type = "StaticMap", Title = "Sunday Map", Options = tempOption });
+                menu.Add(new Menu { Type = "StaticMap", Title = "Map" });
             }
             else
             {
