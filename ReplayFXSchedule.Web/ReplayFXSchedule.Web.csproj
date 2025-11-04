@@ -752,6 +752,8 @@
     <Content Include="Views\PhotoProcessQueues\Details.cshtml" />
     <Content Include="Views\PhotoProcessQueues\Edit.cshtml" />
     <Content Include="Views\PhotoProcessQueues\Index.cshtml" />
+    <Content Include="Views\Vendors\BulkLoad.cshtml" />
+    <Content Include="Views\Sponsors\BulkLoad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
