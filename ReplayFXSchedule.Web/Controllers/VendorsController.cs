@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
 using ReplayFXSchedule.Web.Shared;
+using Newtonsoft.Json;
+using Microsoft.VisualBasic.FileIO;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -355,6 +357,90 @@ namespace ReplayFXSchedule.Web.Controllers
 
             }
             return outList;
+        }
+
+        public ActionResult BulkLoad(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadCSV(int convention_id, HttpPostedFileBase upload)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            VendorImporter importer;
+            List<Vendor> vendors = new List<Vendor>();
+            using (TextFieldParser parser = new TextFieldParser(upload.InputStream))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                string[] fields = parser.ReadFields();
+                importer = new VendorImporter(fields);
+                while (!parser.EndOfData)
+                {
+                    //Processing row
+                    fields = parser.ReadFields();
+                    if (fields.All(f => string.IsNullOrEmpty(f)))
+                    {
+                        continue;
+                    }
+                    var vendor = importer.VendorFactory(fields, db);
+                    convention.Vendors.Add(vendor);
+                    vendors.Add(vendor);
+                }
+            }
+
+            db.SaveChanges();
+            var queue = new List<PhotoProcessQueue>();
+            foreach (var vendor in vendors)
+            {
+                if (!String.IsNullOrEmpty(vendor.Image))
+                {
+                    var processQueue = new PhotoProcessQueue
+                    {
+                        VendorId = vendor.Id,
+                        URL = vendor.Image,
+                        Created = DateTime.Now,
+                        Status = PhotoProcessQueueStatus.New
+                    };
+                    vendor.Image = null;
+                    queue.Add(processQueue);
+                }
+            }
+            db.PhotoProcessQueue.AddRange(queue);
+            db.SaveChanges();
+
+            var result = JsonConvert.SerializeObject(vendors,
+            Formatting.None,
+            new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            });
+
+            return Content(result, "application/json");
         }
     }
 }

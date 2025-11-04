@@ -20,11 +20,11 @@ namespace ReplayFXSchedule.Web.Controllers
             string result;
             if (start == null)
             {
-                start = DateTime.Parse("7/1/2018");
+                start = DateTime.Parse("7/1/2024");
             }
             if (end == null)
             {
-                end = DateTime.Parse("1/1/2024");
+                end = DateTime.Parse("1/1/2027");
             }
 
             if (String.IsNullOrEmpty(category))

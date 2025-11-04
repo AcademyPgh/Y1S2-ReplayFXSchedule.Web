@@ -444,6 +444,10 @@
     <Compile Include="Migrations\ReplayFXDbContext\202411150358570_AddDateToPhoneId.Designer.cs">
       <DependentUpon>202411150358570_AddDateToPhoneId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ReplayFXDbContext\202511040316367_AddSponsorAndVendorToPhotoProcessQueue.cs" />
+    <Compile Include="Migrations\ReplayFXDbContext\202511040316367_AddSponsorAndVendorToPhotoProcessQueue.Designer.cs">
+      <DependentUpon>202511040316367_AddSponsorAndVendorToPhotoProcessQueue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ReplayFXDbContext\Configuration.cs" />
     <Compile Include="Models\GarbageCache.cs" />
     <Compile Include="Models\GuestModels.cs" />
@@ -878,6 +882,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ReplayFXDbContext\202411150358570_AddDateToPhoneId.resx">
       <DependentUpon>202411150358570_AddDateToPhoneId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ReplayFXDbContext\202511040316367_AddSponsorAndVendorToPhotoProcessQueue.resx">
+      <DependentUpon>202511040316367_AddSponsorAndVendorToPhotoProcessQueue.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using ReplayFXSchedule.Web.Models;
 using ReplayFXSchedule.Web.Shared;
+using Newtonsoft.Json;
+using Microsoft.VisualBasic.FileIO;
 
 namespace ReplayFXSchedule.Web.Controllers
 {
@@ -233,6 +235,90 @@ namespace ReplayFXSchedule.Web.Controllers
             db.Sponsors.Remove(sponsor);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult BulkLoad(int convention_id)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadCSV(int convention_id, HttpPostedFileBase upload)
+        {
+            var us = new UserService((ClaimsIdentity)User.Identity, db);
+            if (!us.IsConventionAdmin(convention_id))
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var convention = db.Conventions.Find(convention_id);
+            if (convention == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            SponsorImporter importer;
+            List<Sponsor> sponsors = new List<Sponsor>();
+            using (TextFieldParser parser = new TextFieldParser(upload.InputStream))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                string[] fields = parser.ReadFields();
+                importer = new SponsorImporter(fields);
+                while (!parser.EndOfData)
+                {
+                    //Processing row
+                    fields = parser.ReadFields();
+                    if (fields.All(f => string.IsNullOrEmpty(f)))
+                    {
+                        continue;
+                    }
+                    var sponsor = importer.SponsorFactory(fields, db);
+                    convention.Sponsors.Add(sponsor);
+                    sponsors.Add(sponsor);
+                }
+            }
+
+            db.SaveChanges();
+            var queue = new List<PhotoProcessQueue>();
+            foreach (var sponsor in sponsors)
+            {
+                if (!String.IsNullOrEmpty(sponsor.Image))
+                {
+                    var processQueue = new PhotoProcessQueue
+                    {
+                        SponsorId = sponsor.Id,
+                        URL = sponsor.Image,
+                        Created = DateTime.Now,
+                        Status = PhotoProcessQueueStatus.New
+                    };
+                    sponsor.Image = null;
+                    queue.Add(processQueue);
+                }
+            }
+            db.PhotoProcessQueue.AddRange(queue);
+            db.SaveChanges();
+
+            var result = JsonConvert.SerializeObject(sponsors,
+            Formatting.None,
+            new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            });
+
+            return Content(result, "application/json");
         }
 
         protected override void Dispose(bool disposing)

@@ -48,7 +48,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,EventId,URL,Status,Error,Created,Processed")] PhotoProcessQueue photoProcessQueue)
+        public ActionResult Create([Bind(Include = "Id,EventId,SponsorId,VendorId,URL,Status,Error,Created,Processed")] PhotoProcessQueue photoProcessQueue)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace ReplayFXSchedule.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,EventId,URL,Status,Error,Created,Processed")] PhotoProcessQueue photoProcessQueue)
+        public ActionResult Edit([Bind(Include = "Id,EventId,SponsorId,VendorId,URL,Status,Error,Created,Processed")] PhotoProcessQueue photoProcessQueue)
         {
             if (ModelState.IsValid)
             {
@@ -143,8 +143,33 @@ namespace ReplayFXSchedule.Web.Controllers
                     continue;
                 }
                 var filename = az.GetFileName(stream);
-                var rpe = db.Events.Find(item.EventId);
-                rpe.Image = filename;
+                
+                // Determine which entity type to update based on which ID is set
+                if (item.EventId.HasValue)
+                {
+                    var rpe = db.Events.Find(item.EventId.Value);
+                    if (rpe != null)
+                    {
+                        rpe.Image = filename;
+                    }
+                }
+                else if (item.SponsorId.HasValue)
+                {
+                    var sponsor = db.Sponsors.Find(item.SponsorId.Value);
+                    if (sponsor != null)
+                    {
+                        sponsor.Image = filename;
+                    }
+                }
+                else if (item.VendorId.HasValue)
+                {
+                    var vendor = db.Vendors.Find(item.VendorId.Value);
+                    if (vendor != null)
+                    {
+                        vendor.Image = filename;
+                    }
+                }
+                
                 item.Processed = DateTime.Now;
                 item.Status = PhotoProcessQueueStatus.Processed;
                 db.SaveChanges();

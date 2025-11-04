@@ -275,4 +275,300 @@ namespace ReplayFXSchedule.Web.Shared
             return currentEvent;
         }
     }
+
+    public class SponsorImporter
+    {
+        private Dictionary<string, int> FieldOrder;
+        private string[] Values;
+
+        delegate String UrlGetter();
+
+        public SponsorImporter(string[] fields)
+        {
+            FieldOrder = new Dictionary<string, int>();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                if (!String.IsNullOrEmpty(fields[i]))
+                {
+                    FieldOrder.Add(fields[i], i);
+                }
+            }
+        }
+
+        private string GetStringValue(string fieldName)
+        {
+            if (FieldOrder.ContainsKey(fieldName))
+            {
+                return Values[FieldOrder[fieldName]];
+            }
+            return "";
+        }
+
+        private string GetUrls()
+        {
+            List<string> urls = new List<string>();
+            List<UrlGetter> methods = new List<UrlGetter>();
+            methods.Add(CleanURL);
+            methods.Add(CleanFacebook);
+            methods.Add(CleanTwitter);
+            methods.Add(CleanInstagram);
+            methods.Add(CleanTikTok);
+
+            foreach (var method in methods)
+            {
+                string temp;
+                temp = method();
+                if (!String.IsNullOrEmpty(temp))
+                {
+                    urls.Add(temp);
+                }
+            }
+
+            return String.Join(",", urls);
+        }
+
+        private string Clean(string url)
+        {
+            url = url.Replace("http://", "");
+            url = url.Replace("https://", "");
+            if (url.Length > 0)
+            {
+                return "https://" + url;
+            }
+            return "";
+        }
+
+        private string CleanURL()
+        {
+            string url = GetStringValue("URL");
+            return Clean(url);
+        }
+
+        private string CleanTikTok()
+        {
+            string url = GetStringValue("TikTok");
+            if (url.Length > 0)
+            {
+                url = GetUsername(url, "tiktok.com/");
+                return Clean($"tiktok.com/@{url}");
+            }
+            return "";
+        }
+
+        private string GetUsername(string url, string domain)
+        {
+            if (url.Length > 0)
+            {
+                int index = url.ToLower().IndexOf(domain);
+                if (index > -1)
+                {
+                    url = url.Substring(index + domain.Length);
+                }
+                index = url.IndexOf("?");
+                if (index > -1)
+                {
+                    url = url.Substring(0, index);
+                }
+
+                url = url.Replace("@", "");
+                return url;
+            }
+            return "";
+        }
+
+        private string CleanFacebook()
+        {
+            string url = GetStringValue("Facebook");
+            return Clean(url);
+        }
+
+        private string CleanTwitter()
+        {
+            string url = GetStringValue("Twitter");
+            if (url.Length > 0)
+            {
+                url = GetUsername(url, "twitter.com/");
+                return Clean($"twitter.com/{url}");
+            }
+            return "";
+        }
+
+        private string CleanInstagram()
+        {
+            string url = GetStringValue("Instagram");
+            if (url.Length > 0)
+            {
+                url = GetUsername(url, "instagram.com/");
+                return Clean($"instagram.com/{url}");
+            }
+            return "";
+        }
+
+        public Sponsor SponsorFactory(string[] values, ReplayFXDbContext context)
+        {
+            Values = values;
+            Sponsor currentSponsor = new Sponsor();
+            currentSponsor.Name = GetStringValue("Name");
+            
+            if (!String.IsNullOrEmpty(GetStringValue("GoogleImage")))
+            {
+                currentSponsor.Image = GetStringValue("GoogleImage");
+            }
+
+            currentSponsor.Url = GetUrls();
+
+            return currentSponsor;
+        }
+    }
+
+    public class VendorImporter
+    {
+        private Dictionary<string, int> FieldOrder;
+        private string[] Values;
+
+        delegate String UrlGetter();
+
+        public VendorImporter(string[] fields)
+        {
+            FieldOrder = new Dictionary<string, int>();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                if (!String.IsNullOrEmpty(fields[i]))
+                {
+                    FieldOrder.Add(fields[i], i);
+                }
+            }
+        }
+
+        private string GetStringValue(string fieldName)
+        {
+            if (FieldOrder.ContainsKey(fieldName))
+            {
+                return Values[FieldOrder[fieldName]];
+            }
+            return "";
+        }
+
+        private string GetUrls()
+        {
+            List<string> urls = new List<string>();
+            List<UrlGetter> methods = new List<UrlGetter>();
+            methods.Add(CleanURL);
+            methods.Add(CleanFacebook);
+            methods.Add(CleanTwitter);
+            methods.Add(CleanInstagram);
+            methods.Add(CleanTikTok);
+
+            foreach (var method in methods)
+            {
+                string temp;
+                temp = method();
+                if (!String.IsNullOrEmpty(temp))
+                {
+                    urls.Add(temp);
+                }
+            }
+
+            return String.Join(",", urls);
+        }
+
+        private string Clean(string url)
+        {
+            url = url.Replace("http://", "");
+            url = url.Replace("https://", "");
+            if (url.Length > 0)
+            {
+                return "https://" + url;
+            }
+            return "";
+        }
+
+        private string CleanURL()
+        {
+            string url = GetStringValue("URL");
+            return Clean(url);
+        }
+
+        private string CleanTikTok()
+        {
+            string url = GetStringValue("TikTok");
+            if (url.Length > 0)
+            {
+                url = GetUsername(url, "tiktok.com/");
+                return Clean($"tiktok.com/@{url}");
+            }
+            return "";
+        }
+
+        private string GetUsername(string url, string domain)
+        {
+            if (url.Length > 0)
+            {
+                int index = url.ToLower().IndexOf(domain);
+                if (index > -1)
+                {
+                    url = url.Substring(index + domain.Length);
+                }
+                index = url.IndexOf("?");
+                if (index > -1)
+                {
+                    url = url.Substring(0, index);
+                }
+
+                url = url.Replace("@", "");
+                return url;
+            }
+            return "";
+        }
+
+        private string CleanFacebook()
+        {
+            string url = GetStringValue("Facebook");
+            return Clean(url);
+        }
+
+        private string CleanTwitter()
+        {
+            string url = GetStringValue("Twitter");
+            if (url.Length > 0)
+            {
+                url = GetUsername(url, "twitter.com/");
+                return Clean($"twitter.com/{url}");
+            }
+            return "";
+        }
+
+        private string CleanInstagram()
+        {
+            string url = GetStringValue("Instagram");
+            if (url.Length > 0)
+            {
+                url = GetUsername(url, "instagram.com/");
+                return Clean($"instagram.com/{url}");
+            }
+            return "";
+        }
+
+        public Vendor VendorFactory(string[] values, ReplayFXDbContext context)
+        {
+            Values = values;
+            Vendor currentVendor = new Vendor();
+            currentVendor.Title = GetStringValue("Title");
+            currentVendor.Description = GetStringValue("Description");
+            currentVendor.ExtendedDescription = GetStringValue("ExtendedDescription");
+            currentVendor.Location = GetStringValue("Location");
+            
+            if (!String.IsNullOrEmpty(GetStringValue("GoogleImage")))
+            {
+                currentVendor.Image = GetStringValue("GoogleImage");
+            }
+
+            currentVendor.Url = GetUrls();
+
+            List<int> vendorTypeIds = GetStringValue("VendorTypes").Split(',').Where(s => int.TryParse(s, out int i)).Select(s => Convert.ToInt32(s)).ToList();
+            currentVendor.VendorTypes = context.VendorTypes.Where(vt => vendorTypeIds.Contains(vt.Id)).ToList();
+
+            return currentVendor;
+        }
+    }
 }
