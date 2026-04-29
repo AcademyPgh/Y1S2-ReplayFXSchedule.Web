@@ -408,7 +408,8 @@ namespace ReplayFXSchedule.Web.Controllers
                     Description = evnt.Description,
                     ExtendedDescription = evnt.ExtendedDescription,
                     Image = evnt.Image,
-                    Url = evnt.URL
+                    Url = evnt.URL,
+                    Events = new List<Event> { evnt }
                 });
             }
             db.SaveChanges();
