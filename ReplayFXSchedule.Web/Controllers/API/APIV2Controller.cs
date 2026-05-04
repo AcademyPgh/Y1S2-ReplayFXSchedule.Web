@@ -403,10 +403,10 @@ namespace ReplayFXSchedule.Web.Controllers
                 showPrivate = isVip(convention);
             }
             var events = convention.Events.Where(e => e.IsPrivate == false || e.IsPrivate == showPrivate).OrderBy(e => e.Date).ThenBy(e => e.StartTime).ThenBy(e => e.Title).ToList();
-            foreach(var e in events)
-            {
-                e.Date = e.DisplayDate;
-            }
+            // foreach(var e in events)
+            // {
+            //     e.Date = e.DisplayDate;
+            // }
             return events;
         }
 
