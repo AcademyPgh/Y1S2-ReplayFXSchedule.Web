@@ -94,7 +94,8 @@ namespace ReplayFXSchedule.Web.Controllers
                 db.SaveChanges();
             }
 
-            Convention convention = db.Conventions.Find(convention_id);
+            // AsNoTracking so reassigning the filtered collections below isn't saved back to the DB
+            Convention convention = db.Conventions.AsNoTracking().FirstOrDefault(c => c.Id == convention_id);
             var showPrivate = isVip(convention);
             convention.Events = GetEvents(convention, showPrivate);
             convention.EventTypes = GetEventTypes(convention, showPrivate);
