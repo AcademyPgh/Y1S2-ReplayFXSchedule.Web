@@ -106,7 +106,7 @@ namespace ReplayFXSchedule.Web.Controllers
             {
                 foreach (var vendor in convention.Vendors.Where(v => String.IsNullOrEmpty(v.Url)))
                 {
-                    vendor.Url = "drive.google";
+                    vendor.Url = "https://pittsburghgamingexpo.com/";
                 }
             }
             convention.VendorTypes = convention.VendorTypes.OrderBy(e => e.Name).ToList();
