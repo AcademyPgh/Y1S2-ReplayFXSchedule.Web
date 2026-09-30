@@ -100,6 +100,15 @@ namespace ReplayFXSchedule.Web.Controllers
             convention.Events = GetEvents(convention, showPrivate);
             convention.EventTypes = GetEventTypes(convention, showPrivate);
             convention.Vendors = convention.Vendors.OrderBy(e => e.Title).ToList();
+            // TEMP: convention 18 is on an old app version that breaks on a null/empty vendor URL.
+            // "drive.google" makes the old app hide the URL button. Remove once they're on the new app.
+            if (convention_id == 18)
+            {
+                foreach (var vendor in convention.Vendors.Where(v => String.IsNullOrEmpty(v.Url)))
+                {
+                    vendor.Url = "drive.google";
+                }
+            }
             convention.VendorTypes = convention.VendorTypes.OrderBy(e => e.Name).ToList();
             convention.Games = convention.Games.Where(g => g.AtConvention).OrderBy(g => g.GameTitle).ToList();
             convention.Guests = db.Guests.Where(g => g.Convention.Id == convention_id).OrderBy(e => e.Name).ToList();
